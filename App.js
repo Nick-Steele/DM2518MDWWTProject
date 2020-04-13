@@ -1,12 +1,22 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import Firebase from './config/Firebase'
+import firebase from 'firebase'
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-    </View>
-  );
+class App extends React.Component {
+  signIn = () => {
+    var provider = new firebase.auth.GoogleAuthProvider();
+    Firebase.auth().signInWithPopup(provider);
+  }
+  render() {
+    return (
+      <View style={styles.container}>
+        <TouchableOpacity onPress={this.signIn}>
+        <Text>Sign In!</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  } 
 }
 
 const styles = StyleSheet.create({
@@ -17,3 +27,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+export default App;
