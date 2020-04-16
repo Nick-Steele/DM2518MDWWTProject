@@ -10,10 +10,13 @@ import {
   Alert,
   TextInput,
 } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-import { Colors } from "react-native/Libraries/NewAppScreen";
-// import { Button, Divider, Input, Segment } from "semantic-ui-react";
+import Firebase from '../config/Firebase'
+import firebase from 'firebase'
 
+const signIn = () => {
+  var provider = new firebase.auth.GoogleAuthProvider();
+  Firebase.auth().signInWithPopup(provider);
+}
 const LoginScreen = () => {
   return (
     <SafeAreaView style={styles.safeContainer}>
@@ -49,7 +52,7 @@ const LoginScreen = () => {
         <View style={styles.btnContainer}>
           <TouchableOpacity
             onPress={() => {
-              Alert.alert("Alert", "Google+ Sign in button pressed");
+              signIn();
             }}
           >
             <View style={styles.btnGoogleLoginView}>
