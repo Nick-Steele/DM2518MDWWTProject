@@ -29,10 +29,7 @@ const LoginScreen = () => {
         <View style={styles.logoView}>
           <Image
             style={styles.logo}
-            source={{
-              uri:
-                "https://designshack.net/wp-content/uploads/hipster-logos.jpg",
-            }}
+            source={require("../assets/mainLogo.png")}
           ></Image>
         </View>
 
@@ -118,9 +115,9 @@ const styles = StyleSheet.create({
     // backgroundColor: "grey",
   },
   logo: {
-    width: 300,
-    height: 300,
-    borderRadius: 150,
+    width: 280,
+    height: 280,
+    // borderRadius: 150,
     alignItems: "center",
   },
   detailsContainer: {
