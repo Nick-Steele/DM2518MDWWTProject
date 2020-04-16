@@ -15,11 +15,13 @@ import firebase from 'firebase'
 
 const signIn = () => {
   var provider = new firebase.auth.GoogleAuthProvider();
-  Firebase.auth().signInWithPopup(provider);
+  Firebase.auth().signInWithPopup(provider)
 }
+
 const LoginScreen = () => {
   return (
-    <SafeAreaView style={styles.safeContainer}>
+    <View>
+        <SafeAreaView style={styles.safeContainer}>
       <View style={styles.container}>
         <View style={styles.logoView}>
           <Image
@@ -96,6 +98,8 @@ const LoginScreen = () => {
         </View>
       </View>
     </SafeAreaView>
+    </View>
+    
   );
 };
 
