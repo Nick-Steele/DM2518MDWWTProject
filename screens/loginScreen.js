@@ -16,14 +16,6 @@ import firebase from 'firebase'
 const signIn = () => {
   /*var provider = new firebase.auth.GoogleAuthProvider();
   Firebase.auth().signInWithPopup(provider)*/
-  // Using a redirect.
-firebase.auth().getRedirectResult().then(function(result) {
-  if (result.credential) {
-    // This gives you a Google Access Token.
-    var token = result.credential.accessToken;
-  }
-  var user = result.user;
-});
   var provider = new firebase.auth.GoogleAuthProvider();
   provider.addScope('profile');
   provider.addScope('email');
