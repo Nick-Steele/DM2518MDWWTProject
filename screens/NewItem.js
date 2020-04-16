@@ -10,6 +10,7 @@ const NewItem = () => {
   const [itemText, setItemText] = useState("");
   const [quantityText, setQuantityText] = useState("");
   const [categoryInputText, setCategoryInputText] = useState("");
+  const [storageLocationText, setStorageLocationText] = useState("");
   const [dateInputText, setDateInputText] = useState("");
 
   // DUMMY TEST DATA.
@@ -54,6 +55,7 @@ const NewItem = () => {
           labelFontSize={20}
           data={categoryTestData}
           onFocus={true}
+          onChangeText={() => setCategoryInputText("Fruit")} //CHANGE THIS
         />
 
         {/* STORAGE LOCATION */}
@@ -62,6 +64,7 @@ const NewItem = () => {
           placeholder="Storage Location"
           labelFontSize={20}
           data={storageLocationTestData}
+          onChangeText={() => setStorageLocationText("Freezer")} //CHANGE THIS
         />
 
         <DatePicker
@@ -70,6 +73,7 @@ const NewItem = () => {
           mode="date"
           placeholder="Expirary Date"
           format="YYYY-MM-DD"
+          onDateChange={() => setDateInputText("27-05-1996")}
         />
       </View>
 
@@ -85,7 +89,13 @@ const NewItem = () => {
   );
 
   function parseData(name, quantity) {
-    const item = new Item(name, quantity);
+    const item = new Item(
+      name,
+      quantity,
+      categoryInputText,
+      storageLocationText,
+      dateInputText
+    );
     item.addItemToItems(item);
   }
 
