@@ -10,96 +10,95 @@ import {
   Alert,
   TextInput,
 } from "react-native";
-import Firebase from '../config/Firebase'
-import firebase from 'firebase'
+
+import Firebase from "../config/Firebase";
+import firebase from "firebase";
 
 const signIn = () => {
   var provider = new firebase.auth.GoogleAuthProvider();
-  Firebase.auth().signInWithPopup(provider)
-}
+  Firebase.auth().signInWithPopup(provider);
+};
 
 const LoginScreen = () => {
   return (
     <View>
-        <SafeAreaView style={styles.safeContainer}>
-      <View style={styles.container}>
-        <View style={styles.logoView}>
-          <Image
-            style={styles.logo}
-            source={{
-              uri:
-                "https://designshack.net/wp-content/uploads/hipster-logos.jpg",
-            }}
-          ></Image>
-        </View>
+      <SafeAreaView style={styles.safeContainer}>
+        <View style={styles.container}>
+          <View style={styles.logoView}>
+            <Image
+              style={styles.logo}
+              source={require("../assets/mainLogo.png")}
+            ></Image>
+          </View>
 
-        <View style={styles.detailsContainer}>
-          <TextInput style={styles.userNameText} placeholder="Username..." />
-          <TextInput
-            style={styles.userNameText}
-            secureTextEntry={true}
-            placeholder="Password..."
-          />
-          <TouchableOpacity
-            onPress={() => {
-              Alert.alert("Alert", "Forgot your password button pressed");
-            }}
-          >
-            <View style={styles.btnForgotView}>
-              <Text style={styles.btnForgotText}>Forgot your password?</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
+          <View style={styles.detailsContainer}>
+            <TextInput style={styles.userNameText} placeholder="Username..." />
+            <TextInput
+              style={styles.userNameText}
+              secureTextEntry={true}
+              placeholder="Password..."
+            />
+            <TouchableOpacity
+              onPress={() => {
+                Alert.alert("Alert", "Forgot your password button pressed");
+              }}
+            >
+              <View style={styles.btnForgotView}>
+                <Text style={styles.btnForgotText}>Forgot your password?</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
 
-        <View style={styles.btnContainer}>
-          <TouchableOpacity
-            onPress={() => {
-              signIn();
-            }}
-          >
-            <View style={styles.btnGoogleLoginView}>
-              <Image
-                style={styles.googleImage}
-                source={{
-                  uri:
-                    "https://techcrunch.com/wp-content/uploads/2013/05/google-plus-logo.png?w=730&crop=1 ",
-                }}
-              ></Image>
-              <Text style={styles.btnGoogleLoginText}>Sign in with Google</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              Alert.alert("Alert", "Login button pressed");
-            }}
-          >
-            <View style={styles.btnLoginView}>
-              <Text style={styles.btnLoginText}>Login</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              Alert.alert("Alert", "Register button pressed");
-            }}
-          >
-            <View style={styles.btnRegisterView}>
-              <Text style={styles.btnRegisterText}>Register</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              Alert.alert("Alert", "Terms of service button pressed");
-            }}
-          >
-            <View style={styles.btnTermsView}>
-              <Text style={styles.btnTermsText}>Terms of service</Text>
-            </View>
-          </TouchableOpacity>
+          <View style={styles.btnContainer}>
+            <TouchableOpacity
+              onPress={() => {
+                signIn();
+              }}
+            >
+              <View style={styles.btnGoogleLoginView}>
+                <Image
+                  style={styles.googleImage}
+                  source={{
+                    uri:
+                      "https://techcrunch.com/wp-content/uploads/2013/05/google-plus-logo.png?w=730&crop=1 ",
+                  }}
+                ></Image>
+                <Text style={styles.btnGoogleLoginText}>
+                  Sign in with Google
+                </Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                Alert.alert("Alert", "Login button pressed");
+              }}
+            >
+              <View style={styles.btnLoginView}>
+                <Text style={styles.btnLoginText}>Login</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                Alert.alert("Alert", "Register button pressed");
+              }}
+            >
+              <View style={styles.btnRegisterView}>
+                <Text style={styles.btnRegisterText}>Register</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                Alert.alert("Alert", "Terms of service button pressed");
+              }}
+            >
+              <View style={styles.btnTermsView}>
+                <Text style={styles.btnTermsText}>Terms of service</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
     </View>
-    
   );
 };
 
@@ -117,9 +116,9 @@ const styles = StyleSheet.create({
     // backgroundColor: "grey",
   },
   logo: {
-    width: 300,
-    height: 300,
-    borderRadius: 150,
+    width: 280,
+    height: 280,
+    // borderRadius: 150,
     alignItems: "center",
   },
   detailsContainer: {
