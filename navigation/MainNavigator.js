@@ -16,7 +16,7 @@ function MainStackNavigator({props}) {
   // Handle user state changes
   function authenticationObserver(user) {
     setUser(user);
-    if (isloading) setIsLoading(false);
+    if (isLoading) setIsLoading(false);
   }
 
   React.useEffect(() => {
