@@ -1,20 +1,30 @@
 import { Alert } from "react-native";
 
 export default class Item {
+  items = [];
   // Add other parameters
-  constructor(item, quantity) {
-    this.item = item;
-    this.quantity = quantity;
+  constructor(itemName, quantity) {
+    this.itemName = itemName;
+    this.itemQuantity = quantity;
     // this.category = category;
     // this.storageLocation = storageLocation;
     // this.date = date;
   }
 
   addItemToItems(item) {
-    console.log("add this to the item list...");
+    this.items.push(item);
   }
 
   toString() {
     console.log(this.item + " " + this.quantity);
+  }
+
+  listToString(list) {
+    let i = 0;
+    for (i; i < list.length; ++i) {
+      console.log("***Items in the list***\n");
+
+      console.log(list[i]);
+    }
   }
 }

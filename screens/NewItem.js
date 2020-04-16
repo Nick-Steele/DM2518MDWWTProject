@@ -18,7 +18,7 @@ const NewItem = () => {
         <TextInput
           style={styles.itemNameInput}
           placeholder="Item Name "
-          maxLength={30}
+          maxLength={5}
           onChangeText={(itemText) => setItemText(itemText)}
           defaultValue={itemText}
         ></TextInput>
@@ -26,7 +26,7 @@ const NewItem = () => {
         <TextInput
           style={styles.amountInput}
           placeholder="Enter amount"
-          maxLength={30}
+          maxLength={3}
           keyboardType={"number-pad"}
           onChangeText={(quantityText) => setQuantityText(quantityText)}
           defaultValue={quantityText}
@@ -52,25 +52,42 @@ const NewItem = () => {
           format="YYYY-MM-DD"
         />
       </View>
+
       <View style={styles.buttonView}>
         <Button
           title="Add Item"
-          onPress={() =>
-            Alert.alert(
-              "item name: " + itemText,
-              "quantity: " + quantityText + "...."
-            )
-          }
+          onPress={() => {
+            validateItem(itemText, quantityText);
+          }}
         ></Button>
       </View>
     </View>
   );
-};
 
-function parseData(itemText, quantityText) {
-  const item = new Item();
-  item.addItemToItems(item);
-}
+  function parseData(name, quantity) {
+    const item = new Item(name, quantity);
+    item.addItemToItems(item);
+  }
+
+  function validateItem(itemName, itemQuantity) {
+    if (itemName != "" && itemQuantity != "") {
+      parseData(itemName, itemQuantity);
+      customAlert("Item successfully added!");
+      clearFields();
+    } else {
+      customAlert("Something went wrong try again!");
+    }
+  }
+
+  function clearFields() {
+    setItemText("");
+    setQuantityText("");
+  }
+
+  function customAlert(string) {
+    Alert.alert(string);
+  }
+};
 
 // DUMMY TEST DATA.
 let categoryTestData = [
@@ -123,7 +140,6 @@ const styles = StyleSheet.create({
   buttonView: {
     backgroundColor: "white",
   },
-
   itemNameInput: {
     borderBottomColor: "#CCCCCC",
     borderBottomWidth: 1,
