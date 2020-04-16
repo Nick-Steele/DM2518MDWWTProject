@@ -8,8 +8,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
-    "expo": "^37.0.7",
-    "expo-linear-gradient": "~8.1.0",
+    "expo": "~37.0.3",
     "firebase": "^7.9.0",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
