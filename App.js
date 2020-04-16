@@ -1,13 +1,15 @@
 import React from "react";
 import { StyleSheet, View, } from "react-native";
-import LoginScreen from "./screens/loginScreen";
+import LoginScreen from "./screens/LoginScreen";
 import NewItem from "./screens/NewItem";
+import MainNavigator from "./navigation/MainNavigator"
 
-export default function App() {
+export default function App(props) {
   return (
     <View style={styles.container}>
-      {/* <LoginScreen></LoginScreen> */}
-      <NewItem></NewItem>
+      {/*<LoginScreen/>*/}
+      {/*<NewItem></NewItem>*/}
+      <MainNavigator props={props}/>
     </View>
   );
 }
