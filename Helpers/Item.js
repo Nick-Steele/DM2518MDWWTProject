@@ -19,11 +19,9 @@ export default class Item {
     console.log(this.item + " " + this.quantity);
   }
 
-  listToString(list) {
+  getListItems(list) {
     let i = 0;
-    for (i; i < list.length; ++i) {
-      console.log("***Items in the list***\n");
-
+    for (i; i < list.length; i++) {
       console.log(list[i]);
     }
   }

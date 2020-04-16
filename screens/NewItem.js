@@ -12,19 +12,34 @@ const NewItem = () => {
   const [categoryInputText, setCategoryInputText] = useState("");
   const [dateInputText, setDateInputText] = useState("");
 
+  // DUMMY TEST DATA.
+  let categoryTestData = [
+    { value: "Fruit" },
+    { value: "Meat" },
+    { value: "Vegetable" },
+  ];
+
+  let storageLocationTestData = [
+    { value: "Fridge" },
+    { value: "Freezer" },
+    { value: "Pantry" },
+  ];
+
   return (
     <View style={styles.container}>
       <View style={styles.formContainer}>
+        {/* NAME INPUT */}
         <TextInput
           style={styles.itemNameInput}
           placeholder="Item Name "
-          maxLength={5}
+          maxLength={30}
           onChangeText={(itemText) => setItemText(itemText)}
           defaultValue={itemText}
         ></TextInput>
 
+        {/* QUANTITY INPUT */}
         <TextInput
-          style={styles.amountInput}
+          style={styles.quantityInput}
           placeholder="Enter amount"
           maxLength={3}
           keyboardType={"number-pad"}
@@ -32,15 +47,20 @@ const NewItem = () => {
           defaultValue={quantityText}
         ></TextInput>
 
+        {/* CATEGORY INPUT */}
         <Dropdown
           style={styles.categoryInput}
-          label="Category"
+          placeholder="Category"
+          labelFontSize={20}
           data={categoryTestData}
+          onFocus={true}
         />
 
+        {/* STORAGE LOCATION */}
         <Dropdown
           style={styles.storageLocationInput}
-          label="Storage Location"
+          placeholder="Storage Location"
+          labelFontSize={20}
           data={storageLocationTestData}
         />
 
@@ -72,7 +92,7 @@ const NewItem = () => {
   function validateItem(itemName, itemQuantity) {
     if (itemName != "" && itemQuantity != "") {
       parseData(itemName, itemQuantity);
-      customAlert("Item successfully added!");
+      customAlert("Item " + itemName + " successfully added!");
       clearFields();
     } else {
       customAlert("Something went wrong try again!");
@@ -88,31 +108,6 @@ const NewItem = () => {
     Alert.alert(string);
   }
 };
-
-// DUMMY TEST DATA.
-let categoryTestData = [
-  {
-    value: "Fruit",
-  },
-  {
-    value: "Meat",
-  },
-  {
-    value: "Vegetable",
-  },
-];
-
-let storageLocationTestData = [
-  {
-    value: "Fridge",
-  },
-  {
-    value: "Freezer",
-  },
-  {
-    value: "Pantry",
-  },
-];
 
 const styles = StyleSheet.create({
   container: {
@@ -146,14 +141,11 @@ const styles = StyleSheet.create({
     height: 50,
     fontSize: 20,
   },
-  amountInput: {
-    width: 20,
-  },
   datePickerInput: {
     width: 200,
     padding: 20,
   },
-  amountInput: {
+  quantityInput: {
     borderBottomColor: "#CCCCCC",
     borderBottomWidth: 1,
     height: 50,
