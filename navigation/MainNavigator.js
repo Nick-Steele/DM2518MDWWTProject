@@ -7,8 +7,6 @@ import BottomTabNavigation from './BottomTabNavigation'
 import AuthNavigation from './AuthNavigation'
 import LoadingScreen from '../screens/LoadingScreen'
 
-
-
 function MainStackNavigator({props}) {
   const [isLoading, setIsLoading] = React.useState(true);
   const [user, setUser] = React.useState(false);
