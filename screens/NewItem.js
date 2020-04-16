@@ -1,14 +1,17 @@
-import React from "react";
-import { View, Text, StyleSheet, TextInput, Button } from "react-native";
+import React, { useState } from "react";
+import { View, Text, StyleSheet, TextInput, Button, Alert } from "react-native";
 import { Dropdown } from "react-native-material-dropdown";
 import DatePicker from "react-native-datepicker";
+import Item from "../Helpers/Item";
 
 let today = new Date();
 
-const alert = () => {
-  console.log("heheh");
-};
 const NewItem = () => {
+  const [itemText, setItemText] = useState("");
+  const [quantityText, setQuantityText] = useState("");
+  const [categoryInputText, setCategoryInputText] = useState("");
+  const [dateInputText, setDateInputText] = useState("");
+
   return (
     <View style={styles.container}>
       <View style={styles.formContainer}>
@@ -16,6 +19,8 @@ const NewItem = () => {
           style={styles.itemNameInput}
           placeholder="Item Name "
           maxLength={30}
+          onChangeText={(itemText) => setItemText(itemText)}
+          defaultValue={itemText}
         ></TextInput>
 
         <TextInput
@@ -23,6 +28,8 @@ const NewItem = () => {
           placeholder="Enter amount"
           maxLength={30}
           keyboardType={"number-pad"}
+          onChangeText={(quantityText) => setQuantityText(quantityText)}
+          defaultValue={quantityText}
         ></TextInput>
 
         <Dropdown
@@ -48,13 +55,22 @@ const NewItem = () => {
       <View style={styles.buttonView}>
         <Button
           title="Add Item"
-          style={styles.addButton}
-          onPress={alert}
+          onPress={() =>
+            Alert.alert(
+              "item name: " + itemText,
+              "quantity: " + quantityText + "...."
+            )
+          }
         ></Button>
       </View>
     </View>
   );
 };
+
+function parseData(itemText, quantityText) {
+  const item = new Item();
+  item.addItemToItems(item);
+}
 
 // DUMMY TEST DATA.
 let categoryTestData = [
@@ -87,11 +103,13 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "white",
   },
   formContainer: {
-    backgroundColor: "#CCCCCC",
+    backgroundColor: "white",
+    margin: 40,
     padding: 50,
-    margin: 50,
+
     shadowColor: "#000000",
     shadowOffset: {
       width: 0,
@@ -102,6 +120,10 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     elevation: 5,
   },
+  buttonView: {
+    backgroundColor: "white",
+  },
+
   itemNameInput: {
     borderBottomColor: "#CCCCCC",
     borderBottomWidth: 1,
@@ -121,7 +143,9 @@ const styles = StyleSheet.create({
     height: 50,
     fontSize: 20,
   },
-  categoryInput: {},
+  Button: {
+    height: 40,
+  },
 });
 
 export default NewItem;
