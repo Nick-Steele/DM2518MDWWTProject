@@ -1,5 +1,3 @@
-import { Alert } from "react-native";
-
 export default class Item {
   items = [];
   // Add other parameters
