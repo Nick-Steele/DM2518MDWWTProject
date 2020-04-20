@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {
   View,
+  Text,
   StyleSheet,
   TextInput,
   Button,
@@ -27,7 +28,7 @@ class NewItem extends React.Component {
           <TextInput
             style={styles.itemNameInput}
             placeholder="Enter Item Name "
-            keyboardType="ascii-capable"
+            /*keyboardType="ascii-capable"*/
             maxLength={30}
             onChangeText={(itemNameValue) =>
               this.setState({ itemName: itemNameValue })
@@ -37,8 +38,9 @@ class NewItem extends React.Component {
           {/* Item Quantity Input */}
           <TextInput
             style={styles.itemQuantityInput}
+            ref={this.state.quantity}
             placeholder="Enter Item Quantity"
-            keyboardType="number-pad"
+            /*keyboardType="number-pad"*/
             maxLength={30}
             onChangeText={(itemQuantityValue) =>
               this.setState({ itemQuantity: itemQuantityValue })
@@ -46,6 +48,9 @@ class NewItem extends React.Component {
           ></TextInput>
 
           {/* Item Category Input */}
+          <Text style={styles.selectItemCategoryText}>
+            Select Item Category
+          </Text>
           <Picker
             style={styles.itemCategoryPicker}
             selectedValue={this.state.itemCategory}
@@ -59,6 +64,9 @@ class NewItem extends React.Component {
           </Picker>
 
           {/* Items Storage Location */}
+          <Text style={styles.selectStorageLocationText}>
+            Select Item Storage Location
+          </Text>
           <Picker
             style={styles.itemStorageLocationPicker}
             selectedValue={this.state.itemStorage}
@@ -72,7 +80,7 @@ class NewItem extends React.Component {
           </Picker>
 
           {/* Item Date Picker */}
-          <DatePicker
+          {/* <DatePicker
             style={styles.datePickerInput}
             date={"2020-05-15"}
             mode="date"
@@ -81,7 +89,7 @@ class NewItem extends React.Component {
             onDateChange={(itemExpiraryDateValue) =>
               this.setState({ itemExpiraryDate: itemExpiraryDateValue })
             }
-          ></DatePicker>
+          ></DatePicker> */}
         </View>
 
         <Button
@@ -126,12 +134,12 @@ function validateForm(name, quantity, category, storage, date) {
 
 function clearFields() {
   // (this.state.itemName = ""),
-  //   (this.state.itemQuantity = ""),
+  // this.state.itemQuantity = "";
   //   (this.state.itemCategory = "Select Item Category");
 }
 
 function customAlert(string) {
-  Alert.alert(string);
+  alert(string);
 }
 
 const styles = StyleSheet.create({
@@ -143,6 +151,7 @@ const styles = StyleSheet.create({
   },
   formWrapper: {
     backgroundColor: "white",
+    marginBottom: 30,
     padding: 50,
     shadowColor: "#000000",
     shadowOffset: {
@@ -154,7 +163,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     elevation: 5,
   },
-
   itemNameInput: {
     height: 50,
     fontSize: 20,
@@ -162,16 +170,25 @@ const styles = StyleSheet.create({
     borderBottomColor: "#CCCCCC",
   },
   itemQuantityInput: {
-    marginTop: 30,
     height: 50,
     fontSize: 20,
     borderBottomWidth: 1,
     borderBottomColor: "#CCCCCC",
   },
+  selectItemCategoryText: {
+    marginTop: 20,
+    height: 50,
+    fontSize: 20,
+  },
   itemCategoryPicker: {},
+  selectStorageLocationText: {
+    marginTop: 10,
+    height: 50,
+    fontSize: 20,
+  },
   itemStorageLocationPicker: {},
   datePickerInput: {
-    marginTop: 20,
+    marginTop: 10,
   },
 });
 
