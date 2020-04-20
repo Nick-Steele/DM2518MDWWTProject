@@ -21,6 +21,7 @@ const signIn = () => {
 
 const LoginScreen = () => {
   return (
+    <View>
       <SafeAreaView style={styles.safeContainer}>
         <View style={styles.container}>
           <View style={styles.logoView}>
@@ -97,6 +98,7 @@ const LoginScreen = () => {
           </View>
         </View>
       </SafeAreaView>
+    </View>
   );
 };
 
