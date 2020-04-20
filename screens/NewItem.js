@@ -31,6 +31,7 @@ class NewItem extends React.Component {
           <TextInput
             style={styles.itemNameInput}
             placeholder="Enter Item Name "
+            required
             /*keyboardType="ascii-capable"*/
             maxLength={30}
             onChangeText={(itemNameValue) =>
@@ -198,7 +199,7 @@ const styles = StyleSheet.create({
   formWrapper: {
     backgroundColor: "white",
     marginBottom: 30,
-    padding: 50,
+    padding: 40,
     shadowColor: "#000000",
     shadowOffset: {
       width: 0,
@@ -245,14 +246,19 @@ const styles = StyleSheet.create({
     height: 50,
     fontSize: 20,
   },
-  itemCategoryPicker: {},
+  itemCategoryPicker: {
+    height: 50,
+  },
   selectStorageLocationText: {
     marginTop: 20,
     height: 50,
     fontSize: 20,
   },
-  itemStorageLocationPicker: {},
+  itemStorageLocationPicker: {
+    height: 50,
+  },
   datePickerInput: {
+    height: 50,
     marginTop: 10,
   },
   expiraryDateText: {
