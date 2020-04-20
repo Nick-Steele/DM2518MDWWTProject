@@ -8,195 +8,105 @@ import {
   Alert,
   Picker,
 } from "react-native";
-import { Dropdown } from "react-native-material-dropdown";
-import DatePicker from "react-native-datepicker";
-import Item from "../Helpers/Item";
 
-let today = new Date();
+class NewItem extends React.Component {
+  state = {
+    itemName: "",
+    itemQuantity: "",
+    itemCategory: "meat",
+    itemStorage: "fridge",
+  };
 
-const NewItem = () => {
-  const [itemText, setItemText] = useState("");
-  const [quantityText, setQuantityText] = useState("");
-  const [categoryInputText, setCategoryInputText] = useState("");
-  const [storageLocationText, setStorageLocationText] = useState("");
-  const [dateInputText, setDateInputText] = useState("");
+  render() {
+    return (
+      <View style={styles.container}>
+        <View styles={styles.formContainer}>
+          {/* Item Name Input */}
+          <TextInput
+            style={styles.itemNameInput}
+            placeholder="Enter Item Name "
+            keyboardType="ascii-capable"
+            maxLength={30}
+            onChangeText={(itemNameValue) =>
+              this.setState({ itemName: itemNameValue })
+            }
+          ></TextInput>
 
-  // DUMMY TEST DATA.
-  let categoryTestData = [
-    { value: "Fruit" },
-    { value: "Meat" },
-    { value: "Vegetable" },
-  ];
+          {/* Item Quantity Input */}
+          <TextInput
+            style={styles.itemQuantityInput}
+            placeholder="Enter Item Quantity"
+            keyboardType="number-pad"
+            maxLength={30}
+            onChangeText={(itemQuantityValue) =>
+              this.setState({ itemQuantity: itemQuantityValue })
+            }
+          ></TextInput>
 
-  let storageLocationTestData = [
-    { value: "Fridge" },
-    { value: "Freezer" },
-    { value: "Pantry" },
-  ];
+          {/* Item Category Input */}
+          <Picker
+            style={styles.itemCategoryPicker}
+            selectedValue={this.state.itemCategory}
+            onValueChange={(itemCategoryValue, itemIndex) =>
+              this.setState({ itemCategory: itemCategoryValue })
+            }
+          >
+            <Picker.Item label="Meat" value="meat" />
+            <Picker.Item label="Fruit" value="fruit" />
+            <Picker.Item label="Vegetable" value="vegetable" />
+          </Picker>
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.formContainer}>
-        {/* NAME INPUT */}
-        <TextInput
-          style={styles.itemNameInput}
-          placeholder="Item Name "
-          maxLength={30}
-          onChangeText={(itemText) => setItemText(itemText)}
-          defaultValue={itemText}
-        ></TextInput>
+          {/* Items Storage Location */}
+          <Picker
+            style={styles.itemStorageLocation}
+            selectedValue={this.state.itemStorage}
+            onValueChange={(itemStorageLocationValue, itemIndex) =>
+              this.setState({ itemStorage: itemStorageLocationValue })
+            }
+          >
+            <Picker.Item label="Fridge" value="fridge" />
+            <Picker.Item label="Freezer" value="freezer" />
+            <Picker.Item label="Pantry" value="pantry" />
+          </Picker>
+        </View>
 
-        {/* QUANTITY INPUT */}
-        <TextInput
-          style={styles.quantityInput}
-          placeholder="Enter amount"
-          maxLength={3}
-          keyboardType={"number-pad"}
-          onChangeText={(quantityText) => setQuantityText(quantityText)}
-          defaultValue={quantityText}
-        ></TextInput>
-
-        {/* CATEGORY INPUT */}
-        <Dropdown
-          style={styles.categoryInput}
-          placeholder="Category"
-          labelFontSize={20}
-          data={categoryTestData}
-          onFocus={true}
-          onChangeText={() => setCategoryInputText(categoryInputText)}
-        />
-
-        {/* STORAGE LOCATION */}
-        <Dropdown
-          style={styles.storageLocationInput}
-          placeholder="Storage Location"
-          labelFontSize={20}
-          data={storageLocationTestData}
-          onChangeText={() => setStorageLocationText(storageLocationText)} //CHANGE THIS
-        />
-
-        <DatePicker
-          style={styles.datePickerInput}
-          date={today}
-          mode="date"
-          placeholder="Expirary Date"
-          format="YYYY-MM-DD"
-          onDateChange={() => setDateInputText(dateInputText)}
-        />
-      </View>
-
-      <View style={styles.buttonView}>
         <Button
-          title="Add Item"
-          onPress={() => {
-            validateItem(itemText, quantityText);
-          }}
+          title="Click me"
+          onPress={() =>
+            console.log(
+              this.state.itemName +
+                " | " +
+                this.state.itemQuantity +
+                " | " +
+                this.state.itemCategory +
+                " | " +
+                this.state.itemStorage
+            )
+          }
         ></Button>
       </View>
-    </View>
-  );
-
-  function parseData(
-    name,
-    quantity,
-    categoryInputText,
-    storageLocationText,
-    dateInputText
-  ) {
-    const item = new Item(
-      name,
-      quantity,
-      categoryInputText,
-      storageLocationText,
-      dateInputText
-    );
-    item.addItemToItems(item);
-    console.log("***");
-    console.log(
-      name,
-      quantity,
-      categoryInputText,
-      storageLocationText,
-      dateInputText
     );
   }
-  function validateItem(
-    itemName,
-    itemQuantity,
-    categoryInputText,
-    storageLocationText,
-    dateInputText
-  ) {
-    // Continue to check other arguments.
-    if (itemName != "" && itemQuantity != "") {
-      parseData(
-        itemName,
-        itemQuantity,
-        categoryInputText,
-        storageLocationText,
-        dateInputText
-      );
-      customAlert("Item " + itemName + " successfully added!");
-      clearFields();
-    } else {
-      customAlert("Something went wrong try again!");
-    }
-  }
-
-  function clearFields() {
-    setItemText("");
-    setQuantityText("");
-  }
-
-  function customAlert(string) {
-    Alert.alert(string);
-  }
-};
-
+}
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "column",
-    justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "white",
+    justifyContent: "center",
   },
-  formContainer: {
-    backgroundColor: "white",
-    margin: 40,
-    padding: 50,
 
-    shadowColor: "#000000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowRadius: 6,
-    shadowOpacity: 0.26,
-    backgroundColor: "white",
-    elevation: 5,
-  },
-  buttonView: {
-    backgroundColor: "white",
-  },
+  formContainer: {},
+
+  itemCategoryPicker: {},
+
+  itemStorageLocation: {},
+
   itemNameInput: {
     borderBottomColor: "#CCCCCC",
     borderBottomWidth: 1,
     height: 50,
     fontSize: 20,
-  },
-  datePickerInput: {
-    width: 200,
-    padding: 20,
-  },
-  quantityInput: {
-    borderBottomColor: "#CCCCCC",
-    borderBottomWidth: 1,
-    height: 50,
-    fontSize: 20,
-  },
-  Button: {
-    height: 40,
   },
 });
 
