@@ -11,16 +11,16 @@ export default class Item {
 
   addItemToItems(item) {
     this.items.push(item);
-  }
-
-  toString() {
     console.log(
-      this.item +
-        " " +
-        this.quantity +
-        this.category +
-        this.storageLocation +
-        this.date
+      item.itemName +
+        " | " +
+        item.itemQuantity +
+        " | " +
+        item.itemCategory +
+        " | " +
+        item.itemStorageLocation +
+        " | " +
+        item.itemDate
     );
   }
 

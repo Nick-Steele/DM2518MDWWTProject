@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   View,
-  Text,
   StyleSheet,
   TextInput,
   Button,
@@ -9,12 +8,13 @@ import {
   Picker,
 } from "react-native";
 import DatePicker from "react-native-datepicker";
+import Item from "../Helpers/Item";
 
 class NewItem extends React.Component {
   state = {
     itemName: "",
     itemQuantity: "",
-    itemCategory: "meat",
+    itemCategory: "Select Item Category",
     itemStorage: "fridge",
     itemExpiraryDate: "2020-05-15",
   };
@@ -22,7 +22,7 @@ class NewItem extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <View styles={styles.formContainer}>
+        <View style={styles.formWrapper}>
           {/* Item Name Input */}
           <TextInput
             style={styles.itemNameInput}
@@ -60,7 +60,7 @@ class NewItem extends React.Component {
 
           {/* Items Storage Location */}
           <Picker
-            style={styles.itemStorageLocation}
+            style={styles.itemStorageLocationPicker}
             selectedValue={this.state.itemStorage}
             onValueChange={(itemStorageLocationValue, itemIndex) =>
               this.setState({ itemStorage: itemStorageLocationValue })
@@ -71,6 +71,7 @@ class NewItem extends React.Component {
             <Picker.Item label="Pantry" value="pantry" />
           </Picker>
 
+          {/* Item Date Picker */}
           <DatePicker
             style={styles.datePickerInput}
             date={"2020-05-15"}
@@ -86,16 +87,12 @@ class NewItem extends React.Component {
         <Button
           title="Click me"
           onPress={() =>
-            console.log(
-              this.state.itemName +
-                " | " +
-                this.state.itemQuantity +
-                " | " +
-                this.state.itemCategory +
-                " | " +
-                this.state.itemStorage +
-                " | " +
-                this.state.itemExpiraryDate
+            validateForm(
+              this.state.itemName,
+              this.state.itemQuantity,
+              this.state.itemCategory,
+              this.state.itemStorage,
+              this.state.itemExpiraryDate
             )
           }
         ></Button>
@@ -103,6 +100,40 @@ class NewItem extends React.Component {
     );
   }
 }
+// Function creates the Item object itself and adds it to the item class where it is managed.
+function parseData(name, quantity, category, storage, date) {
+  const itemObject = new Item(name, quantity, category, storage, date); // Create new item object based on form details.
+  itemObject.addItemToItems(itemObject);
+  customAlert("Added item" + " " + name + " successfully");
+}
+
+// Function checks if form elements are not empty,
+// parses the data to Item class and clears the form for re-use.
+function validateForm(name, quantity, category, storage, date) {
+  if (
+    name != "" &&
+    quantity != "" &&
+    category != "" &&
+    storage != "" &&
+    date != ""
+  ) {
+    parseData(name, quantity, category, storage, date);
+    clearFields();
+  } else {
+    customAlert("Something went wrong, try again!");
+  }
+}
+
+function clearFields() {
+  // (this.state.itemName = ""),
+  //   (this.state.itemQuantity = ""),
+  //   (this.state.itemCategory = "Select Item Category");
+}
+
+function customAlert(string) {
+  Alert.alert(string);
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -110,18 +141,37 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-
-  formContainer: {},
-
-  itemCategoryPicker: {},
-
-  itemStorageLocation: {},
+  formWrapper: {
+    backgroundColor: "white",
+    padding: 50,
+    shadowColor: "#000000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowRadius: 6,
+    shadowOpacity: 0.26,
+    backgroundColor: "white",
+    elevation: 5,
+  },
 
   itemNameInput: {
-    borderBottomColor: "#CCCCCC",
-    borderBottomWidth: 1,
     height: 50,
     fontSize: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: "#CCCCCC",
+  },
+  itemQuantityInput: {
+    marginTop: 30,
+    height: 50,
+    fontSize: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: "#CCCCCC",
+  },
+  itemCategoryPicker: {},
+  itemStorageLocationPicker: {},
+  datePickerInput: {
+    marginTop: 20,
   },
 });
 
