@@ -8,6 +8,7 @@ import {
   Alert,
   Picker,
 } from "react-native";
+import DatePicker from "react-native-datepicker";
 
 class NewItem extends React.Component {
   state = {
@@ -15,6 +16,7 @@ class NewItem extends React.Component {
     itemQuantity: "",
     itemCategory: "meat",
     itemStorage: "fridge",
+    itemExpiraryDate: "2020-05-15",
   };
 
   render() {
@@ -68,6 +70,17 @@ class NewItem extends React.Component {
             <Picker.Item label="Freezer" value="freezer" />
             <Picker.Item label="Pantry" value="pantry" />
           </Picker>
+
+          <DatePicker
+            style={styles.datePickerInput}
+            date={"2020-05-15"}
+            mode="date"
+            placeholder="Expirary Date"
+            format="YYYY-MM-DD"
+            onDateChange={(itemExpiraryDateValue) =>
+              this.setState({ itemExpiraryDate: itemExpiraryDateValue })
+            }
+          ></DatePicker>
         </View>
 
         <Button
@@ -80,7 +93,9 @@ class NewItem extends React.Component {
                 " | " +
                 this.state.itemCategory +
                 " | " +
-                this.state.itemStorage
+                this.state.itemStorage +
+                " | " +
+                this.state.itemExpiraryDate
             )
           }
         ></Button>
