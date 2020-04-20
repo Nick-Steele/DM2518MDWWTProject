@@ -11,9 +11,6 @@ export default class Item {
 
   addItemToItems(item) {
     this.items.push(item);
-    console.log(
-      item.itemName + item.itemCategory + item.itemQuantity + item.date
-    );
   }
 
   toString() {

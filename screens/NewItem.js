@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TextInput, Button, Alert } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  Button,
+  Alert,
+  Picker,
+} from "react-native";
 import { Dropdown } from "react-native-material-dropdown";
 import DatePicker from "react-native-datepicker";
 import Item from "../Helpers/Item";
@@ -55,7 +63,7 @@ const NewItem = () => {
           labelFontSize={20}
           data={categoryTestData}
           onFocus={true}
-          onChangeText={() => setCategoryInputText("Fruit")} //CHANGE THIS
+          onChangeText={() => setCategoryInputText(categoryInputText)}
         />
 
         {/* STORAGE LOCATION */}
@@ -64,7 +72,7 @@ const NewItem = () => {
           placeholder="Storage Location"
           labelFontSize={20}
           data={storageLocationTestData}
-          onChangeText={() => setStorageLocationText("Freezer")} //CHANGE THIS
+          onChangeText={() => setStorageLocationText(storageLocationText)} //CHANGE THIS
         />
 
         <DatePicker
@@ -73,7 +81,7 @@ const NewItem = () => {
           mode="date"
           placeholder="Expirary Date"
           format="YYYY-MM-DD"
-          onDateChange={() => setDateInputText("27-05-1996")}
+          onDateChange={() => setDateInputText(dateInputText)}
         />
       </View>
 
@@ -88,7 +96,13 @@ const NewItem = () => {
     </View>
   );
 
-  function parseData(name, quantity) {
+  function parseData(
+    name,
+    quantity,
+    categoryInputText,
+    storageLocationText,
+    dateInputText
+  ) {
     const item = new Item(
       name,
       quantity,
@@ -97,11 +111,31 @@ const NewItem = () => {
       dateInputText
     );
     item.addItemToItems(item);
+    console.log("***");
+    console.log(
+      name,
+      quantity,
+      categoryInputText,
+      storageLocationText,
+      dateInputText
+    );
   }
-
-  function validateItem(itemName, itemQuantity) {
+  function validateItem(
+    itemName,
+    itemQuantity,
+    categoryInputText,
+    storageLocationText,
+    dateInputText
+  ) {
+    // Continue to check other arguments.
     if (itemName != "" && itemQuantity != "") {
-      parseData(itemName, itemQuantity);
+      parseData(
+        itemName,
+        itemQuantity,
+        categoryInputText,
+        storageLocationText,
+        dateInputText
+      );
       customAlert("Item " + itemName + " successfully added!");
       clearFields();
     } else {
