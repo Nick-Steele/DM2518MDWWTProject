@@ -9,8 +9,12 @@ export default class Item {
     this.itemDate = new Date(day, month, year);
   }
 
-  addItemToItems(item) {
+  addItemToFoodList(item) {
     this.foodItemsList.push(item);
+    let i = 0;
+    this.foodItemsList.forEach((element) => {
+      console.log(element);
+    });
   }
 
   // Retreive all food items which are kept in the list

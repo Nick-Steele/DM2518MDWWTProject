@@ -147,7 +147,7 @@ class NewItem extends React.Component {
 }
 // Function creates the Item object itself and adds it to the item class where it is managed.
 function parseData(name, quantity, category, storage, day, month, year) {
-  const itemObject = new Item(
+  let itemObject = new Item(
     name,
     quantity,
     category,
@@ -156,7 +156,7 @@ function parseData(name, quantity, category, storage, day, month, year) {
     month,
     year
   ); // Create new item object based on form details.
-  itemObject.addItemToItems(itemObject);
+  itemObject.addItemToFoodList(itemObject);
   customAlert("Added item" + " " + name + " successfully");
 }
 
