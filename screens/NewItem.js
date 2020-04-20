@@ -17,7 +17,10 @@ class NewItem extends React.Component {
     itemQuantity: "",
     itemCategory: "Select Item Category",
     itemStorage: "fridge",
-    itemExpiraryDate: "2020-05-15",
+    day: "",
+    month: "",
+    year: "",
+    //itemExpiraryDate: "2020-05-15",
   };
 
   render() {
@@ -79,6 +82,28 @@ class NewItem extends React.Component {
             <Picker.Item label="Pantry" value="pantry" />
           </Picker>
 
+          <Text style={styles.expiraryDateText}>Enter Expirary date</Text>
+          <View style={styles.nestedDateInputContainer}>
+            <TextInput
+              placeholder="dd"
+              style={styles.dayInput}
+              onChangeText={(dayValue) => this.setState({ day: dayValue })}
+            />
+
+            <TextInput
+              placeholder="mm"
+              style={styles.monthInput}
+              onChangeText={(monthValue) =>
+                this.setState({ month: monthValue })
+              }
+            ></TextInput>
+            <TextInput
+              placeholder="yyyy"
+              style={styles.yearInput}
+              onChangeText={(yearValue) => this.setState({ year: yearValue })}
+            ></TextInput>
+          </View>
+
           {/* Item Date Picker */}
           {/* <DatePicker
             style={styles.datePickerInput}
@@ -93,14 +118,25 @@ class NewItem extends React.Component {
         </View>
 
         <Button
-          title="Click me"
+          title="Add Item"
           onPress={() =>
+            // console.log(
+            //   this.state.itemName +
+            //     this.state.itemQuantity +
+            //     this.state.itemCategory +
+            //     this.state.itemStorage +
+            //     this.state.day +
+            //     this.state.month +
+            //     this.state.year
+            // )
             validateForm(
               this.state.itemName,
               this.state.itemQuantity,
               this.state.itemCategory,
               this.state.itemStorage,
-              this.state.itemExpiraryDate
+              this.state.day,
+              this.state.month,
+              this.state.year
             )
           }
         ></Button>
@@ -109,23 +145,33 @@ class NewItem extends React.Component {
   }
 }
 // Function creates the Item object itself and adds it to the item class where it is managed.
-function parseData(name, quantity, category, storage, date) {
-  const itemObject = new Item(name, quantity, category, storage, date); // Create new item object based on form details.
+function parseData(name, quantity, category, storage, day, month, year) {
+  const itemObject = new Item(
+    name,
+    quantity,
+    category,
+    storage,
+    day,
+    month,
+    year
+  ); // Create new item object based on form details.
   itemObject.addItemToItems(itemObject);
   customAlert("Added item" + " " + name + " successfully");
 }
 
 // Function checks if form elements are not empty,
 // parses the data to Item class and clears the form for re-use.
-function validateForm(name, quantity, category, storage, date) {
+function validateForm(name, quantity, category, storage, day, month, year) {
   if (
     name != "" &&
     quantity != "" &&
     category != "" &&
     storage != "" &&
-    date != ""
+    day != "" &&
+    month != "" &&
+    year != ""
   ) {
-    parseData(name, quantity, category, storage, date);
+    parseData(name, quantity, category, storage, day, month, year);
     clearFields();
   } else {
     customAlert("Something went wrong, try again!");
@@ -135,7 +181,7 @@ function validateForm(name, quantity, category, storage, date) {
 function clearFields() {
   // (this.state.itemName = ""),
   // this.state.itemQuantity = "";
-  //   (this.state.itemCategory = "Select Item Category");
+  //  (this.state.itemCategory = "Select Item Category");
 }
 
 function customAlert(string) {
@@ -163,6 +209,25 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     elevation: 5,
   },
+  nestedDateInputContainer: {
+    marginTop: 10,
+    flexDirection: "row",
+  },
+  dayInput: {
+    height: 40,
+    borderBottomWidth: 1,
+    borderBottomColor: "#CCCCCC",
+  },
+  monthInput: {
+    height: 40,
+    borderBottomWidth: 1,
+    borderBottomColor: "#CCCCCC",
+  },
+  yearInput: {
+    height: 40,
+    borderBottomWidth: 1,
+    borderBottomColor: "#CCCCCC",
+  },
   itemNameInput: {
     height: 50,
     fontSize: 20,
@@ -182,13 +247,18 @@ const styles = StyleSheet.create({
   },
   itemCategoryPicker: {},
   selectStorageLocationText: {
-    marginTop: 10,
+    marginTop: 20,
     height: 50,
     fontSize: 20,
   },
   itemStorageLocationPicker: {},
   datePickerInput: {
     marginTop: 10,
+  },
+  expiraryDateText: {
+    marginTop: 30,
+    height: 50,
+    fontSize: 20,
   },
 });
 

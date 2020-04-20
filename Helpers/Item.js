@@ -1,33 +1,23 @@
 export default class Item {
-  items = [];
+  foodItemsList = [];
   // Add other parameters
-  constructor(itemName, quantity, category, storageLocation, date) {
+  constructor(itemName, quantity, category, storageLocation, day, month, year) {
     this.itemName = itemName;
     this.itemQuantity = quantity;
     this.itemCategory = category;
     this.itemStorageLocation = storageLocation;
-    this.itemDate = date;
+    this.itemDate = new Date(day, month, year);
   }
 
   addItemToItems(item) {
-    this.items.push(item);
-    console.log(
-      item.itemName +
-        " | " +
-        item.itemQuantity +
-        " | " +
-        item.itemCategory +
-        " | " +
-        item.itemStorageLocation +
-        " | " +
-        item.itemDate
-    );
+    this.foodItemsList.push(item);
   }
 
+  // Retreive all food items which are kept in the list
   getListItems(list) {
     let i = 0;
     for (i; i < list.length; i++) {
-      console.log(list[i]);
+      return list[i];
     }
   }
 }
