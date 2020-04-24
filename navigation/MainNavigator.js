@@ -1,13 +1,12 @@
+import * as React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import Firebase from "../config/Firebase";
 
-import * as React from 'react'
-import { NavigationContainer } from '@react-navigation/native'
-import Firebase from '../config/Firebase'
+import BottomTabNavigation from "./BottomTabNavigation";
+import AuthNavigation from "./AuthNavigation";
+import LoadingScreen from "../screens/LoadingScreen";
 
-import BottomTabNavigation from './BottomTabNavigation'
-import AuthNavigation from './AuthNavigation'
-import LoadingScreen from '../screens/LoadingScreen'
-
-function MainStackNavigator({props}) {
+function MainStackNavigator({ props }) {
   const [isLoading, setIsLoading] = React.useState(true);
   const [user, setUser] = React.useState(false);
 
@@ -18,24 +17,26 @@ function MainStackNavigator({props}) {
   }
 
   React.useEffect(() => {
-	setTimeout(() => {
-		setIsLoading(!isLoading);
-	  }, 500);
+    setTimeout(() => {
+      setIsLoading(!isLoading);
+    }, 500);
 
-    const subscriber = Firebase.auth().onAuthStateChanged(authenticationObserver);
+    const subscriber = Firebase.auth().onAuthStateChanged(
+      authenticationObserver
+    );
     return subscriber; // unsubscribe on unmount
   }, []);
 
   return (
     <NavigationContainer>
-		{isLoading ? (
-			<LoadingScreen />
-		) : user ? (
-			<BottomTabNavigation props={props}/>
-		) : (
-			<AuthNavigation />
-		)}
-	</NavigationContainer>
+      {isLoading ? (
+        <LoadingScreen />
+      ) : user ? (
+        <BottomTabNavigation props={props} />
+      ) : (
+        <AuthNavigation />
+      )}
+    </NavigationContainer>
   );
 }
 
