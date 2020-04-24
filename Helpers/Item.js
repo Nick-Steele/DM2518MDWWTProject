@@ -157,6 +157,32 @@ class Item extends Component {
 
   compareItems(item1, item2){
     return ((item1.name===item2.name)&&(item1.location===item2.location)&&(item1.expiredate===item2.expiredate))
+
+// export default class Item {
+//   foodItemsList = [];
+//   // Add other parameters
+//   constructor(itemName, quantity, category, storageLocation, day, month, year) {
+//     this.itemName = itemName;
+//     this.itemQuantity = quantity;
+//     this.itemCategory = category;
+//     this.itemStorageLocation = storageLocation;
+//     this.itemDate = new Date(day, month, year);
+//   }
+
+//   addItemToFoodList(item) {
+//     this.foodItemsList.push(item);
+//     let i = 0;
+//     this.foodItemsList.forEach((element) => {
+//       console.log(element);
+//     });
+//   }
+
+//   // Retreive all food items which are kept in the list
+//   getListItems(list) {
+//     let i = 0;
+//     for (i; i < list.length; i++) {
+//       return list[i];
+//     }
   }
 }
 export default Item
