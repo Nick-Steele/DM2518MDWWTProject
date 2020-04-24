@@ -1,18 +1,16 @@
 import React from "react";
 import { StyleSheet, View, } from "react-native";
 
-import ShowList from "./components/Example";
-import { MenuProvider } from "react-native-popup-menu";
+import MainNavigator from "./navigation/MainNavigator";
+import { LoginScreen, NewItem } from "./screens";
 
 export default function App(props) {
   return (
-    <MenuProvider>
-      <View style={styles.container}>
-        {/* <LoginScreen></LoginScreen> */}
-        {/* <NewItem></NewItem> */}
-        <ShowList></ShowList>
-      </View>
-    </MenuProvider>
+    <View style={styles.container}>
+      {/*<LoginScreen/>*/}
+      {/*<NewItem></NewItem>*/}
+      <MainNavigator props={props} />
+    </View>
   );
 }
 

@@ -1,20 +1,27 @@
-import { Alert } from "react-native";
-
 export default class Item {
+  foodItemsList = [];
   // Add other parameters
-  constructor(item, quantity) {
-    this.item = item;
-    this.quantity = quantity;
-    // this.category = category;
-    // this.storageLocation = storageLocation;
-    // this.date = date;
+  constructor(itemName, quantity, category, storageLocation, day, month, year) {
+    this.itemName = itemName;
+    this.itemQuantity = quantity;
+    this.itemCategory = category;
+    this.itemStorageLocation = storageLocation;
+    this.itemDate = new Date(day, month, year);
   }
 
-  addItemToItems(item) {
-    console.log("add this to the item list...");
+  addItemToFoodList(item) {
+    this.foodItemsList.push(item);
+    let i = 0;
+    this.foodItemsList.forEach((element) => {
+      console.log(element);
+    });
   }
 
-  toString() {
-    console.log(this.item + " " + this.quantity);
+  // Retreive all food items which are kept in the list
+  getListItems(list) {
+    let i = 0;
+    for (i; i < list.length; i++) {
+      return list[i];
+    }
   }
 }
