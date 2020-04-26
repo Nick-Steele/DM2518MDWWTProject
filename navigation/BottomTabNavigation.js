@@ -8,7 +8,9 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableHighlight,
+  TouchableOpacity,
+  Alert,
+  Button,
 } from "react-native";
 
 import {
@@ -17,6 +19,7 @@ import {
   NewItem,
   TestChildScreen,
   HomeScreen,
+  GraphScreen,
 } from "../screens";
 
 const BottomTab = createBottomTabNavigator();
@@ -43,17 +46,28 @@ function LoggedInUser() {
 function SignOutUser() {
   return (
     <View style={{ paddingLeft: 16 }}>
-      <TouchableHighlight onPress={() => Firebase.auth().signOut()}>
+      <TouchableOpacity
+        onPress={() => {
+          Firebase.auth().signOut();
+        }}
+        // This works for Android and IOS but not web
+        // onPress={() =>
+        //   Alert.alert("Sign Out", "Are you sure you want too sign out?", [
+        //     {
+        //       text: "Yes",
+        //       onPress: () => console.log("Signing out..."),
+        //       onPress: () => Firebase.auth().signOut(),
+        //     },
+        //     {
+        //       text: "Cancel",
+        //       onPress: () => console.log("Sign out aborted"),
+        //       style: "cancel",
+        //     },
+        //   ])
+        // }
+      >
         <Text style={{ color: "#007AFF" }}>Sign Out</Text>
-      </TouchableHighlight>
-    </View>
-  );
-}
-
-function HeaderTitle() {
-  return (
-    <View style={{ paddingLeft: 16 }}>
-      <Text style={styles.headerText}>Home</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -66,7 +80,7 @@ const HomeStackScreen = () => (
       options={{
         headerLeft: (props) => <SignOutUser {...props} />,
         headerRight: (props) => <LoggedInUser {...props} />,
-        headerTitle: (props) => <HeaderTitle {...props} />,
+        headerTitleAlign: "center",
       }}
     />
     <StorageStack.Screen name="TestChildScreen" component={TestChildScreen} />
@@ -75,14 +89,26 @@ const HomeStackScreen = () => (
 
 const StorageStackScreen = () => (
   <StorageStack.Navigator>
-    <StorageStack.Screen name="Storage" component={StorageScreen} />
+    <StorageStack.Screen
+      name="Storage"
+      component={StorageScreen}
+      options={{
+        headerTitleAlign: "center",
+      }}
+    />
     <StorageStack.Screen name="TestChildScreen" component={TestChildScreen} />
   </StorageStack.Navigator>
 );
 
 const WasteStackScreen = () => (
   <WasteStack.Navigator>
-    <WasteStack.Screen name="Waste Analytics" component={WasteScreen} />
+    <WasteStack.Screen
+      name="Waste Analytics"
+      component={WasteScreen}
+      options={{
+        headerTitleAlign: "center",
+      }}
+    />
     <StorageStack.Screen name="TestChildScreen" component={TestChildScreen} />
   </WasteStack.Navigator>
 );
