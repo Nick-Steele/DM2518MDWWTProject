@@ -13,4 +13,6 @@ web-report/
 # macOS
 .DS_Store
 *.env
-*package-lock*
+*package-lock.*
+*package.*
+
