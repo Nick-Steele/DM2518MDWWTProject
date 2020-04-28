@@ -4,6 +4,12 @@ import MainNavigator from "./navigation/MainNavigator";
 import { LoginScreen, NewItem, TestChildScreen } from "./screens";
 import Item from "./Helpers/Item";
 
+import {decode, encode} from 'base-64'
+
+if (!global.btoa) {  global.btoa = encode }
+
+if (!global.atob) { global.atob = decode }
+
 export default function App(props) {
   return (
     <View style={styles.container}>
