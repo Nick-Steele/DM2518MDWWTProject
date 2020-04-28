@@ -1,7 +1,7 @@
 import { Alert } from "react-native";
 import TestChildScreen from "../screens/TestChildScreen";
 import React, { Component } from "react";
-import {firestore} from '../config/Firebase'
+import Firebase from '../config/Firebase'
 
 // usage  <Item><TestChildScreen/></Item> 
 
@@ -27,7 +27,7 @@ class Item extends Component {
   }
 
   getItemFromItems(userid){
-    var first = firestore.collection("Fridgecollection").doc(userid).collection("mat")
+    var first = Firebase.firestore().collection("Fridgecollection").doc(userid).collection("mat")
 
     return first.get().then(collectionSnapshot=>{
         var foodlist = []
@@ -42,7 +42,7 @@ class Item extends Component {
 
   addItemToItems(userid, item) {
       //compare with the food collection at first
-      var fooddb = firestore.collection("Foodcollection")
+      var fooddb = Firebase.firestore().collection("Foodcollection")
       var addfooddb = this.searchItemFromItems(item.name)
       .then(fitem=>{
           if(!fitem){
@@ -77,7 +77,7 @@ class Item extends Component {
                   item['fid']=fitem.id
                   item['name']=fitem.name
                   item['category']=fitem.category,
-                firestore.collection("Fridgecollection").doc(userid).collection("mat").add(item) // add to user's stroage db
+                  Firebase.firestore().collection("Fridgecollection").doc(userid).collection("mat").add(item) // add to user's stroage db
                 currentfood.push(item) // add to the user's food list
               }
             return currentfood
@@ -94,7 +94,7 @@ class Item extends Component {
         var rmlist = []
         currentfood.map(food=>{
         if(food.id===rmid){ // for output use, not necessary for db interaction
-          firestore.collection("Fridgecollection").doc(userid).collection("mat").doc(rmid).delete() // delete from database
+          Firebase.firestore().collection("Fridgecollection").doc(userid).collection("mat").doc(rmid).delete() // delete from database
           return 
         }
         rmlist.push(food)
@@ -112,7 +112,7 @@ class Item extends Component {
       items.map(x=>{
         if(x.id===editid){// for output use, not necessary for db interaction
           item['fid']=  x.fid
-          firestore.collection("Fridgecollection").doc(userid).collection("mat").doc(editid).set(item)
+          Firebase.firestore().collection("Fridgecollection").doc(userid).collection("mat").doc(editid).set(item)
           editlist.push(item)
           return 
         }
@@ -125,7 +125,7 @@ class Item extends Component {
   }
 
   searchItemFromItems(name){ // search in fooddb
-    var fooddb = firestore.collection("Foodcollection")
+    var fooddb = Firebase.firestore().collection("Foodcollection")
     var searchfooddb = fooddb.get()
     .then( // read the list in foodb
       collectionSnapshot=>{
