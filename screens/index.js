@@ -7,3 +7,4 @@ export { default as WasteScreen } from "./WasteScreen";
 export { default as TestChildScreen } from "./TestChildScreen";
 export { default as NewItem } from "./NewItem";
 export { default as GraphScreen } from "./GraphScreen";
+export { default as SettingsScreen } from "./SettingsScreen";

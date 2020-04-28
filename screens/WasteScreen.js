@@ -2,14 +2,10 @@ import * as React from "react";
 import {
   View,
   Text,
-  TouchableHighlight,
   StyleSheet,
   SafeAreaView,
   TouchableOpacity,
-  ScrollView,
-  Alert,
   Dimensions,
-  Switch,
 } from "react-native";
 
 import { PieChart } from "react-native-chart-kit";
