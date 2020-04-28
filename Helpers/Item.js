@@ -40,7 +40,9 @@ class Item extends Component {
     }).catch(error=>console.log(error))
   }
 
-  addItemToItems(userid, item) {
+  addItemToItems(item) {
+      // get current user id
+      var userid = Firebase.auth().currentUser.uid;
       //compare with the food collection at first
       var fooddb = Firebase.firestore().collection("Foodcollection")
       var addfooddb = this.searchItemFromItems(item.name)

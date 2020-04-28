@@ -12,11 +12,4 @@ web-report/
 
 # macOS
 .DS_Store
-*.env
-<<<<<<< HEAD
 package-lock.json
-=======
-*package-lock.*
-*package.*
-
->>>>>>> 9d25564ca193d0e56ec693a40b7ee2e4f9ea5a28
