@@ -41,7 +41,6 @@ export default function StorageScreen({ navigation }) {
   return (
     <View>
       <View>
-        <Text>StorageScreen</Text>
         <Button
           title="Test Child Screen"
           onPress={() => {
