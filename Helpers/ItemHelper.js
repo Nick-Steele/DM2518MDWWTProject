@@ -22,7 +22,7 @@ export function addItem(item) {
       var addfooddb = this.searchItem(item.name)
       .then(fitem=>{
           if(!fitem){
-            var adddb = fooddb.doc(userid).add({ // if not exist in our fooddb, add it in(only keep 2 attributes)
+            var adddb = fooddb.add({ // if not exist in our fooddb, add it in(only keep 2 attributes)
               'name':item.name,
               'category':item.category
             }).then((docRef) =>{ 
@@ -49,11 +49,11 @@ export function addItem(item) {
                     console.log("Give user a hint that this item is already exist! Use the edit method if needed.")
                   }
               })
-                if(!inlist){
-                  item['fid']=fitem.id
-                  item['name']=fitem.name
-                  item['category']=fitem.category,
-                  Firebase.firestore().collection("Fridgecollection").doc(userid).collection("mat").add(item) // add to user's stroage db
+              if(!inlist){
+                item['fid']=fitem.id
+                item['name']=fitem.name
+                item['category']=fitem.category,
+                Firebase.firestore().collection("Fridgecollection").doc(userid).collection("mat").add(item) // add to user's stroage db
                 currentfood.push(item) // add to the user's food list
               }
             return currentfood
@@ -65,7 +65,7 @@ export function addItem(item) {
   }
 
 export function removeItem(userid, rmid){ // assume the food is already in fooddb
-    return this.getItems(userid)
+    return this.getItem(userid)
     .then(currentfood=>{
         var rmlist = []
         currentfood.map(food=>{
