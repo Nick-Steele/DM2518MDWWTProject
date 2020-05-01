@@ -1,9 +1,8 @@
 import * as React from "react";
 import { View, ScrollView, SafeAreaView, Text, TouchableOpacity, FlatList, StyleSheet, ActivityIndicator, } from "react-native";
-import {getItems} from "../Helpers/Item";
+import {getItems} from "../Helpers/ItemHelper";
 import Listitem from "../components/Listitem";
 import { MenuProvider } from "react-native-popup-menu";
-import Firebase from "../config/Firebase";
 import LoadingScreen from "./LoadingScreen";
 
 export default function StorageScreen({ navigation }) {
