@@ -1,46 +1,37 @@
-import { Alert } from "react-native";
-import TestChildScreen from "../screens/TestChildScreen";
-import React, { Component } from "react";
+
 import Firebase from '../config/Firebase'
 
 // usage  <Item><TestChildScreen/></Item> 
 
-class Item extends Component {
-  // Add other parameters
-  constructor(props) {
-    super()
-    // this.category = category;
-    // this.storageLocation = storageLocation;
-    // this.date = date;
-  }
 
-  render(){
-    var childprops = 
-    {
-    "getItemFromItems":(userid)=>this.getItemFromItems(userid),
-    "addItemToItems" : (userid, item)=>this.addItemToItems(userid, item),
-    "removeItemFromItems" : (userid,rmid)=>this.removeItemFromItems(userid,rmid),
-    "editItemInItems" : (userid,item, editid)=>this.editItemInItems(userid,item, editid),
-    "searchItemFromItems" : (name)=>this.searchItemFromItems(name)
-  }
-    return React.cloneElement(this.props.children, childprops);
-  }
+  // render(){
+  //   var childprops = 
+  //   {
+  //   "getItemFromItems":(userid)=>this.getItemFromItems(userid),
+  //   "addItemToItems" : (userid, item)=>this.addItemToItems(userid, item),
+  //   "removeItemFromItems" : (userid,rmid)=>this.removeItemFromItems(userid,rmid),
+  //   "editItemInItems" : (userid,item, editid)=>this.editItemInItems(userid,item, editid),
+  //   "searchItemFromItems" : (name)=>this.searchItemFromItems(name)
+  // }
+  //   return React.cloneElement(this.props.children, childprops);
+  // }
 
-  getItemFromItems(userid){
+export const getItemFromItems = (userid)=>{
+
     var first = Firebase.firestore().collection("Fridgecollection").doc(userid).collection("mat")
-
     return first.get().then(collectionSnapshot=>{
-        var foodlist = []
-        var docs = collectionSnapshot.docs
-        docs.map(x=>{
-          var obj = x.data()
-          obj['id']=x.id
-          foodlist.push(obj)})
-        return foodlist
-    }).catch(error=>console.log(error))
-  }
+      var foodlist = []
+      var docs = collectionSnapshot.docs
+      docs.map(x=>{
+        var obj = x.data()
+        obj['id']=x.id
+        foodlist.push(obj) 
+  })    
+      return foodlist
+  }).catch(error=>console.log(error))
+}
 
-  addItemToItems(item) {
+export const addItemToItems=(item)=>{
       // get current user id
       var userid = Firebase.auth().currentUser.uid;
       //compare with the food collection at first
@@ -90,7 +81,7 @@ class Item extends Component {
       return addfooddb
   }
 
-  removeItemFromItems(userid, rmid){ // assume the food is already in fooddb
+export const removeItemFromItems=(userid, rmid)=>{ // assume the food is already in fooddb
     return this.getItemFromItems(userid)
     .then(currentfood=>{
         var rmlist = []
@@ -107,7 +98,7 @@ class Item extends Component {
   ).catch(error=>console.log(error))
 }    
 
-  editItemInItems(userid, item, editid){ // edit item 
+export const editItemInItems=(userid, item, editid)=>{ // edit item 
     var editfood = this.getItemFromItems(userid)
     .then(items=>{
       var editlist=[]
@@ -126,7 +117,7 @@ class Item extends Component {
   return editfood
   }
 
-  searchItemFromItems(name){ // search in fooddb
+export const searchItemFromItems = (name)=>{ // search in fooddb
     var fooddb = Firebase.firestore().collection("Foodcollection")
     var searchfooddb = fooddb.get()
     .then( // read the list in foodb
@@ -157,9 +148,9 @@ class Item extends Component {
     return searchfooddb
   }
 
-  compareItems(item1, item2){
+  const compareItems=(item1, item2)=>{
     return ((item1.name===item2.name)&&(item1.location===item2.location)&&(item1.expiredate===item2.expiredate))
-
+  }
 // export default class Item {
 //   foodItemsList = [];
 //   // Add other parameters
@@ -185,6 +176,5 @@ class Item extends Component {
 //     for (i; i < list.length; i++) {
 //       return list[i];
 //     }
-  }
-}
-export default Item
+
+
