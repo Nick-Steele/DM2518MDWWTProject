@@ -13,7 +13,7 @@ import {
 
 import Firebase from "../config/Firebase";
 
-const GraphScreen = () => {
+const SettingsScreen = () => {
   function LoggedInUser() {
     return (
       <View style={styles.profileView}>
@@ -93,17 +93,26 @@ const GraphScreen = () => {
 
 const styles = StyleSheet.create({
   safeContainer: {
-    flex: 1,
+    flex: 1
   },
   scroll: {
-    backgroundColor: "white",
+    backgroundColor: "white"
   },
   profileContainer: {
     // backgroundColor: "powderblue",
+    shadowColor: "#000000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowRadius: 6,
+    shadowOpacity: 0.26,
+    marginBottom: 10
   },
   profileView: {
     alignItems: "center",
     padding: 24,
+    
   },
   profileImage: {
     width: 60,
@@ -112,15 +121,16 @@ const styles = StyleSheet.create({
   },
   profileName: {
     marginTop: 16,
-    fontSize: 18,
-    fontWeight: "500",
+    fontSize: 20,
+    fontWeight: "400",
   },
   settingsContainer: {
-    height: 200,
     backgroundColor: "skyblue",
   },
   buttonView: {
-    backgroundColor: "yellow",
+    backgroundColor: "#fafafa",
+    borderBottomColor: "lightgrey",
+    borderBottomWidth: 1
   },
   button: {
     padding: 8,
@@ -133,7 +143,9 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "#007AFF",
-    marginLeft: 16,
+    marginLeft: 5,
+    fontSize: 18,
+    padding: 10
   },
   buttonTab: {
     fontSize: 24,
@@ -141,7 +153,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default GraphScreen;
+export default SettingsScreen;
 
 // Sign Out Button testing
 // This works for Android and IOS but not web
