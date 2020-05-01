@@ -2,7 +2,7 @@ import * as React from "react";
 import { View, Text, TouchableHighlight, FlatList, Button } from "react-native";
 import Item from "../Helpers/Item";
 import Listitem from "../components/Listitem";
-import { MenuContext } from "react-native-popup-menu";
+import { MenuProvider } from "react-native-popup-menu";
 
 export default function StorageScreen({ navigation }) {
   //   const item = Item();
@@ -48,9 +48,8 @@ export default function StorageScreen({ navigation }) {
           }}
         ></Button>
       </View>
-      <MenuContext>
-        <Item>
-          <View style={{ marginTop: 30 }}>
+      <MenuProvider>
+      <View style={{ marginTop: 30 }}>
             <FlatList
               data={TestData.food}
               renderItem={({ item }) => {
@@ -58,8 +57,7 @@ export default function StorageScreen({ navigation }) {
               }}
             />
           </View>
-        </Item>
-      </MenuContext>
+      </MenuProvider>
     </View>
   );
 }

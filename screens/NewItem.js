@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, TextInput, Button } from "react-native";
-import Item from "../Helpers/Item";
+import * as Item from "../Helpers/ItemHelper";
 import RadioForm, {
   RadioButton,
   RadioButtonInput,
@@ -53,7 +53,6 @@ class NewItem extends React.Component {
             placeholder="Item Quantity"
             keyboardType="number-pad"
             maxLength={30}
-            y
             onChangeText={(itemQuantityValue) =>
               this.setState({ itemQuantity: itemQuantityValue })
             }
@@ -124,7 +123,7 @@ class NewItem extends React.Component {
 }
 // Function creates the Item object itself and adds it to the item class where it is managed.
 function parseData(name, quantity, category, storage, day, month, year) {
-  let itemObject = new Item(
+  let item = {
     name,
     quantity,
     category,
@@ -132,8 +131,9 @@ function parseData(name, quantity, category, storage, day, month, year) {
     day,
     month,
     year
-  ); // Create new item object based on form details.
+  }; // Create new item object based on form details.
   //itemObject.addItemToFoodList(itemObject);
+  Item.addItem(item);
   customAlert("Added" + quantity + " " + name + " successfully");
 }
 

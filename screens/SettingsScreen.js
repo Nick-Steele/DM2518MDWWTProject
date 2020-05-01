@@ -40,7 +40,7 @@ const GraphScreen = () => {
         <TouchableOpacity
           style={styles.button}
           onPress={() => {
-            // Firebase.auth().signOut();
+            Firebase.auth().signOut();
           }}
         >
           <Image
