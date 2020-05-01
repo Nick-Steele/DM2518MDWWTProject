@@ -10,7 +10,7 @@ const Listitem = (mat)=>{
     return (
         <View style={styles.listItem}>
                 <View style={styles.icon}>
-                    <Text style={styles.listItemText}>{mat.title}</Text>
+                    <Text style={styles.listItemText}>{mat.name}</Text>
                     <View style={styles.icon}>
                         <Text style={styles.amount}>{mat.amount+' unit'}</Text>
                         <Menu>
@@ -26,7 +26,7 @@ const Listitem = (mat)=>{
                     </View>
                 </View>
                 <View style={styles.listinfo}>
-                    <Text>{mat.date}</Text>
+                    <Text>{mat.expiredate}</Text>
                     <Text>{mat.category}</Text>
                     <Text>{mat.location}</Text>
                 </View>

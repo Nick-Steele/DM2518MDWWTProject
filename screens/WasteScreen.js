@@ -14,7 +14,6 @@ import readWasted from "../Helpers/readWasted";
 const GraphScreen = () => {
   const screenWidth = Dimensions.get("window").width - 32;
   const screenHeight = Dimensions.get("window").height / 3.5;
-
   // Used to toggle details of graph
   const [isEnabled, setIsEnabled] = React.useState(false);
   const [theData, setTheData] = React.useState([
