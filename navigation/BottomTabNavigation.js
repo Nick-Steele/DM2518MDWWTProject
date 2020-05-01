@@ -14,7 +14,6 @@ import {
 
 import {
   StorageScreen,
-  WasteScreen,
   NewItem,
   TestChildScreen,
   HomeScreen,
@@ -59,13 +58,12 @@ const StorageStackScreen = () => (
 const WasteStackScreen = () => (
   <WasteStack.Navigator>
     <WasteStack.Screen
-      name="Waste Analytics"
-      component={WasteScreen}
+      name="Analytics"
+      component={GraphScreen}
       options={{
         headerTitleAlign: "center",
       }}
     />
-    <StorageStack.Screen name="TestChildScreen" component={TestChildScreen} />
   </WasteStack.Navigator>
 );
 
