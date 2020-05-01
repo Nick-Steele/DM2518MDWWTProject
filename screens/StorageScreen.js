@@ -30,73 +30,7 @@ export default function StorageScreen({ navigation }) {
       </View>
     )
   })
-  const TestData = {
-    food: [
-      {
-        title: "Cabbage",
-        category: "vegetable",
-        location: "Pantry",
-        amount: 1,
-        date: "2020-04-17",
-      },
-      {
-        title: "Cabbage",
-        category: "vegetable",
-        location: "Pantry",
-        amount: 2,
-        date: "2020-04-17",
-      },
-      {
-        title: "Cabbage",
-        category: "vegetable",
-        location: "Pantry",
-        amount: 3,
-        date: "2020-04-17",
-      },
-      {
-        title: "Cabbage",
-        category: "vegetable",
-        location: "Pantry",
-        amount: 4,
-        date: "2020-04-17",
-      },
-      {
-        title: "Cabbage",
-        category: "vegetable",
-        location: "Pantry",
-        amount: 4,
-        date: "2020-04-17",
-      },
-      {
-        title: "Cabbage",
-        category: "vegetable",
-        location: "Pantry",
-        amount: 4,
-        date: "2020-04-17",
-      },
-      {
-        title: "Cabbage",
-        category: "vegetable",
-        location: "Pantry",
-        amount: 4,
-        date: "2020-04-17",
-      },
-      {
-        title: "Cabbage",
-        category: "vegetable",
-        location: "Pantry",
-        amount: 4,
-        date: "2020-04-17",
-      },
-      {
-        title: "Cabbage",
-        category: "vegetable",
-        location: "Pantry",
-        amount: 4,
-        date: "2020-04-17",
-      },
-    ],
-  };
+  
   const [mat, setMat] = React.useState(0)
   const [loading, setLoading] = React.useState(true)
   React.useEffect(()=>{
