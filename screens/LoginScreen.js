@@ -4,33 +4,30 @@ import {
   Text,
   StyleSheet,
   Image,
-  Button,
   SafeAreaView,
   TouchableOpacity,
   Alert,
   TextInput,
+  Platform,
+  Vibration
 } from "react-native";
-
-import Firebase from "../config/Firebase";
-import firebase from "firebase";
-
-const signIn = () => {
-  var provider = new firebase.auth.GoogleAuthProvider();
-  Firebase.auth().signInWithPopup(provider);
-};
+import {signIn} from '../Helpers/SignIn'
 
 const LoginScreen = () => {
   return (
-      <SafeAreaView style={styles.safeContainer}>
-        <View style={styles.container}>
-          <View style={styles.logoView}>
+    <SafeAreaView style={styles.safeContainer}>
+      <View style={styles.container}>
+        <View style={styles.logoContainer}>
+          <View style={styles.logoSizeView}>
             <Image
               style={styles.logo}
               source={require("../assets/mainLogo.png")}
             ></Image>
           </View>
+        </View>
 
-          <View style={styles.detailsContainer}>
+        <View style={styles.detailsContainer}>
+          <View style={styles.detailsSizeView}>
             <TextInput style={styles.userNameText} placeholder="Username..." />
             <TextInput
               style={styles.userNameText}
@@ -47,8 +44,10 @@ const LoginScreen = () => {
               </View>
             </TouchableOpacity>
           </View>
+        </View>
 
-          <View style={styles.btnContainer}>
+        <View style={styles.btnContainer}>
+          <View style={styles.btnSizeView}>
             <TouchableOpacity
               onPress={() => {
                 signIn();
@@ -96,7 +95,8 @@ const LoginScreen = () => {
             </TouchableOpacity>
           </View>
         </View>
-      </SafeAreaView>
+      </View>
+    </SafeAreaView>
   );
 };
 
@@ -107,24 +107,38 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  logoView: {
+
+  logoContainer: {
     flex: 1,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  logoSizeView: {
+    flex: 1,
+    maxWidth: 500,
+    maxHeight: 500,
+    alignSelf: "stretch",
     alignItems: "center",
     justifyContent: "center",
-    // backgroundColor: "grey",
   },
   logo: {
-    width: 280,
-    height: 280,
-    // borderRadius: 150,
-    alignItems: "center",
+    flex: 1,
+    resizeMode: "contain",
+    minWidth: 300,
   },
+
   detailsContainer: {
     flex: 1,
     paddingLeft: 60,
     paddingRight: 60,
+    flexDirection: "row",
     justifyContent: "center",
-    // backgroundColor: "lightgrey",
+    alignItems: "center",
+  },
+  detailsSizeView: {
+    flex: 1,
+    maxWidth: 600,
   },
   userNameText: {
     fontSize: 20,
@@ -140,19 +154,21 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
     paddingTop: 8,
   },
+
   btnContainer: {
     flex: 1,
-    justifyContent: "center",
     paddingLeft: 50,
     paddingRight: 50,
-    // backgroundColor: "skyblue",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
   },
   btnGoogleLoginView: {
     borderRadius: 5,
     marginBottom: 24,
+    flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    flexDirection: "row",
     backgroundColor: "#db4a37",
   },
   googleImage: {
@@ -191,6 +207,10 @@ const styles = StyleSheet.create({
   },
   btnTermsText: {
     color: "grey",
+  },
+  btnSizeView: {
+    flex: 1,
+    maxWidth: 600,
   },
 });
 

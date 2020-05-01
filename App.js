@@ -1,19 +1,22 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-
 import MainNavigator from "./navigation/MainNavigator";
-import { LoginScreen, HomePage, NewItem } from "./screens";
+import { LoginScreen, NewItem, TestChildScreen } from "./screens";
 import Item from "./Helpers/Item";
-import TestChildScreen from "./screens/TestChildScreen";
+
+import {decode, encode} from 'base-64'
+
+if (!global.btoa) {  global.btoa = encode }
+
+if (!global.atob) { global.atob = decode }
 
 export default function App(props) {
   return (
     <View style={styles.container}>
       {/* <LoginScreen/> */}
       {/* <NewItem></NewItem> */}
-      {/* <MainNavigator props={props} /> */}
-      {/* <HomePage></HomePage> */}
-      <Item><TestChildScreen/></Item> 
+      {<MainNavigator props={props} />}
+      {/* <Item><TestChildScreen/></Item>  */}
       {/* <TestChildScreen/> */}
     </View>
   );

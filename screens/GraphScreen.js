@@ -1,7 +1,8 @@
-import React from "react";
+import * as React from "react";
 import {
   View,
   Text,
+  TouchableHighlight,
   StyleSheet,
   SafeAreaView,
   TouchableOpacity,
@@ -9,30 +10,16 @@ import {
   Alert,
 } from "react-native";
 
-// Change Views holding components into FlatLists
-// Load only 5 things
-// If > 5 display "Load More Button"
-// When pressed navigate to new page with list of all items in that day
-
-const HomePage = () => {
+const GraphScreen = () => {
   return (
     <SafeAreaView style={styles.safeContainer}>
       <ScrollView style={styles.container}>
-        <Text style={[styles.bodyText, styles.topText]}>
-          The food is going to expire
-        </Text>
+        <Text style={[styles.bodyText, styles.topText]}>Select Analytics</Text>
         <View style={styles.todayView}>
-          <Text style={[styles.bodyText, styles.bodyTextMargin]}>- Today</Text>
           <View style={styles.other}>
-            <View style={styles.component}>
-              <Text style={styles.center}>Put Component Here...</Text>
-            </View>
-            <View style={styles.component}>
-              <Text style={styles.center}>Put Component Here...</Text>
-            </View>
-            <View style={styles.component}>
-              <Text style={styles.center}>Put Component Here...</Text>
-            </View>
+            <View style={styles.component}></View>
+            <View style={styles.component}></View>
+            <View style={styles.component}></View>
             <View style={styles.loadMoreView}>
               <TouchableOpacity
                 onPress={() => {
@@ -46,32 +33,17 @@ const HomePage = () => {
         </View>
 
         <View style={styles.tomorrowView}>
-          <Text style={[styles.bodyText, styles.bodyTextMargin]}>
-            - Tomorrow
-          </Text>
           <View style={styles.other}>
-            <View style={styles.component}>
-              <Text style={styles.center}>Put Component Here...</Text>
-            </View>
-            <View style={styles.component}>
-              <Text style={styles.center}>Put Component Here...</Text>
-            </View>
+            <View style={styles.component}></View>
+            <View style={styles.component}></View>
           </View>
         </View>
 
         <View style={styles.threedaysView}>
-          <Text style={[styles.bodyText, styles.bodyTextMargin]}>
-            - Three days later
-          </Text>
           <View style={styles.other}>
-            <View style={styles.component}>
-              <Text style={styles.center}>Put Component Here...</Text>
-            </View>
+            <View style={styles.component}></View>
           </View>
         </View>
-        <Text style={[styles.bodyText, styles.bottomText]}>
-          click the item for more options
-        </Text>
       </ScrollView>
     </SafeAreaView>
   );
@@ -133,4 +105,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomePage;
+export default GraphScreen;
