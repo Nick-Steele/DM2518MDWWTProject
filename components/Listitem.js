@@ -15,14 +15,14 @@ const Listitem = (mat, navigation)=>{
                     <View>
                         <View style={styles.icon}>
                             <View style={styles.itemAndAmount}>
-                                <Text style={styles.listItemText}>{mat.title}</Text>
-                                <Text style={styles.amount}>{mat.amount+' unit'}</Text>
+                                <Text style={styles.listItemText}>{mat.name}</Text>
+                                <Text style={styles.amount}>{mat.quantity}</Text>
                             </View>  
                         </View>
                         <View style={styles.listinfo}>
-                            <Text>{mat.date}</Text>
+                            <Text>{mat.expirydate}</Text>
                             <Text>{mat.category}</Text>
-                            <Text>{mat.location}</Text>
+                            <Text>{mat.storage}</Text>
                         </View>
                     </View>
                 </TouchableOpacity>

@@ -1,8 +1,10 @@
 import * as React from "react";
-import { View, ScrollView, SafeAreaView, Text, TouchableOpacity, FlatList, StyleSheet } from "react-native";
-import Item from "../Helpers/Item";
+import { View, ScrollView, SafeAreaView, Text, TouchableOpacity, FlatList, StyleSheet, ActivityIndicator, } from "react-native";
+import {getItems} from "../Helpers/Item";
 import Listitem from "../components/Listitem";
 import { MenuProvider } from "react-native-popup-menu";
+import Firebase from "../config/Firebase";
+import LoadingScreen from "./LoadingScreen";
 
 export default function StorageScreen({ navigation }) {
 
@@ -95,6 +97,23 @@ export default function StorageScreen({ navigation }) {
       },
     ],
   };
+  const [mat, setMat] = React.useState(0)
+  const [loading, setLoading] = React.useState(true)
+  React.useEffect(()=>{
+      getItems().then(x=>setMat(x))
+      setTimeout(()=>{
+        setLoading(false)
+      },500)
+  },[])
+  console.log(mat)
+  if(loading){
+    console.log("loading true",mat)
+    return(
+      <LoadingScreen/>
+    )
+  }
+  else{
+  console.log("loading false",mat)
   return (
     <MenuProvider>
       <SafeAreaView style={styles.safeContainer}>
@@ -105,7 +124,7 @@ export default function StorageScreen({ navigation }) {
         <ScrollView style={styles.container}>
           <FlatList
             style={{ flex: 1, marginTop: 10}}
-            data={TestData.food}
+            data={mat}
             renderItem={({ item, index }) => {
               return Listitem(item, navigation);
             }}
@@ -115,6 +134,7 @@ export default function StorageScreen({ navigation }) {
       </SafeAreaView >
     </MenuProvider>
   );
+  }
 }
 
 const styles = StyleSheet.create({

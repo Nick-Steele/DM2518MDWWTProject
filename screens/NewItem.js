@@ -175,7 +175,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
     marginBottom: 20,
-    marginTop: 20,
     padding: 40,
     shadowColor: "#000000",
     shadowOffset: {
@@ -187,7 +186,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     elevation: 5,
     width: '90%',
-    flexGrow: 0.8,
+    flexGrow: 0.9,
   },
   nestedDateInputContainer: {
     marginTop: 10,
@@ -213,14 +212,14 @@ const styles = StyleSheet.create({
     borderBottomColor: "#CCCCCC",
   },
   itemNameInput: {
-    height: 30,
+    height: 40,
     fontSize: 18,
     borderBottomWidth: 1,
     borderBottomColor: "#CCCCCC",
   },
   itemQuantityInput: {
-    marginTop: 10,
-    height: 30,
+    marginTop: 15,
+    height: 40,
     fontSize: 18,
     borderBottomWidth: 1,
     borderBottomColor: "#CCCCCC",

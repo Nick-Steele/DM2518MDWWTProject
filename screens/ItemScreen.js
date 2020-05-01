@@ -1,29 +1,6 @@
 import * as React from "react";
 import { View, Text, StyleSheet, Button, TouchableOpacity } from "react-native";
 
-const userid = "epiNTkmnMtVwKKbFuPHP";
-const item1 = {
-  name: "potato",
-  category: "vegetable",
-  amount: 2.3,
-  location: "freeze",
-  expiredate: "2020-03-01",
-};
-const item2 = {
-  name: "tomato",
-  category: "vegetable",
-  amount: 0.3,
-  location: "freeze",
-  expiredate: "2020-03-02",
-};
-const item3 = {
-  name: "carrot",
-  category: "vegetable",
-  amount: 0.3,
-  location: "freeze",
-  expiredate: "2020-03-03",
-};
-const editid = "IT9iLcaw7PUV4UP3cyZY";
 function ItemScreen({route, navigation}) {
   const {item} = route.params;
   navigation.setOptions({
@@ -57,20 +34,20 @@ function ItemScreen({route, navigation}) {
         <View style={styles.innerView}>
           <View style={styles.itemNameAndType}>
             <Text style={styles.itemNameText}>NAME</Text>
-            <Text style={styles.expiraryDateText}>{item.title}</Text>
+            <Text style={styles.expiraryDateText}>{item.name}</Text>
           </View>
           <View style={styles.itemExpiryDate}>
             <Text style={styles.expiraryDateText}>Expiry</Text>
-            <Text style={styles.expiraryDateText}>{item.date}</Text>
+            <Text style={styles.expiraryDateText}>{item.expirydate}</Text>
           </View>
           <View style={styles.itemAmount}>
             <Text style={styles.itemAmountText}>Amount</Text>
-            <Text style={styles.expiraryDateText}>{item.amount}</Text>
+            <Text style={styles.expiraryDateText}>{item.quantity}</Text>
           </View>
 
           <View style={styles.storage}>
             <Text style={styles.storageText}>Storage</Text>
-            <Text style={styles.expiraryDateText}>{item.location}</Text>
+            <Text style={styles.expiraryDateText}>{item.storage}</Text>
           </View>
         </View>
 

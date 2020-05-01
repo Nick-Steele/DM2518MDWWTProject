@@ -19,7 +19,7 @@ export function addItem(item) {
       var userid = Firebase.auth().currentUser.uid;
       //compare with the food collection at first
       var fooddb = Firebase.firestore().collection("Foodcollection")
-      var addfooddb = this.searchItem(item.name)
+      var addfooddb = searchItem(item.name)
       .then(fitem=>{
           if(!fitem){
             var adddb = fooddb.add({ // if not exist in our fooddb, add it in(only keep 2 attributes)
@@ -40,11 +40,11 @@ export function addItem(item) {
         })
       .then(fitem=>{
           // compare with user's stroage
-          var getcurrent = this.getItems(userid)
+          var getcurrent = getItems(userid)
           .then(currentfood=>{
                 var inlist=false
                 currentfood.map(food=>{
-                  if(this.compareItems(food,item)){ // This case is repeated add(every info is the same)
+                  if(compareItems(food,item)){ // This case is repeated add(every info is the same)
                     inlist=true
                     console.log("Give user a hint that this item is already exist! Use the edit method if needed.")
                   }
@@ -65,7 +65,7 @@ export function addItem(item) {
   }
 
 export function removeItem(userid, rmid){ // assume the food is already in fooddb
-    return this.getItem(userid)
+    return getItem(userid)
     .then(currentfood=>{
         var rmlist = []
         currentfood.map(food=>{
@@ -82,7 +82,7 @@ export function removeItem(userid, rmid){ // assume the food is already in foodd
 }    
 
 export function editItem(userid, item, editid){ // edit item 
-    var editfood = this.getItems(userid)
+    var editfood = getItems(userid)
     .then(items=>{
       var editlist=[]
       items.map(x=>{
@@ -131,6 +131,6 @@ export function searchItem(name){ // search in fooddb
     return searchfooddb
   }
 
-export function compareItems(item1, item2){
+function compareItems(item1, item2){
 	return ((item1.name===item2.name)&&(item1.location===item2.location)&&(item1.expiredate===item2.expiredate))
 }
