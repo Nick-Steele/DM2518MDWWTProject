@@ -2,6 +2,7 @@
   "expo": {
     "name": "FoodManagementApplication",
     "slug": "FoodManagementApplication",
+    "owner": "sbeasitanporling",
     "platforms": [
       "ios",
       "android",

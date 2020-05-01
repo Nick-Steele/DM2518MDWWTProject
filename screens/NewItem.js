@@ -1,38 +1,45 @@
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  Button,
-  Alert,
-  Picker,
-} from "react-native";
-import DatePicker from "react-native-datepicker";
-import Item from "../Helpers/Item";
+import React from "react";
+import { View, Text, StyleSheet, TextInput, Button } from "react-native";
+import * as Item from "../Helpers/ItemHelper";
+import RadioForm, {
+  RadioButton,
+  RadioButtonInput,
+  RadioButtonLabel,
+} from "react-native-simple-radio-button";
 
 class NewItem extends React.Component {
   state = {
     itemName: "",
     itemQuantity: "",
-    itemCategory: "Select Item Category",
+    itemCategory: "fruit",
     itemStorage: "fridge",
     day: "",
     month: "",
     year: "",
-    //itemExpiraryDate: "2020-05-15",
   };
 
   render() {
+    var itemCategoryProperties = [
+      { label: "Fruit", value: "fruit" },
+      { label: "Veg", value: "veg" },
+      { label: "Meat", value: "meat" },
+    ];
+
+    var itemStorageProperties = [
+      { label: "Fridge", value: "fridge" },
+      { label: "Freezer", value: "freezer" },
+      { label: "Pantry", value: "pantry" },
+    ];
+
     return (
       <View style={styles.container}>
         <View style={styles.formWrapper}>
           {/* Item Name Input */}
           <TextInput
             style={styles.itemNameInput}
-            placeholder="Enter Item Name "
+            placeholder="Item Name "
             required
-            /*keyboardType="ascii-capable"*/
+            keyboardType="default"
             maxLength={30}
             onChangeText={(itemNameValue) =>
               this.setState({ itemName: itemNameValue })
@@ -43,8 +50,8 @@ class NewItem extends React.Component {
           <TextInput
             style={styles.itemQuantityInput}
             ref={this.state.quantity}
-            placeholder="Enter Item Quantity"
-            /*keyboardType="number-pad"*/
+            placeholder="Item Quantity"
+            keyboardType="number-pad"
             maxLength={30}
             onChangeText={(itemQuantityValue) =>
               this.setState({ itemQuantity: itemQuantityValue })
@@ -52,38 +59,28 @@ class NewItem extends React.Component {
           ></TextInput>
 
           {/* Item Category Input */}
-          <Text style={styles.selectItemCategoryText}>
-            Select Item Category
-          </Text>
-          <Picker
-            style={styles.itemCategoryPicker}
-            selectedValue={this.state.itemCategory}
-            onValueChange={(itemCategoryValue, itemIndex) =>
-              this.setState({ itemCategory: itemCategoryValue })
-            }
-          >
-            <Picker.Item label="Meat" value="meat" />
-            <Picker.Item label="Fruit" value="fruit" />
-            <Picker.Item label="Vegetable" value="vegetable" />
-          </Picker>
+          <Text style={styles.selectItemCategoryText}>Category:</Text>
+          <RadioForm
+            radio_props={itemCategoryProperties}
+            formHorizontal={true}
+            onPress={(categoryValue) => {
+              this.setState({ itemCategory: categoryValue });
+            }}
+          />
 
           {/* Items Storage Location */}
           <Text style={styles.selectStorageLocationText}>
-            Select Item Storage Location
+            Storage Location:
           </Text>
-          <Picker
-            style={styles.itemStorageLocationPicker}
-            selectedValue={this.state.itemStorage}
-            onValueChange={(itemStorageLocationValue, itemIndex) =>
-              this.setState({ itemStorage: itemStorageLocationValue })
-            }
-          >
-            <Picker.Item label="Fridge" value="fridge" />
-            <Picker.Item label="Freezer" value="freezer" />
-            <Picker.Item label="Pantry" value="pantry" />
-          </Picker>
+          <RadioForm
+            radio_props={itemStorageProperties}
+            formHorizontal={true}
+            onPress={(storageValue) => {
+              this.setState({ itemStorage: storageValue });
+            }}
+          />
 
-          <Text style={styles.expiraryDateText}>Enter Expirary date</Text>
+          <Text style={styles.expiraryDateText}>Expirary Date:</Text>
           <View style={styles.nestedDateInputContainer}>
             <TextInput
               placeholder="dd"
@@ -104,32 +101,11 @@ class NewItem extends React.Component {
               onChangeText={(yearValue) => this.setState({ year: yearValue })}
             ></TextInput>
           </View>
-
-          {/* Item Date Picker */}
-          {/* <DatePicker
-            style={styles.datePickerInput}
-            date={"2020-05-15"}
-            mode="date"
-            placeholder="Expirary Date"
-            format="YYYY-MM-DD"
-            onDateChange={(itemExpiraryDateValue) =>
-              this.setState({ itemExpiraryDate: itemExpiraryDateValue })
-            }
-          ></DatePicker> */}
         </View>
 
         <Button
           title="Add Item"
           onPress={() =>
-            // console.log(
-            //   this.state.itemName +
-            //     this.state.itemQuantity +
-            //     this.state.itemCategory +
-            //     this.state.itemStorage +
-            //     this.state.day +
-            //     this.state.month +
-            //     this.state.year
-            // )
             validateForm(
               this.state.itemName,
               this.state.itemQuantity,
@@ -147,7 +123,7 @@ class NewItem extends React.Component {
 }
 // Function creates the Item object itself and adds it to the item class where it is managed.
 function parseData(name, quantity, category, storage, day, month, year) {
-  let itemObject = new Item(
+  let item = {
     name,
     quantity,
     category,
@@ -155,9 +131,10 @@ function parseData(name, quantity, category, storage, day, month, year) {
     day,
     month,
     year
-  ); // Create new item object based on form details.
+  }; // Create new item object based on form details.
   //itemObject.addItemToFoodList(itemObject);
-  customAlert("Added item" + " " + name + " successfully");
+  Item.addItem(item);
+  customAlert("Added" + quantity + " " + name + " successfully");
 }
 
 // Function checks if form elements are not empty,
@@ -173,17 +150,13 @@ function validateForm(name, quantity, category, storage, day, month, year) {
     year != ""
   ) {
     parseData(name, quantity, category, storage, day, month, year);
-    clearFields();
+    //clearFields();
   } else {
-    customAlert("Something went wrong, try again!");
+    customAlert("Form incomplete, try again!");
   }
 }
 
-function clearFields() {
-  // (this.state.itemName = ""),
-  // this.state.itemQuantity = "";
-  //  (this.state.itemCategory = "Select Item Category");
-}
+function clearFields() {}
 
 function customAlert(string) {
   alert(string);
@@ -213,18 +186,22 @@ const styles = StyleSheet.create({
   nestedDateInputContainer: {
     marginTop: 10,
     flexDirection: "row",
+    justifyContent: "space-evenly",
   },
   dayInput: {
+    fontSize: 20,
     height: 40,
     borderBottomWidth: 1,
     borderBottomColor: "#CCCCCC",
   },
   monthInput: {
+    fontSize: 20,
     height: 40,
     borderBottomWidth: 1,
     borderBottomColor: "#CCCCCC",
   },
   yearInput: {
+    fontSize: 20,
     height: 40,
     borderBottomWidth: 1,
     borderBottomColor: "#CCCCCC",
@@ -236,32 +213,30 @@ const styles = StyleSheet.create({
     borderBottomColor: "#CCCCCC",
   },
   itemQuantityInput: {
+    marginTop: 5,
     height: 50,
     fontSize: 20,
     borderBottomWidth: 1,
     borderBottomColor: "#CCCCCC",
   },
   selectItemCategoryText: {
+    color: "gray",
     marginTop: 20,
     height: 50,
     fontSize: 20,
-  },
-  itemCategoryPicker: {
-    height: 50,
   },
   selectStorageLocationText: {
+    color: "gray",
     marginTop: 20,
     height: 50,
     fontSize: 20,
-  },
-  itemStorageLocationPicker: {
-    height: 50,
   },
   datePickerInput: {
     height: 50,
     marginTop: 10,
   },
   expiraryDateText: {
+    color: "gray",
     marginTop: 30,
     height: 50,
     fontSize: 20,

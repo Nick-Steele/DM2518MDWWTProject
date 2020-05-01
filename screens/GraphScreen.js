@@ -2,49 +2,112 @@ import * as React from "react";
 import {
   View,
   Text,
-  TouchableHighlight,
   StyleSheet,
   SafeAreaView,
   TouchableOpacity,
-  ScrollView,
-  Alert,
+  Dimensions,
 } from "react-native";
 
+import { PieChart } from "react-native-chart-kit";
+import readWasted from "../Helpers/readWasted";
+
 const GraphScreen = () => {
+  const screenWidth = Dimensions.get("window").width - 32;
+  const screenHeight = Dimensions.get("window").height / 3.5;
+
+  // Used to toggle details of graph
+  const [isEnabled, setIsEnabled] = React.useState(false);
+  const [theData, setTheData] = React.useState([
+    {
+      name: "Dairy",
+      wasted: 5,
+      color: "skyblue",
+      legendFontColor: "#7F7F7F",
+      legendFontSize: 15,
+    },
+    {
+      name: "Meat",
+      wasted: 1,
+      color: "red",
+      legendFontColor: "#7F7F7F",
+      legendFontSize: 15,
+    },
+    {
+      name: "Vegetables",
+      wasted: 2,
+      color: "lightgreen",
+      legendFontColor: "#7F7F7F",
+      legendFontSize: 15,
+    },
+    {
+      name: "Fruit",
+      wasted: 2,
+      color: "yellow",
+      legendFontColor: "#7F7F7F",
+      legendFontSize: 15,
+    },
+  ]);
+
+  // Adds a new legend and catagory to chart (Adds to the bottom)
+  const addItem = (props) => {
+    setTheData((prevItem) => {
+      return [
+        ...prevItem,
+        {
+          name: name,
+          wasted: wasted,
+          color: color,
+          legendFontColor: "#7F7F7F",
+          legendFontSize: 15,
+        },
+      ];
+    });
+  };
+
+  // Dont Remove... Serves no function... it will make things crash though...
+  const chartConfig = {
+    decimalPlaces: 2,
+    color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+  };
+
   return (
     <SafeAreaView style={styles.safeContainer}>
-      <ScrollView style={styles.container}>
-        <Text style={[styles.bodyText, styles.topText]}>Select Analytics</Text>
-        <View style={styles.todayView}>
-          <View style={styles.other}>
-            <View style={styles.component}></View>
-            <View style={styles.component}></View>
-            <View style={styles.component}></View>
-            <View style={styles.loadMoreView}>
-              <TouchableOpacity
-                onPress={() => {
-                  Alert.alert("Alert", "Loading more items");
-                }}
-              >
-                <Text>Load more...</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
+      <Text style={styles.titleText}>Select Analytics</Text>
+      <View style={styles.dropDownContainer}>
+        <View style={styles.dropDownView}>
+          <Text>DropDown Here...</Text>
+          <TouchableOpacity
+            onPress={() => {
+              addItem((name = "Testing"), (wasted = 5), (color = "purple"));
+            }}
+          >
+            <Text>Click to test addItem</Text>
+          </TouchableOpacity>
         </View>
-
-        <View style={styles.tomorrowView}>
-          <View style={styles.other}>
-            <View style={styles.component}></View>
-            <View style={styles.component}></View>
-          </View>
+      </View>
+      <View style={styles.graphContainer}>
+        <View style={styles.graphView}>
+          <TouchableOpacity
+            onPress={() => {
+              setIsEnabled((previousState) => !previousState);
+            }}
+          >
+            <Text style={styles.graphTitle}>Pie Chart</Text>
+            <PieChart
+              data={theData}
+              width={screenWidth}
+              height={screenHeight}
+              chartConfig={chartConfig}
+              style={styles.chartStyle}
+              accessor="wasted"
+              paddingLeft="15"
+              backgroundColor="powderblue"
+              absolute={isEnabled} //for the absolute number remove if you want percentage
+            />
+          </TouchableOpacity>
+          <Text style={styles.detailText}>Click for more details...</Text>
         </View>
-
-        <View style={styles.threedaysView}>
-          <View style={styles.other}>
-            <View style={styles.component}></View>
-          </View>
-        </View>
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 };
@@ -53,55 +116,47 @@ const styles = StyleSheet.create({
   safeContainer: {
     flex: 1,
   },
-  container: {
-    flex: 1,
-  },
-  todayView: {
-    flex: 1,
-    backgroundColor: "powderblue",
-    marginBottom: 8,
-  },
-  tomorrowView: {
-    flex: 1,
-    backgroundColor: "lightgreen",
-    marginBottom: 8,
-  },
-  threedaysView: {
-    flex: 1,
-    backgroundColor: "yellow",
-  },
-  bodyText: {
+  titleText: {
     fontSize: 18,
     fontWeight: "bold",
-  },
-  topText: {
     marginLeft: 16,
     marginTop: 16,
   },
-  bodyTextMargin: {
-    marginLeft: 40,
-  },
-  bottomText: {
-    alignSelf: "flex-end",
-    marginRight: 16,
-    marginTop: 8,
-    marginBottom: 8,
-  },
-  other: {
+  dropDownContainer: {
     flex: 1,
-    backgroundColor: "pink",
   },
-  component: {
-    height: 100,
-    borderBottomWidth: 1,
-    borderColor: "grey",
+  dropDownView: {
+    flex: 1,
+    paddingLeft: 16,
+    justifyContent: "center",
+    backgroundColor: "white",
+  },
+  graphContainer: {
+    flex: 6,
+    paddingTop: 8,
+    paddingBottom: 8,
+  },
+  graphView: {
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "white",
   },
-  loadMoreView: {
-    alignItems: "center",
-    backgroundColor: "orange",
-    padding: 8,
+  graphTitle: {
+    textAlign: "center",
+    fontSize: 20,
+    padding: 16,
+  },
+  chartStyle: {
+    // flex: 1,
+    marginVertical: 8,
+    borderRadius: 16,
+    backgroundColor: "powderblue",
+  },
+  detailText: {
+    fontSize: 12,
+    marginRight: 24,
+    alignSelf: "flex-end",
   },
 });
 

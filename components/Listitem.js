@@ -4,8 +4,6 @@ import { Icon } from 'react-native-elements'
 import { Popmenu } from "./Popmenu";
 import { MenuTrigger, Menu } from "react-native-popup-menu";
 
-
-
 const Listitem = (mat)=>{
     return (
         <View style={styles.listItem}>

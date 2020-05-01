@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Dimensions,
+  Alert,
 } from "react-native";
 
 import Firebase from "../config/Firebase";
@@ -25,6 +26,7 @@ const GraphScreen = () => {
             }
           />
         </TouchableOpacity>
+
         <Text style={styles.profileName}>
           {Firebase.auth().currentUser.displayName}
         </Text>
@@ -38,7 +40,7 @@ const GraphScreen = () => {
         <TouchableOpacity
           style={styles.button}
           onPress={() => {
-            // Firebase.auth().signOut();
+            Firebase.auth().signOut();
           }}
         >
           <Image
@@ -46,7 +48,25 @@ const GraphScreen = () => {
             source={require("../assets/profile_placeholder.png")}
           ></Image>
           <Text style={styles.buttonText}>Sign Out</Text>
-          <Text style={styles.buttonTab}>></Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
+  function LinkButton(props) {
+    return (
+      <View style={styles.buttonView}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            Alert.alert("Test");
+          }}
+        >
+          <Image
+            style={styles.buttonImage}
+            source={require("../assets/profile_placeholder.png")}
+          ></Image>
+          <Text style={styles.buttonText}>{props.text}</Text>
         </TouchableOpacity>
       </View>
     );
@@ -59,11 +79,11 @@ const GraphScreen = () => {
           <LoggedInUser></LoggedInUser>
         </View>
         <View style={styles.settingsContainer}>
-          <Text>Settings</Text>
-          <Text>Settings</Text>
-          <Text>Settings</Text>
-          <Text>Settings</Text>
-          <Text>Settings</Text>
+          <LinkButton text="Units"></LinkButton>
+          <LinkButton text="Location"></LinkButton>
+          <LinkButton text="Time Zone"></LinkButton>
+          <LinkButton text="Date Format"></LinkButton>
+          <LinkButton text="Settings"></LinkButton>
           <SignOutUser></SignOutUser>
         </View>
       </ScrollView>
@@ -118,7 +138,6 @@ const styles = StyleSheet.create({
   buttonTab: {
     fontSize: 24,
     fontWeight: "600",
-    alignSelf: "flex-end",
   },
 });
 
