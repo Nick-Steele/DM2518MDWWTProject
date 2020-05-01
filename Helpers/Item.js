@@ -1,5 +1,5 @@
 import { Alert } from "react-native";
-import TestChildScreen from "../screens/TestChildScreen";
+import TestChildScreen from "../screens/ItemScreen";
 import React, { Component } from "react";
 import Firebase from '../config/Firebase'
 

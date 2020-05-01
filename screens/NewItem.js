@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, TextInput, Button } from "react-native";
+import { View, ScrollView, Text, StyleSheet, TextInput, Button } from "react-native";
 import * as Item from "../Helpers/ItemHelper";
 import RadioForm, {
   RadioButton,
@@ -33,7 +33,7 @@ class NewItem extends React.Component {
 
     return (
       <View style={styles.container}>
-        <View style={styles.formWrapper}>
+        <ScrollView style={styles.formWrapper}>
           {/* Item Name Input */}
           <TextInput
             style={styles.itemNameInput}
@@ -63,6 +63,7 @@ class NewItem extends React.Component {
           <RadioForm
             radio_props={itemCategoryProperties}
             formHorizontal={true}
+            labelHorizontal={false}
             onPress={(categoryValue) => {
               this.setState({ itemCategory: categoryValue });
             }}
@@ -75,6 +76,7 @@ class NewItem extends React.Component {
           <RadioForm
             radio_props={itemStorageProperties}
             formHorizontal={true}
+            labelHorizontal={false}
             onPress={(storageValue) => {
               this.setState({ itemStorage: storageValue });
             }}
@@ -101,7 +103,7 @@ class NewItem extends React.Component {
               onChangeText={(yearValue) => this.setState({ year: yearValue })}
             ></TextInput>
           </View>
-        </View>
+        </ScrollView>
 
         <Button
           title="Add Item"
@@ -170,8 +172,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   formWrapper: {
+    flex: 1,
     backgroundColor: "white",
-    marginBottom: 30,
+    marginBottom: 20,
+    marginTop: 20,
     padding: 40,
     shadowColor: "#000000",
     shadowOffset: {
@@ -182,6 +186,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.26,
     backgroundColor: "white",
     elevation: 5,
+    width: '90%',
+    flexGrow: 0.8,
   },
   nestedDateInputContainer: {
     marginTop: 10,
@@ -189,57 +195,58 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
   },
   dayInput: {
-    fontSize: 20,
-    height: 40,
+    fontSize: 18,
+    height: 30,
     borderBottomWidth: 1,
     borderBottomColor: "#CCCCCC",
   },
   monthInput: {
-    fontSize: 20,
-    height: 40,
+    fontSize: 18,
+    height: 30,
     borderBottomWidth: 1,
     borderBottomColor: "#CCCCCC",
   },
   yearInput: {
-    fontSize: 20,
-    height: 40,
+    fontSize: 18,
+    height: 30,
     borderBottomWidth: 1,
     borderBottomColor: "#CCCCCC",
   },
   itemNameInput: {
-    height: 50,
-    fontSize: 20,
+    height: 30,
+    fontSize: 18,
     borderBottomWidth: 1,
     borderBottomColor: "#CCCCCC",
   },
   itemQuantityInput: {
-    marginTop: 5,
-    height: 50,
-    fontSize: 20,
+    marginTop: 10,
+    height: 30,
+    fontSize: 18,
     borderBottomWidth: 1,
     borderBottomColor: "#CCCCCC",
   },
   selectItemCategoryText: {
     color: "gray",
     marginTop: 20,
-    height: 50,
+    height: 30,
     fontSize: 20,
   },
   selectStorageLocationText: {
     color: "gray",
     marginTop: 20,
-    height: 50,
+    height: 30,
     fontSize: 20,
   },
   datePickerInput: {
-    height: 50,
+    height: 30,
     marginTop: 10,
   },
   expiraryDateText: {
     color: "gray",
     marginTop: 30,
-    height: 50,
+    height: 30,
     fontSize: 20,
+    
   },
 });
 

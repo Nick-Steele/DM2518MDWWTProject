@@ -1,46 +1,62 @@
 import React from "react";
-import {View, Text, StyleSheet, FlatList } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import { Icon } from 'react-native-elements'
 import { Popmenu } from "./Popmenu";
 import { MenuTrigger, Menu } from "react-native-popup-menu";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
-const Listitem = (mat)=>{
+const Listitem = (mat, navigation)=>{
     return (
-        <View style={styles.listItem}>
-                <View style={styles.icon}>
-                    <Text style={styles.listItemText}>{mat.title}</Text>
-                    <View style={styles.icon}>
-                        <Text style={styles.amount}>{mat.amount+' unit'}</Text>
-                        <Menu>
-                        <MenuTrigger>
-                            <Icon
-                                name="more-vert"
-                                size={35}
-                                color='brown'
-                                />
-                        </MenuTrigger>
-                        {Popmenu()}
-                        </Menu>
+        <View style={styles.listItem}>            
+            <View style={{width:'90%'}}>
+                <TouchableOpacity
+                onPress={() => {navigation.push("ItemScreen", {item: mat})}}
+                >
+                    <View>
+                        <View style={styles.icon}>
+                            <View style={styles.itemAndAmount}>
+                                <Text style={styles.listItemText}>{mat.title}</Text>
+                                <Text style={styles.amount}>{mat.amount+' unit'}</Text>
+                            </View>  
+                        </View>
+                        <View style={styles.listinfo}>
+                            <Text>{mat.date}</Text>
+                            <Text>{mat.category}</Text>
+                            <Text>{mat.location}</Text>
+                        </View>
                     </View>
-                </View>
-                <View style={styles.listinfo}>
-                    <Text>{mat.date}</Text>
-                    <Text>{mat.category}</Text>
-                    <Text>{mat.location}</Text>
-                </View>
-
+                </TouchableOpacity>
+            </View>
+            <View style={styles.icon} style={{justifyContent: 'center'}}>
+                <Menu>
+                    <MenuTrigger style={{padding: 10, marginRight: -20}}>
+                        <Icon
+                        name="more-vert"
+                        size={40}
+                        color='#0a84ff'
+                        />
+                    </MenuTrigger>
+                    {Popmenu()}
+                </Menu>
+            </View>
         </View>
     )
 }
 
-
 const styles = StyleSheet.create({
     listItem:{
         backgroundColor: '#fff',
-        borderBottomWidth:5,
+        borderBottomWidth:1,
         borderColor:'#eee',
         height:80, 
         flex:1,
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 20,
+        paddingRight: 20,
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between'
     },
     icon:{
         display: 'flex',
@@ -48,17 +64,21 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     amount:{
-        marginTop:10,
-        marginRight:45,
+        marginTop:13,
+        //marginRight:45,
+        marginLeft: 30,
         fontSize:15,
     },
-
+    itemAndAmount: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+    },
     listItemText:{
         marginTop:10,
         marginLeft:2,
         fontSize:20,
     },
-
     listinfo:{
         display: 'flex',
         justifyContent: 'space-between',
@@ -68,8 +88,6 @@ const styles = StyleSheet.create({
         marginBottom:10,
         marginLeft:2,
     },
-
-
 })
 
 export default Listitem

@@ -3,19 +3,13 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import {
-  Image,
-  View,
-  Text,
   StyleSheet,
-  TouchableOpacity,
-  Alert,
-  Button,
 } from "react-native";
 
 import {
   StorageScreen,
   NewItem,
-  TestChildScreen,
+  ItemScreen,
   HomeScreen,
   GraphScreen,
   SettingsScreen,
@@ -38,7 +32,7 @@ const HomeStackScreen = () => (
         headerTitleAlign: "center",
       }}
     />
-    <StorageStack.Screen name="TestChildScreen" component={TestChildScreen} />
+    <StorageStack.Screen name="ItemScreen" component={ItemScreen} />
   </HomeStack.Navigator>
 );
 
@@ -51,7 +45,8 @@ const StorageStackScreen = () => (
         headerTitleAlign: "center",
       }}
     />
-    <StorageStack.Screen name="TestChildScreen" component={TestChildScreen} />
+    <StorageStack.Screen name="NewItem" component={NewItem} options={{title: "Add New Item!"}}/>
+    <StorageStack.Screen name="ItemScreen" component={ItemScreen} />
   </StorageStack.Navigator>
 );
 
@@ -81,11 +76,10 @@ export default function BottomTabNavigator() {
         component={WasteStackScreen}
         options={{}}
       />
-      <BottomTab.Screen name="Add Item" component={NewItem} options={{}} />
       <BottomTab.Screen
-        name="More..."
+        name="Settings"
         component={SettingsScreen}
-        options={{}}
+        options={{title: "More..."}}
       />
     </BottomTab.Navigator>
   );
