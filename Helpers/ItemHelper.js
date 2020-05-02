@@ -21,6 +21,17 @@ export function getItems(userid) {
     .catch((error) => console.log(error));
 }
 
+export function getItemsFoodCollection() {
+  var first = Firebase.firestore()
+    .collection("Foodcollection")
+    .get()
+    .then((snapshot) => {
+      snapshot.docs.forEach((doc) => {
+        console.log(doc.data());
+      });
+    });
+}
+
 export function addItem(item) {
   // get current user id
   var userid = Firebase.auth().currentUser.uid;
