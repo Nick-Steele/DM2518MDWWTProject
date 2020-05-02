@@ -1,10 +1,8 @@
 import * as React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Item from '../Helpers/Item'
-import {
-  StyleSheet,
-} from "react-native";
+
+import { StyleSheet } from "react-native";
 
 import {
   StorageScreen,
@@ -45,7 +43,11 @@ const StorageStackScreen = () => (
         headerTitleAlign: "center",
       }}
     />
-    <StorageStack.Screen name="NewItem" component={NewItem} options={{title: "Add New Item!"}}/>
+    <StorageStack.Screen
+      name="NewItem"
+      component={NewItem}
+      options={{ title: "Add New Item!" }}
+    />
     <StorageStack.Screen name="ItemScreen" component={ItemScreen} />
   </StorageStack.Navigator>
 );
@@ -79,7 +81,7 @@ export default function BottomTabNavigator() {
       <BottomTab.Screen
         name="Settings"
         component={SettingsScreen}
-        options={{title: "More..."}}
+        options={{ title: "More..." }}
       />
     </BottomTab.Navigator>
   );
