@@ -4,13 +4,18 @@ import {
   View,
   ListView,
   TouchableHighlight,
+  FlatList,
   TouchableOpacity,
   Text,
   Button,
 } from "react-native";
 import { SearchBar } from "react-native-elements";
 import Firebase from "../config/Firebase";
-import { searchItem, getItemsFoodCollection } from "../Helpers/ItemHelper";
+import {
+  searchItem,
+  getItemsFoodCollection,
+  foodCollectionList,
+} from "../Helpers/ItemHelper";
 
 export default class App extends React.Component {
   state = {
@@ -25,11 +30,11 @@ export default class App extends React.Component {
   constructor({ navigation }) {
     super();
     console.log("Food Collection Items For Nick");
+    console.log(foodCollectionList);
+    console.log("**************");
     this.updateData();
     this.navigation = navigation;
     this.nav();
-
-    this.foodData = [];
     // let ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     // this.state = {
     //   itemDataSouce: ds,
@@ -71,11 +76,6 @@ export default class App extends React.Component {
           onChangeText={this.updateSearch}
           value={search}
         />
-
-        {/* <ListView
-          dataSource={this.state.itemDataSouce}
-          renderRow={this.renderRow}
-        ></ListView> */}
       </View>
     );
   }
@@ -84,5 +84,8 @@ export default class App extends React.Component {
 const styles = new StyleSheet.create({
   liText: {
     fontSize: 16,
+  },
+  flatlist: {
+    backgroundColor: "yellow",
   },
 });
