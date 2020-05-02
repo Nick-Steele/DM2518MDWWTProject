@@ -1,5 +1,12 @@
 import React from "react";
-import { View, ScrollView, Text, StyleSheet, TextInput, Button } from "react-native";
+import {
+  View,
+  ScrollView,
+  Text,
+  StyleSheet,
+  TextInput,
+  Button,
+} from "react-native";
 import * as Item from "../Helpers/ItemHelper";
 import RadioForm, {
   RadioButton,
@@ -132,7 +139,7 @@ function parseData(name, quantity, category, storage, day, month, year) {
     storage,
     day,
     month,
-    year
+    year,
   }; // Create new item object based on form details.
   //itemObject.addItemToFoodList(itemObject);
   Item.addItem(item);
@@ -185,7 +192,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.26,
     backgroundColor: "white",
     elevation: 5,
-    width: '90%',
+    width: "90%",
     flexGrow: 0.9,
   },
   nestedDateInputContainer: {
@@ -245,7 +252,6 @@ const styles = StyleSheet.create({
     marginTop: 30,
     height: 30,
     fontSize: 20,
-    
   },
 });
 

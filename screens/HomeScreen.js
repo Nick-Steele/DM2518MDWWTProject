@@ -110,7 +110,7 @@ export default function HomeScreen({ navigation }) {
 
           <View style={[styles.tomorrowView, styles.commonView]}>
             <Text style={[styles.bodyText, styles.bodyTextMargin]}>
-              This week
+              This Week
             </Text>
             <ScrollView style={styles.other}>
               <FlatList
@@ -135,7 +135,7 @@ export default function HomeScreen({ navigation }) {
 
           <View style={[styles.threedaysView, styles.commonView]}>
             <Text style={[styles.bodyText, styles.bodyTextMargin]}>
-              This month
+              This Month
             </Text>
             <ScrollView style={styles.other}>
               <FlatList
@@ -158,7 +158,7 @@ export default function HomeScreen({ navigation }) {
             </ScrollView>
           </View>
           <Text style={[styles.bodyText, styles.bottomText]}>
-            click the item for more options
+            Click items for more options
           </Text>
         </ScrollView>
       </MenuProvider>
