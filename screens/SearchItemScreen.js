@@ -21,60 +21,83 @@ export default class App extends React.Component {
     searchItem(search); //Automatically Query the database each time user inputs.
   };
 
-  constructor() {
+  constructor({ navigation }) {
     super();
-    let ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-    this.state = {
-      itemDataSouce: ds,
-    };
-    this.itemsRef = this.getRef().child("Foodcollection");
-    this.renderRow = this.renderRow.bind(this);
-    this.pressRow = this.pressRow.bind(this);
+
+    this.navigation = navigation;
+    console.log("**Navigation**");
+    console.log(navigation);
+    // this.nav();
+
+    // let ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+    // this.state = {
+    //   itemDataSouce: ds,
+    // };
+    // this.itemsRef = this.getRef().child("Foodcollection");
+    // this.renderRow = this.renderRow.bind(this);
+    // this.pressRow = this.pressRow.bind(this);
   }
 
-  getRef() {
-    return Firebase.database().ref();
-  }
-
-  componentWillMount() {
-    this.getItems(this.itemsRef);
-  }
-  componentDidMount() {
-    this.getItems(this.itemsRef);
-  }
-  getItems() {
-    //let items = [{ title: "Item One" }, { title: "Item Two" }];
-    this.itemsRef.on("value", () => (snap) => {
-      let items = [];
-      snap.array.forEach((child) => {
-        items.push({
-          title: child.value.name,
-          _key: child.key,
-        });
-      });
-      this.setState({
-        itemDataSouce: this.state.itemDataSouce.cloneWithRows(items),
-      });
+  nav() {
+    this.navigation.setOptions({
+      headerRight: () => (
+        <View style={{ marginRight: 10 }}>
+          <TouchableOpacity
+            onPress={() => this.navigation.push("NewItem")}
+            style={{ padding: 10 }}
+          >
+            <Text style={{ color: "#0a84ff", fontSize: 18 }}>
+              Add Custom Item
+            </Text>
+          </TouchableOpacity>
+        </View>
+      ),
     });
   }
 
-  pressRow(item) {
-    console.log(item);
-  }
+  // getRef() {
+  //   return Firebase.database().ref();
+  // }
 
-  renderRow(item) {
-    return (
-      <TouchableHighlight
-        onPress={() => {
-          this.pressRow(item);
-        }}
-      >
-        <View style={styles.li}>
-          <Text style={styles.liText}>{item.name}</Text>
-        </View>
-      </TouchableHighlight>
-    );
-  }
+  // componentWillMount() {
+  //   this.getItems(this.itemsRef);
+  // }
+  // componentDidMount() {
+  //   this.getItems(this.itemsRef);
+  // }
+  // getItems() {
+  //   //let items = [{ title: "Item One" }, { title: "Item Two" }];
+  //   this.itemsRef.on("value", () => (snap) => {
+  //     let items = [];
+  //     snap.array.forEach((child) => {
+  //       items.push({
+  //         title: child.value.name,
+  //         _key: child.key,
+  //       });
+  //     });
+  //     this.setState({
+  //       itemDataSouce: this.state.itemDataSouce.cloneWithRows(items),
+  //     });
+  //   });
+  // }
+
+  // pressRow(item) {
+  //   console.log(item);
+  // }
+
+  // renderRow(item) {
+  //   return (
+  //     <TouchableHighlight
+  //       onPress={() => {
+  //         this.pressRow(item);
+  //       }}
+  //     >
+  //       <View style={styles.li}>
+  //         <Text style={styles.liText}>{item.name}</Text>
+  //       </View>
+  //     </TouchableHighlight>
+  //   );
+  // }
 
   render() {
     const { search } = this.state;
@@ -88,10 +111,14 @@ export default class App extends React.Component {
           value={search}
         />
 
-        <ListView
+        {/* <ListView
           dataSource={this.state.itemDataSouce}
           renderRow={this.renderRow}
-        ></ListView>
+        ></ListView> */}
+        <Button
+          title="Add Custom Item"
+          onPress={() => this.navigation.push("NewItem")}
+        ></Button>
       </View>
     );
   }

@@ -19,10 +19,10 @@ export default function App(props) {
     <View style={styles.container}>
       {/* <LoginScreen/> */}
       {/* <NewItem></NewItem> */}
-      {/*<MainNavigator props={props} />}
+      {<MainNavigator props={props} />}
       {/* <Item><TestChildScreen/></Item>  */}
       {/* <TestChildScreen/> */}
-      <SearchItemScreen></SearchItemScreen>
+      {/*<SearchItemScreen></SearchItemScreen>*/}
     </View>
   );
 }
