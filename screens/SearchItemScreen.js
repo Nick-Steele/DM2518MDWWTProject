@@ -1,51 +1,52 @@
 import React from "react";
 import {
-  View,
   StyleSheet,
-  Text,
-  Button,
-  TouchableOpacity,
+  View,
   ListView,
   TouchableHighlight,
+  Text,
 } from "react-native";
 import { SearchBar } from "react-native-elements";
 
-export default function SearchItemScreen({ navigation }) {
-  function SearhItem() {
+export default class App extends React.Component {
+  state = {
+    search: "",
+  };
+
+  updateSearch = (search) => {
+    this.setState({ search });
+  };
+
+  constructor() {
     super();
     let ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     this.state = {
-      itemDataSource: ds,
+      itemDataSouce: ds,
     };
+
+    this.renderRow = this.renderRow.bind(this);
+    this.pressRow = this.pressRow.bind(this);
   }
 
-  function getItems() {
+  componentWillMount() {
+    this.getItems();
+  }
+  componentDidMount() {
+    this.getItems();
+  }
+  getItems() {
     let items = [{ title: "Item One" }, { title: "Item Two" }];
+
     this.setState({
-      itemDataSource: this.state.itemDataSource.cloneWithRows(items),
+      itemDataSouce: this.state.itemDataSouce.cloneWithRows(items),
     });
   }
 
-  navigation.setOptions({
-    headerRight: () => (
-      <View style={{ marginRight: 10 }}>
-        <TouchableOpacity
-          onPress={() => navigation.push("NewItem")}
-          style={{ padding: 10 }}
-        >
-          <Text style={{ color: "#0a84ff", fontSize: 18 }}>
-            Add Custom Item
-          </Text>
-        </TouchableOpacity>
-      </View>
-    ),
-  });
-
-  function pressRow(item) {
+  pressRow(item) {
     console.log(item);
   }
 
-  function renderRow() {
+  renderRow(item) {
     return (
       <TouchableHighlight
         onPress={() => {
@@ -59,24 +60,28 @@ export default function SearchItemScreen({ navigation }) {
     );
   }
 
-  return (
-    <View style={styles.container}>
-      <SearchBar
-        placeholder="Search Food Database"
-        lightTheme
-        //onChangeText={this.updateSearch}
-      />
+  render() {
+    const { search } = this.state;
 
-      <ListView
-        dataSource={this.state.dataSource}
-        renderRow={this.renderRow}
-      ></ListView>
-    </View>
-  );
+    return (
+      <View>
+        <SearchBar
+          lightTheme
+          placeholder="Search Food Database"
+          onChangeText={this.updateSearch}
+          value={search}
+        />
+        <ListView
+          dataSource={this.state.itemDataSouce}
+          renderRow={this.renderRow}
+        ></ListView>
+      </View>
+    );
+  }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "yellow",
+const styles = new StyleSheet.create({
+  liText: {
+    fontSize: 16,
   },
 });
