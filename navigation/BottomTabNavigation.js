@@ -3,6 +3,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import { StyleSheet } from "react-native";
+// import { Icon } from "react-native-elements";
+import Icons from "../components/Icons";
 
 import {
   StorageScreen,
@@ -67,21 +69,46 @@ const WasteStackScreen = () => (
 export default function BottomTabNavigator() {
   return (
     <BottomTab.Navigator tabBarOptions={{}}>
-      <BottomTab.Screen name="Home" component={HomeStackScreen} options={{}} />
+      <BottomTab.Screen
+        name="Home"
+        component={HomeStackScreen}
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <Icons packageType="FontAwesome5" name="home" focused={focused} />
+          ),
+        }}
+      />
       <BottomTab.Screen
         name="Storage"
         component={StorageStackScreen}
-        options={{}}
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <Icons packageType="Ionicons" name="md-basket" focused={focused} />
+          ),
+        }}
       />
       <BottomTab.Screen
         name="Waste"
         component={WasteStackScreen}
-        options={{}}
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <Icons packageType="Ionicons" name="md-pie" focused={focused} />
+          ),
+        }}
       />
       <BottomTab.Screen
         name="Settings"
         component={SettingsScreen}
-        options={{ title: "More..." }}
+        options={{
+          title: "More...",
+          tabBarIcon: ({ focused }) => (
+            <Icons
+              packageType="MaterialCommunityIcons"
+              name="dots-horizontal"
+              focused={focused}
+            />
+          ),
+        }}
       />
     </BottomTab.Navigator>
   );

@@ -12,6 +12,7 @@ import {
 } from "react-native";
 
 import Firebase from "../config/Firebase";
+import Icons from "../components/Icons";
 
 const SettingsScreen = () => {
   function LoggedInUser() {
@@ -43,11 +44,11 @@ const SettingsScreen = () => {
             Firebase.auth().signOut();
           }}
         >
-          <Image
-            style={styles.buttonImage}
-            source={require("../assets/profile_placeholder.png")}
-          ></Image>
-          <Text style={styles.buttonText}>Sign Out</Text>
+          <View style={styles.textIconView}>
+            <Icons packageType="Ionicons" name="md-log-out" focused={false} />
+            <Text style={styles.buttonText}>Sign Out</Text>
+          </View>
+          <View></View>
         </TouchableOpacity>
       </View>
     );
@@ -62,11 +63,21 @@ const SettingsScreen = () => {
             Alert.alert("Test");
           }}
         >
-          <Image
-            style={styles.buttonImage}
-            source={require("../assets/profile_placeholder.png")}
-          ></Image>
-          <Text style={styles.buttonText}>{props.text}</Text>
+          <View style={styles.textIconView}>
+            <Icons
+              packageType={props.packageType}
+              name={props.name}
+              focused={false}
+            />
+            <Text style={styles.buttonText}>{props.text}</Text>
+          </View>
+          <View style={styles.iconEnd}>
+            <Icons
+              packageType="Ionicons"
+              name="md-arrow-dropright"
+              focused={false}
+            />
+          </View>
         </TouchableOpacity>
       </View>
     );
@@ -79,11 +90,31 @@ const SettingsScreen = () => {
           <LoggedInUser></LoggedInUser>
         </View>
         <View style={styles.settingsContainer}>
-          <LinkButton text="Units"></LinkButton>
-          <LinkButton text="Location"></LinkButton>
-          <LinkButton text="Time Zone"></LinkButton>
-          <LinkButton text="Date Format"></LinkButton>
-          <LinkButton text="Settings"></LinkButton>
+          <LinkButton
+            text="Units"
+            packageType="Ionicons"
+            name="md-stats"
+          ></LinkButton>
+          <LinkButton
+            text="Location"
+            packageType="Ionicons"
+            name="md-locate"
+          ></LinkButton>
+          <LinkButton
+            text="Time Zone"
+            packageType="Ionicons"
+            name="md-time"
+          ></LinkButton>
+          <LinkButton
+            text="Date Format"
+            packageType="Ionicons"
+            name="md-calendar"
+          ></LinkButton>
+          <LinkButton
+            text="Settings"
+            packageType="Ionicons"
+            name="md-settings"
+          ></LinkButton>
           <SignOutUser></SignOutUser>
         </View>
       </ScrollView>
@@ -93,13 +124,12 @@ const SettingsScreen = () => {
 
 const styles = StyleSheet.create({
   safeContainer: {
-    flex: 1
+    flex: 1,
   },
   scroll: {
-    backgroundColor: "white"
+    backgroundColor: "white",
   },
   profileContainer: {
-    // backgroundColor: "powderblue",
     shadowColor: "#000000",
     shadowOffset: {
       width: 0,
@@ -107,12 +137,11 @@ const styles = StyleSheet.create({
     },
     shadowRadius: 6,
     shadowOpacity: 0.26,
-    marginBottom: 10
+    marginBottom: 10,
   },
   profileView: {
     alignItems: "center",
     padding: 24,
-    
   },
   profileImage: {
     width: 60,
@@ -128,28 +157,34 @@ const styles = StyleSheet.create({
     backgroundColor: "skyblue",
   },
   buttonView: {
-    backgroundColor: "#fafafa",
+    flex: 1,
+    borderBottomWidth: 1,
     borderBottomColor: "lightgrey",
-    borderBottomWidth: 1
+    backgroundColor: "#fafafa",
   },
   button: {
     padding: 8,
     flexDirection: "row",
-    alignItems: "center",
+    justifyContent: "space-between",
   },
-  buttonImage: {
-    height: 30,
-    width: 30,
+  textIconView: {
+    marginLeft: 8,
+    flexDirection: "row",
+    alignItems: "center",
   },
   buttonText: {
     color: "#007AFF",
     marginLeft: 5,
     fontSize: 18,
-    padding: 10
+    padding: 10,
   },
   buttonTab: {
     fontSize: 24,
     fontWeight: "600",
+  },
+  iconEnd: {
+    marginRight: 8,
+    justifyContent: "center",
   },
 });
 
