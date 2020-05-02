@@ -153,6 +153,7 @@ export function searchItem(name) {
         foodlist.map((food) => {
           if (food.name === name) {
             inlist = true;
+            console.log("Item in: " + inlist);
             item = food;
             return;
           }
