@@ -14,12 +14,14 @@ import {
   GraphScreen,
   SettingsScreen,
 } from "../screens";
+import SearchItemScreen from "../screens/SearchItemScreen";
 
 const BottomTab = createBottomTabNavigator();
 
 const HomeStack = createStackNavigator();
 const StorageStack = createStackNavigator();
 const WasteStack = createStackNavigator();
+const SearchItemsStack = createStackNavigator();
 
 const HomeStackScreen = () => (
   <HomeStack.Navigator>
@@ -49,6 +51,12 @@ const StorageStackScreen = () => (
       name="NewItem"
       component={NewItem}
       options={{ title: "Add New Item!" }}
+    />
+
+    <StorageStack.Screen
+      name="SearchItems"
+      component={SearchItemScreen}
+      options={{ title: "Search Existing Items" }}
     />
     <StorageStack.Screen name="ItemScreen" component={ItemScreen} />
   </StorageStack.Navigator>
