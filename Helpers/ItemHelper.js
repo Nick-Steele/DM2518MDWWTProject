@@ -20,16 +20,19 @@ export function getItems(userid) {
     })
     .catch((error) => console.log(error));
 }
-export var foodCollectionList = [];
+
 export function getItemsFoodCollection() {
-  var first = Firebase.firestore()
+  var foodCollectionList = [];
+  Firebase.firestore()
     .collection("Foodcollection")
     .get()
     .then((snapshot) => {
       snapshot.docs.forEach((doc) => {
         foodCollectionList.push(doc.data());
       });
-    });
+    })
+    .catch((error) => console.log(error));
+  return foodCollectionList;
 }
 
 export function addItem(item) {

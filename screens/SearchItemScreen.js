@@ -10,43 +10,27 @@ import {
   Button,
 } from "react-native";
 import { SearchBar } from "react-native-elements";
+import { searchItem, getItemsFoodCollection } from "../Helpers/ItemHelper";
 import Firebase from "../config/Firebase";
-import {
-  searchItem,
-  getItemsFoodCollection,
-  foodCollectionList,
-} from "../Helpers/ItemHelper";
+import { getAutoFocusEnabled } from "expo/build/AR";
 
 export default class App extends React.Component {
-  state = {
-    search: "",
-  };
+  constructor({ navigation }) {
+    super();
+
+    this.state = {
+      search: "",
+      data: getItemsFoodCollection(),
+    };
+    this.navigation = navigation;
+    this.nav();
+  }
 
   updateSearch = (search) => {
     this.setState({ search });
-    searchItem(search); //Automatically Query the database each time user inputs.
+    //Automatically Query the database each time User Inputs.
+    searchItem(search);
   };
-
-  constructor({ navigation }) {
-    super();
-    console.log("Food Collection Items For Nick");
-    console.log(foodCollectionList);
-    console.log("**************");
-    this.updateData();
-    this.navigation = navigation;
-    this.nav();
-    // let ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-    // this.state = {
-    //   itemDataSouce: ds,
-    // };
-    // this.itemsRef = this.getRef().child("Foodcollection");
-    // this.renderRow = this.renderRow.bind(this);
-    // this.pressRow = this.pressRow.bind(this);
-  }
-
-  updateData() {
-    getItemsFoodCollection();
-  }
 
   nav() {
     this.navigation.setOptions({
@@ -65,9 +49,9 @@ export default class App extends React.Component {
     });
   }
 
+  componentDidMount() {}
   render() {
     const { search } = this.state;
-
     return (
       <View>
         <SearchBar
@@ -75,6 +59,14 @@ export default class App extends React.Component {
           placeholder="Search Food Database"
           onChangeText={this.updateSearch}
           value={search}
+        />
+        <FlatList
+          style={{ flex: 1, marginTop: 10 }}
+          data={this.state.data}
+          renderItem={({ item, index }) => {
+            console.log(item);
+          }}
+          keyExtractor={(item, index) => index.toString()}
         />
       </View>
     );
