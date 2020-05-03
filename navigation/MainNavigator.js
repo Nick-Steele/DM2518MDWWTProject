@@ -5,7 +5,10 @@ import Firebase from "../config/Firebase";
 import BottomTabNavigation from "./BottomTabNavigation";
 import AuthNavigation from "./AuthNavigation";
 import LoadingScreen from "../screens/LoadingScreen";
+<<<<<<< HEAD
 import { WasteScreen, HomeScreen } from "../screens";
+=======
+>>>>>>> 410debfd87a52319382d0836daa67b8c4f4a1028
 
 function MainStackNavigator({ props }) {
   const [isLoading, setIsLoading] = React.useState(true);

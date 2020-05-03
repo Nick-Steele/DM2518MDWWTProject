@@ -1,9 +1,16 @@
 import * as React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+<<<<<<< HEAD
 import {
   StyleSheet,
 } from "react-native";
+=======
+
+import { StyleSheet } from "react-native";
+// import { Icon } from "react-native-elements";
+import Icons from "../components/Icons";
+>>>>>>> 410debfd87a52319382d0836daa67b8c4f4a1028
 
 import {
   StorageScreen,
@@ -44,7 +51,11 @@ const StorageStackScreen = () => (
         headerTitleAlign: "center",
       }}
     />
-    <StorageStack.Screen name="NewItem" component={NewItem} options={{title: "Add New Item!"}}/>
+    <StorageStack.Screen
+      name="NewItem"
+      component={NewItem}
+      options={{ title: "Add New Item!" }}
+    />
     <StorageStack.Screen name="ItemScreen" component={ItemScreen} />
   </StorageStack.Navigator>
 );
@@ -64,21 +75,46 @@ const WasteStackScreen = () => (
 export default function BottomTabNavigator() {
   return (
     <BottomTab.Navigator tabBarOptions={{}}>
-      <BottomTab.Screen name="Home" component={HomeStackScreen} options={{}} />
+      <BottomTab.Screen
+        name="Home"
+        component={HomeStackScreen}
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <Icons packageType="FontAwesome5" name="home" focused={focused} />
+          ),
+        }}
+      />
       <BottomTab.Screen
         name="Storage"
         component={StorageStackScreen}
-        options={{}}
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <Icons packageType="Ionicons" name="md-basket" focused={focused} />
+          ),
+        }}
       />
       <BottomTab.Screen
         name="Waste"
         component={WasteStackScreen}
-        options={{}}
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <Icons packageType="Ionicons" name="md-pie" focused={focused} />
+          ),
+        }}
       />
       <BottomTab.Screen
         name="Settings"
         component={SettingsScreen}
-        options={{title: "More..."}}
+        options={{
+          title: "More...",
+          tabBarIcon: ({ focused }) => (
+            <Icons
+              packageType="MaterialCommunityIcons"
+              name="dots-horizontal"
+              focused={focused}
+            />
+          ),
+        }}
       />
     </BottomTab.Navigator>
   );
