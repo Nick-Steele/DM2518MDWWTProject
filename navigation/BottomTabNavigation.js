@@ -1,10 +1,16 @@
 import * as React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+<<<<<<< HEAD
+import {
+  StyleSheet,
+} from "react-native";
+=======
 
 import { StyleSheet } from "react-native";
 // import { Icon } from "react-native-elements";
 import Icons from "../components/Icons";
+>>>>>>> 410debfd87a52319382d0836daa67b8c4f4a1028
 
 import {
   StorageScreen,
