@@ -5,7 +5,6 @@ import Firebase from "../config/Firebase";
 import BottomTabNavigation from "./BottomTabNavigation";
 import AuthNavigation from "./AuthNavigation";
 import LoadingScreen from "../screens/LoadingScreen";
-import Item from '../Helpers/Item'
 import { WasteScreen, HomeScreen } from "../screens";
 
 function MainStackNavigator({ props }) {
