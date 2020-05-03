@@ -176,7 +176,6 @@ export function searchItem(name) {
         return item;
       }
     );
-
   return searchfooddb;
 }
 

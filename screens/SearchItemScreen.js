@@ -8,11 +8,19 @@ import {
   TouchableOpacity,
   Text,
   Button,
+  NativeModules,
 } from "react-native";
 import { SearchBar } from "react-native-elements";
-import { searchItem, getItemsFoodCollection } from "../Helpers/ItemHelper";
+import {
+  searchItem,
+  getItemsFoodCollection,
+  addItem,
+} from "../Helpers/ItemHelper";
 import Firebase from "../config/Firebase";
 import { getAutoFocusEnabled } from "expo/build/AR";
+import { storageScreen } from "../screens/StorageScreen";
+
+import { parseData } from "../screens/NewItem";
 
 export default class App extends React.Component {
   constructor({ navigation }) {
@@ -60,6 +68,17 @@ export default class App extends React.Component {
           value={search}
         />
         <Button title="Test Search" onPress={searchItem(search)}></Button>
+
+        <Button
+          title="Add to storage"
+          onPress={() => {
+            var item = searchItem(search);
+            item.then(function (v) {
+              addItem(v);
+              console.log(v);
+            });
+          }}
+        ></Button>
       </View>
     );
   }
