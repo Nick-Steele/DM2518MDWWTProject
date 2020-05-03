@@ -156,6 +156,7 @@ export function searchItem(name) {
           obj["id"] = x.id;
           foodlist.push(obj);
         });
+        console.log(foodlist);
         return foodlist;
       }
     )
@@ -167,11 +168,11 @@ export function searchItem(name) {
         foodlist.map((food) => {
           if (food.name === name) {
             inlist = true;
-            console.log("Item in: " + inlist);
             item = food;
             return;
           }
         });
+        console.log(item);
         return item;
       }
     );

@@ -29,7 +29,7 @@ export default class App extends React.Component {
   updateSearch = (search) => {
     this.setState({ search });
     //Automatically Query the database each time User Inputs.
-    searchItem(search);
+    //searchItem(search);
   };
 
   nav() {
@@ -49,7 +49,6 @@ export default class App extends React.Component {
     });
   }
 
-  componentDidMount() {}
   render() {
     const { search } = this.state;
     return (
@@ -60,14 +59,7 @@ export default class App extends React.Component {
           onChangeText={this.updateSearch}
           value={search}
         />
-        <FlatList
-          style={{ flex: 1, marginTop: 10 }}
-          data={this.state.data}
-          renderItem={({ item, index }) => {
-            console.log(item);
-          }}
-          keyExtractor={(item, index) => index.toString()}
-        />
+        <Button title="Test Search" onPress={searchItem(search)}></Button>
       </View>
     );
   }
