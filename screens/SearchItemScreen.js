@@ -1,26 +1,11 @@
 import React from "react";
-import {
-  StyleSheet,
-  View,
-  ListView,
-  TouchableHighlight,
-  FlatList,
-  TouchableOpacity,
-  Text,
-  Button,
-  NativeModules,
-} from "react-native";
+import { StyleSheet, View, TouchableOpacity, Text, Button } from "react-native";
 import { SearchBar } from "react-native-elements";
 import {
   searchItem,
   getItemsFoodCollection,
   addItem,
 } from "../Helpers/ItemHelper";
-import Firebase from "../config/Firebase";
-import { getAutoFocusEnabled } from "expo/build/AR";
-import { storageScreen } from "../screens/StorageScreen";
-
-import { parseData } from "../screens/NewItem";
 
 export default class App extends React.Component {
   constructor({ navigation }) {
@@ -67,7 +52,6 @@ export default class App extends React.Component {
           onChangeText={this.updateSearch}
           value={search}
         />
-        <Button title="Test Search" onPress={searchItem(search)}></Button>
 
         <Button
           title="Add to storage"

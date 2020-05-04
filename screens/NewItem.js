@@ -8,11 +8,7 @@ import {
   Button,
 } from "react-native";
 import * as Item from "../Helpers/ItemHelper";
-import RadioForm, {
-  RadioButton,
-  RadioButtonInput,
-  RadioButtonLabel,
-} from "react-native-simple-radio-button";
+import RadioForm from "react-native-simple-radio-button";
 
 class NewItem extends React.Component {
   state = {
@@ -130,20 +126,24 @@ class NewItem extends React.Component {
     );
   }
 }
+
+// Function used to build the date in appropriate format.
+function buildDate(year, month, day) {
+  var dateObj = new Date(year, month, day);
+  return dateObj;
+}
 // Function creates the Item object itself and adds it to the item class where it is managed.
-function parseData(name, quantity, category, storage, day, month, year) {
+function parseData(name, quantity, category, storage, year, month, day) {
   let item = {
     name,
     quantity,
     category,
     storage,
-    day,
-    month,
-    year,
+    date: buildDate(year, month, day),
   }; // Create new item object based on form details.
   //itemObject.addItemToFoodList(itemObject);
   Item.addItem(item);
-  customAlert("Added" + quantity + " " + name + " successfully");
+  customAlert("Added:" + item.name + ", Quantity: " + item.quantity);
 }
 
 // Function checks if form elements are not empty,
@@ -158,7 +158,7 @@ function validateForm(name, quantity, category, storage, day, month, year) {
     month != "" &&
     year != ""
   ) {
-    parseData(name, quantity, category, storage, day, month, year);
+    parseData(name, quantity, category, storage, year, month, day);
     //clearFields();
   } else {
     customAlert("Form incomplete, try again!");
