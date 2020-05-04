@@ -4,6 +4,7 @@ import { SearchBar } from "react-native-elements";
 import {
   searchItem,
   getItemsFoodCollection,
+  getItems,
   addItem,
 } from "../Helpers/ItemHelper";
 
@@ -13,10 +14,18 @@ export default class App extends React.Component {
 
     this.state = {
       search: "",
-      //data: getItemsFoodCollection(),
+      data: getItemsFoodCollection(),
     };
     this.navigation = navigation;
     this.nav();
+  }
+
+  renderFoundItem() {
+    return (
+      <View>
+        <Text>Hi!</Text>
+      </View>
+    );
   }
 
   updateSearch = (search) => {
@@ -41,7 +50,6 @@ export default class App extends React.Component {
       ),
     });
   }
-
   render() {
     const { search } = this.state;
     return (
@@ -59,7 +67,6 @@ export default class App extends React.Component {
             var item = searchItem(search);
             item.then(function (v) {
               addItem(v);
-              console.log(v);
             });
           }}
         ></Button>

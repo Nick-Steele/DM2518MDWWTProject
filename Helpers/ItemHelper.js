@@ -23,6 +23,21 @@ export function getItems(userid) {
     .catch((error) => console.log(error));
 }
 
+export function getItemsFoodCollection() {
+  var foodCollectionList = [];
+
+  Firebase.firestore()
+    .collection("Foodcollection")
+    .get()
+    .then((snapshot) => {
+      snapshot.docs.forEach((doc) => {
+        foodCollectionList.push(doc.data());
+      });
+      return foodCollectionList;
+    })
+    .catch((error) => console.log(error));
+}
+
 export function addItem(item) {
   // get current user id
   var userid = Firebase.auth().currentUser.uid;
@@ -174,4 +189,3 @@ function compareItems(item1, item2) {
     item1.expiredate === item2.expiredate
   );
 }
-
