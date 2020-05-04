@@ -1,11 +1,16 @@
 import React from "react";
-import { View, ScrollView, Text, StyleSheet, TextInput, Button } from "react-native";
+import { View, KeyboardAvoidingView, ScrollView, Text, StyleSheet, TextInput, Button, Keyboard, TouchableWithoutFeedback, Platform } from "react-native";
 import * as Item from "../Helpers/ItemHelper";
 import RadioForm, {
   RadioButton,
   RadioButtonInput,
   RadioButtonLabel,
 } from "react-native-simple-radio-button";
+import DatePicker from 'react-native-datepicker'
+
+const getTodaysDate = () => {
+  return new Date().toISOString().slice(0,10).replace(/-/g,"");
+}
 
 class NewItem extends React.Component {
   state = {
@@ -16,6 +21,7 @@ class NewItem extends React.Component {
     day: "",
     month: "",
     year: "",
+    date: ""
   };
 
   render() {
@@ -32,7 +38,10 @@ class NewItem extends React.Component {
     ];
 
     return (
-      <View style={styles.container}>
+      <KeyboardAvoidingView 
+      behavior={Platform.OS == "ios" ? "padding" : "height"}
+      style={styles.container}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ScrollView style={styles.formWrapper}>
           {/* Item Name Input */}
           <TextInput
@@ -83,28 +92,59 @@ class NewItem extends React.Component {
           />
 
           <Text style={styles.expiraryDateText}>Expirary Date:</Text>
-          <View style={styles.nestedDateInputContainer}>
-            <TextInput
-              placeholder="dd"
-              style={styles.dayInput}
-              onChangeText={(dayValue) => this.setState({ day: dayValue })}
+          
+            {Platform.OS == 'web' ? (
+              <View style={styles.nestedDateInputContainer}>
+                <TextInput
+                  placeholder="dd"
+                  style={styles.dayInput}
+                  onChangeText={(dayValue) => this.setState({ day: dayValue })}
+                ></TextInput>
+                <TextInput
+                  placeholder="mm"
+                  style={styles.monthInput}
+                  onChangeText={(monthValue) =>
+                    this.setState({ month: monthValue })
+                  }
+                ></TextInput>
+                <TextInput
+                  placeholder="yyyy"
+                  style={styles.yearInput}
+                  onChangeText={(yearValue) => this.setState({ year: yearValue })}
+                ></TextInput>
+              </View>
+            ) : (
+              <DatePicker
+              style={{width: 200}}
+              date={this.state.date}
+              mode="date"
+              placeholder="select date"
+              format="YYYY-MM-DD"
+              minDate={getTodaysDate()}
+              maxDate="2100-06-01"
+              confirmBtnText="Confirm"
+              cancelBtnText="Cancel"
+              customStyles={{
+                dateIcon: {
+                  position: 'absolute',
+                  left: 0,
+                  top: 4,
+                  marginLeft: 0
+                },
+                dateInput: {
+                  marginLeft: 36
+                }
+                // ... You can check the source to find the other keys.
+              }}
+              onDateChange={(date) => {
+                this.setState({date: date})
+              }}
             />
-
-            <TextInput
-              placeholder="mm"
-              style={styles.monthInput}
-              onChangeText={(monthValue) =>
-                this.setState({ month: monthValue })
-              }
-            ></TextInput>
-            <TextInput
-              placeholder="yyyy"
-              style={styles.yearInput}
-              onChangeText={(yearValue) => this.setState({ year: yearValue })}
-            ></TextInput>
-          </View>
+            )}
+            
+          
         </ScrollView>
-
+        </TouchableWithoutFeedback>
         <Button
           title="Add Item"
           onPress={() =>
@@ -119,7 +159,7 @@ class NewItem extends React.Component {
             )
           }
         ></Button>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }

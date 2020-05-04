@@ -22,6 +22,7 @@
     "expo-react-native-adapter": "^3.0.1",
     "firebase": "^7.9.0",
     "kit": "^1.0.26",
+    "moment": "^2.25.1",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-37.0.1.tar.gz",

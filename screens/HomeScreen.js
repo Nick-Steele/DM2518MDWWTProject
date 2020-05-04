@@ -11,6 +11,9 @@ import {
 } from "react-native";
 import Listitem from "../components/Listitem";
 import { MenuProvider } from "react-native-popup-menu";
+import {getItems} from "../Helpers/ItemHelper";
+import LoadingScreen from "./LoadingScreen";
+import moment from 'moment';
 
 // Change Views holding components into FlatLists
 // Load only 5 things
@@ -77,8 +80,96 @@ const TestData = {
   ],
 };
 
+const TestData2 = {
+  food: [
+    {
+      name: "Cabbage",
+      category: "vegetable",
+      storage: "Pantry",
+      quantity: 4,
+      expirydate: "2020-04-17",
+    },
+    {
+      name: "Cabbage",
+      category: "vegetable",
+      storage: "Pantry",
+      quantity: 4,
+      expirydate: "2020-04-17",
+    },
+    {
+      name: "Cabbage",
+      category: "vegetable",
+      storage: "Pantry",
+      quantity: 4,
+      expirydate: "2020-04-17",
+    },
+  ]
+}
+
+const TestData3 = {
+  food: [
+    {
+      name: "Cabbage",
+      category: "vegetable",
+      storage: "Pantry",
+      quantity: 4,
+      expirydate: "2020-04-17",
+    },
+    {
+      name: "Cabbage",
+      category: "vegetable",
+      storage: "Pantry",
+      quantity: 4,
+      expirydate: "2020-04-17",
+    },
+    {
+      name: "Cabbage",
+      category: "vegetable",
+      storage: "Pantry",
+      quantity: 4,
+      expirydate: "2020-04-17",
+    },
+    {
+      name: "Cabbage",
+      category: "vegetable",
+      storage: "Pantry",
+      quantity: 4,
+      expirydate: "2020-04-17",
+    },
+  ]
+}
 
 export default function HomeScreen({ navigation }) {
+  const [mat, setMat] = React.useState(0)
+  const [todayFood, setTodayFood]  = React.useState([]);
+  const [weekFood, setWeekFood]  = React.useState([]);
+  const [monthFood, setMonthFood]  = React.useState([]);
+  const [loading, setLoading] = React.useState(true)
+  React.useEffect(()=>{
+      getItems().then(items=>{
+        let todaysDate = new Date().toISOString().slice(0,10);
+        let endOfWeekDate = moment().add('days', 7).format("YYYY-MM-DD");
+        let endOfMonthDate = moment().add('days', 31).format("YYYY-MM-DD");
+        setMat(items);
+        setTodayFood(items.filter(item => item.expirydate == todaysDate));
+        items = items.filter(item => item.expirydate != todaysDate);
+        setWeekFood(items.filter(item => moment(item.expirydate).isBetween(todaysDate, endOfWeekDate)))
+        items = items.filter(item => !moment(item.expirydate).isBetween(todaysDate, endOfWeekDate));
+        setMonthFood(items.filter(item => moment(item.expirydate).isBetween(endOfWeekDate, endOfMonthDate)));
+        console.log(todayFood);
+        console.log(weekFood);
+        console.log(monthFood);
+      });
+      setTimeout(()=>{
+        setLoading(false)
+      },500)
+  },[])
+  if(loading){
+    return(
+      <LoadingScreen/>
+    )
+  }
+  else{
   return (
     <SafeAreaView style={styles.safeContainer}>
       <MenuProvider>
@@ -86,16 +177,17 @@ export default function HomeScreen({ navigation }) {
         <Text style={[styles.bodyText, styles.topText]}>
           The food is going to expire
         </Text>
-        <View style={[styles.todayView, styles.commonView]}>
+        <View style={[styles.todayView]}>
           <Text style={[styles.bodyText, styles.bodyTextMargin]}>Today</Text>
-          <ScrollView style={styles.other}>
+          {/*<ScrollView style={styles.other}>*/}
             <FlatList
               style={{ flex: 1}}
-              data={TestData.food}
+              data={todayFood}
               renderItem={({ item, index }) => {
                 return Listitem(item, navigation);
               }}
               keyExtractor={(item, index) => index.toString()}
+              initialNumToRender={3}
             />
             <View style={styles.loadMoreView}>
               <TouchableOpacity
@@ -106,15 +198,15 @@ export default function HomeScreen({ navigation }) {
                 <Text>Load more...</Text>
               </TouchableOpacity>
             </View>
-          </ScrollView>
+          {/*</ScrollView>*/}
         </View>
 
-        <View style={[styles.tomorrowView, styles.commonView]}>
+        <View style={[styles.tomorrowView]}>
           <Text style={[styles.bodyText, styles.bodyTextMargin]}>This week</Text>
-          <ScrollView style={styles.other}>
+          {/*<ScrollView style={styles.other}>*/}
             <FlatList
               style={{ flex: 1}}
-              data={TestData.food}
+              data={weekFood}
               renderItem={({ item, index }) => {
                 return Listitem(item, navigation);
               }}
@@ -129,15 +221,15 @@ export default function HomeScreen({ navigation }) {
                 <Text>Load more...</Text>
               </TouchableOpacity>
             </View>
-          </ScrollView>
+          {/*</ScrollView>*/}
         </View>
 
-        <View style={[styles.threedaysView, styles.commonView]}>
+        <View style={[styles.threedaysView]}>
           <Text style={[styles.bodyText, styles.bodyTextMargin]}>This month</Text>
-          <ScrollView style={styles.other}>
+          {/*<ScrollView style={styles.other}>*/}
             <FlatList
               style={{ flex: 1}}
-              data={TestData.food}
+              data={monthFood}
               renderItem={({ item, index }) => {
                 return Listitem(item, navigation);
               }}
@@ -152,15 +244,13 @@ export default function HomeScreen({ navigation }) {
                 <Text>Load more...</Text>
               </TouchableOpacity>
             </View>
-          </ScrollView>
+          {/*</ScrollView>*/}
         </View>
-        <Text style={[styles.bodyText, styles.bottomText]}>
-          click the item for more options
-        </Text>
       </ScrollView>
       </MenuProvider>
     </SafeAreaView>
   );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -187,12 +277,48 @@ const styles = StyleSheet.create({
   },
   todayView: {
     backgroundColor: "powderblue",
+    flex: 1,
+    margin: 20,
+    marginLeft: 40,
+    marginRight: 40,
+    shadowColor: "#000000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowRadius: 6,
+    shadowOpacity: 0.26,
+    borderRadius: 10
   },
   tomorrowView: {
     backgroundColor: "lightgreen",
+    flex: 1,
+    margin: 20,
+    marginLeft: 40,
+    marginRight: 40,
+    shadowColor: "#000000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowRadius: 6,
+    shadowOpacity: 0.26,
+    borderRadius: 10
   },
   threedaysView: {
     backgroundColor: "salmon",
+    flex: 1,
+    margin: 20,
+    marginLeft: 40,
+    marginRight: 40,
+    shadowColor: "#000000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowRadius: 6,
+    shadowOpacity: 0.26,
+    borderRadius: 10
     
   },
   bodyText: {
@@ -233,7 +359,6 @@ const styles = StyleSheet.create({
   loadMoreView: {
     alignItems: "center",
     backgroundColor: "#fafafa",
-    padding: 20,
-    color: 'grey',
+    padding: 20
   },
 });
