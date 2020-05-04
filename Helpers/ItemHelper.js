@@ -174,3 +174,4 @@ function compareItems(item1, item2) {
     item1.expiredate === item2.expiredate
   );
 }
+
