@@ -13,7 +13,7 @@ export default class App extends React.Component {
 
     this.state = {
       search: "",
-      data: getItemsFoodCollection(),
+      //data: getItemsFoodCollection(),
     };
     this.navigation = navigation;
     this.nav();
@@ -68,11 +68,4 @@ export default class App extends React.Component {
   }
 }
 
-const styles = new StyleSheet.create({
-  liText: {
-    fontSize: 16,
-  },
-  flatlist: {
-    backgroundColor: "yellow",
-  },
-});
+const styles = new StyleSheet.create({});

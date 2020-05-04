@@ -2,9 +2,10 @@ import Firebase from "../config/Firebase";
 
 //I8dOBqVCVMaLBgtjSzF7xy0yy5i1
 export function getItems(userid) {
+  console.log(userid); // THIS GIVES UNDEFINED FOR SOME REASON.
   var first = Firebase.firestore()
     .collection("Fridgecollection")
-    .doc("I8dOBqVCVMaLBgtjSzF7xy0yy5i1")
+    .doc("I8dOBqVCVMaLBgtjSzF7xy0yy5i1") // userid should be used. But this is ok for testing.
     .collection("mat");
 
   return first
@@ -20,20 +21,6 @@ export function getItems(userid) {
       return foodlist;
     })
     .catch((error) => console.log(error));
-}
-
-export function getItemsFoodCollection() {
-  var foodCollectionList = [];
-  Firebase.firestore()
-    .collection("Foodcollection")
-    .get()
-    .then((snapshot) => {
-      snapshot.docs.forEach((doc) => {
-        foodCollectionList.push(doc.data());
-      });
-    })
-    .catch((error) => console.log(error));
-  return foodCollectionList;
 }
 
 export function addItem(item) {
