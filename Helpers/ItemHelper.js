@@ -1,5 +1,6 @@
 import Firebase from "../config/Firebase";
 
+//I8dOBqVCVMaLBgtjSzF7xy0yy5i1
 export function getItems(userid) {
   var first = Firebase.firestore()
     .collection("Fridgecollection")

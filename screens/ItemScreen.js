@@ -34,20 +34,20 @@ function ItemScreen({ route, navigation }) {
       <View style={styles.innerView}>
         <View style={styles.itemNameAndType}>
           <Text style={styles.itemNameText}>Name</Text>
-          <Text style={styles.expiraryDateText}>{item.name}</Text>
+          <Text style={styles.itemNameTextValue}>{item.name}</Text>
         </View>
         <View style={styles.itemExpiryDate}>
-          <Text style={styles.expiraryDateText}>Expiry</Text>
-          <Text style={styles.expiraryDateText}>{item.expirydate}</Text>
+          <Text style={styles.expiryDateText}>Expiry</Text>
+          <Text style={styles.expiryDateTextValue}>{item.expirydate}</Text>
         </View>
         <View style={styles.itemAmount}>
           <Text style={styles.itemAmountText}>Amount</Text>
-          <Text style={styles.expiraryDateText}>{item.quantity}</Text>
+          <Text style={styles.itemAmountTextValue}>{item.quantity}</Text>
         </View>
 
         <View style={styles.storage}>
           <Text style={styles.storageText}>Storage</Text>
-          <Text style={styles.expiraryDateText}>{item.storage}</Text>
+          <Text style={styles.storageTextValue}>{item.storage}</Text>
         </View>
       </View>
 
@@ -94,15 +94,19 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   itemNameText: {
+    fontWeight: "bold",
     fontSize: 20,
   },
-  expiraryDateText: {
+  expiryDateText: {
+    fontWeight: "bold",
     fontSize: 20,
   },
   itemAmountText: {
+    fontWeight: "bold",
     fontSize: 20,
   },
   storageText: {
+    fontWeight: "bold",
     fontSize: 20,
   },
   itemExpiryDate: {
