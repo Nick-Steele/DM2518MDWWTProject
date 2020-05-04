@@ -40,19 +40,15 @@ export default function StorageScreen({ navigation }) {
   },[])
   console.log(mat)
   if(loading){
-    console.log("loading true",mat)
     return(
       <LoadingScreen/>
     )
   }
   else{
-  console.log("loading false",mat)
   return (
     <MenuProvider>
       <SafeAreaView style={styles.safeContainer}>
-        <View>
-          
-          
+        <View>        
         </View>
         <ScrollView style={styles.container}>
           <FlatList
