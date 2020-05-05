@@ -1,5 +1,12 @@
 import React from "react";
-import { StyleSheet, View, TouchableOpacity, Text, Button } from "react-native";
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Text,
+  Button,
+  FlatList,
+} from "react-native";
 import { SearchBar } from "react-native-elements";
 import {
   searchItem,
@@ -14,18 +21,23 @@ export default class App extends React.Component {
 
     this.state = {
       search: "",
-      data: getItemsFoodCollection(),
+      data: [
+        {
+          category: "Fruit",
+          title: "Banana",
+        },
+        {
+          category: "Fruit",
+          title: "Orange",
+        },
+        {
+          category: "Meat",
+          title: "Beef",
+        },
+      ],
     };
     this.navigation = navigation;
     this.nav();
-  }
-
-  renderFoundItem() {
-    return (
-      <View>
-        <Text>Hi!</Text>
-      </View>
-    );
   }
 
   updateSearch = (search) => {
@@ -42,9 +54,7 @@ export default class App extends React.Component {
             onPress={() => this.navigation.push("NewItem")}
             style={{ padding: 10 }}
           >
-            <Text style={{ color: "#0a84ff", fontSize: 18 }}>
-              Add Custom Item
-            </Text>
+            <Text style={{ color: "#0a84ff", fontSize: 18 }}>New Item</Text>
           </TouchableOpacity>
         </View>
       ),
@@ -59,6 +69,18 @@ export default class App extends React.Component {
           placeholder="Search Food Database"
           onChangeText={this.updateSearch}
           value={search}
+        />
+        <FlatList
+          data={this.state.data}
+          renderItem={({ item }) => (
+            <View style={styles.TouchableOpacityView}>
+              <TouchableOpacity style={styles.button}>
+                <Text style={styles.itemTitleText}>{item.title}</Text>
+                <Text style={styles.itemCategoryText}>{item.category}</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+          keyExtractor={(item) => item.id}
         />
 
         <Button
@@ -75,4 +97,21 @@ export default class App extends React.Component {
   }
 }
 
-const styles = new StyleSheet.create({});
+const styles = new StyleSheet.create({
+  button: {
+    alignItems: "center",
+    backgroundColor: "#DDDDDD",
+    paddingLeft: 50,
+    paddingRight: 50,
+    paddingTop: 30,
+    paddingBottom: 30,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  itemTitleText: {
+    fontSize: 20,
+  },
+  itemCategoryText: {
+    fontSize: 20,
+  },
+});

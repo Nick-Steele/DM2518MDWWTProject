@@ -56,7 +56,7 @@ const StorageStackScreen = () => (
     <StorageStack.Screen
       name="SearchItems"
       component={SearchItemScreen}
-      options={{ title: "Search Existing Food", headerTitleAlign: "center" }}
+      options={{ title: "SearchFood", headerTitleAlign: "center" }}
     />
     <StorageStack.Screen name="ItemScreen" component={ItemScreen} />
   </StorageStack.Navigator>
