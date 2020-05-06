@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
-  FlatList
+  FlatList,
 } from "react-native";
 import Listitem from "../components/Listitem";
 import { MenuProvider } from "react-native-popup-menu";
@@ -259,7 +259,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    
   },
   commonView: {
     flex: 1,
@@ -273,7 +272,7 @@ const styles = StyleSheet.create({
     },
     shadowRadius: 6,
     shadowOpacity: 0.26,
-    borderRadius: 10
+    borderRadius: 10,
   },
   todayView: {
     backgroundColor: "powderblue",
@@ -323,23 +322,22 @@ const styles = StyleSheet.create({
   },
   bodyText: {
     fontSize: 18,
-    padding: 10
+    padding: 10,
   },
   topText: {
     marginTop: 20,
-    textAlign: 'center',
-    color: 'grey',
-    fontSize: 22
+    textAlign: "center",
+    color: "grey",
+    fontSize: 22,
   },
   bodyTextMargin: {
-    textAlign: 'center'
+    textAlign: "center",
   },
   bottomText: {
     alignSelf: "flex-end",
     marginRight: 16,
     marginTop: 8,
     marginBottom: 8,
-    
   },
   other: {
     flex: 1,
@@ -347,7 +345,7 @@ const styles = StyleSheet.create({
     minHeight: 70,
     maxHeight: 210,
     borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10
+    borderBottomRightRadius: 10,
   },
   component: {
     height: 100,
