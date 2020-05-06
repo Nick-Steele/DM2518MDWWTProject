@@ -25,9 +25,9 @@ export function getItems(userid) {
 
 export function getItemsFoodCollection() {
   var foodCollectionList = [];
+  var first = Firebase.firestore().collection("Foodcollection");
 
-  Firebase.firestore()
-    .collection("Foodcollection")
+  return first
     .get()
     .then((snapshot) => {
       snapshot.docs.forEach((doc) => {
@@ -159,7 +159,7 @@ export function searchItem(name) {
           obj["id"] = x.id;
           foodlist.push(obj);
         });
-        console.log(foodlist);
+        // console.log(foodlist);
         return foodlist;
       }
     )
