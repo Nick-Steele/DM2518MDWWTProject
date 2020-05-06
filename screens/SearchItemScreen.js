@@ -16,6 +16,7 @@ import {
   addItem,
 } from "../Helpers/ItemHelper";
 import Dialog from "react-native-dialog";
+import { TextInput } from "react-native-gesture-handler";
 
 export default class App extends React.Component {
   constructor({ navigation }) {
@@ -94,32 +95,64 @@ export default class App extends React.Component {
         <Button
           title="Test Modal"
           onPress={() => this.setState({ modalVisible: true })}
-        >
-          {" "}
-        </Button>
-
-        <Button
-          title="Add to storage"
-          onPress={() => {
-            var item = searchItem(search);
-            item.then(function (v) {
-              if (v !== null || v !== undefined) {
-                var item = v;
-                console.log("Add Item: " + v.name + v.category);
-                //addItem(v);
-              } else {
-                console.log("This item does not exist, try making your own");
-              }
-            });
-          }}
         ></Button>
 
-        <Modal visible={this.state.modalVisible} animationType="slide">
-          <View style={{ flex: 1, backgroundColor: "yellow" }}>
-            <Text>Hello from modal</Text>
+        {/*MODAL CONTENT */}
+        <Modal
+          visible={this.state.modalVisible}
+          animationType="slide"
+          transparent={true}
+        >
+          <View style={styles.modalContent}>
+            <Text style={styles.modalContentTitleText}>
+              Enter the following
+            </Text>
+            <Text>Enter Quantity</Text>
+            <TextInput placeholder="Quantity" />
+
+            <Text>Enter Date</Text>
+            <View style={styles.nestedDateInputContainer}>
+              <TextInput
+                placeholder="dd"
+                style={styles.dayInput}
+                onChangeText={(dayValue) => this.setState({ day: dayValue })}
+              />
+
+              <TextInput
+                placeholder="mm"
+                style={styles.monthInput}
+                onChangeText={(monthValue) =>
+                  this.setState({ month: monthValue })
+                }
+              ></TextInput>
+              <TextInput
+                placeholder="yyyy"
+                style={styles.yearInput}
+                onChangeText={(yearValue) => this.setState({ year: yearValue })}
+              ></TextInput>
+            </View>
+
             <Button
-              title="Quit Modal"
+              title="Exit"
               onPress={() => this.setState({ modalVisible: false })}
+            ></Button>
+
+            <Button
+              title="Add to storage"
+              onPress={() => {
+                var item = searchItem(search);
+                item.then(function (v) {
+                  if (v !== null || v !== undefined) {
+                    var item = v;
+                    console.log("Add Item: " + v.name + v.category);
+                    //addItem(v);
+                  } else {
+                    console.log(
+                      "This item does not exist, try making your own"
+                    );
+                  }
+                });
+              }}
             ></Button>
           </View>
         </Modal>
@@ -145,9 +178,24 @@ const styles = new StyleSheet.create({
   itemTitleText: {
     fontSize: 20,
   },
-  modalContent: { backgroundColor: "yellow" },
+  modalContent: {
+    flex: 1,
+    justifyContent: "center",
+    backgroundColor: "yellow",
+    margin: 50,
+    borderRadius: 20,
+  },
   itemCategoryText: {
     fontSize: 20,
+  },
+  modalContentTitleText: {
+    fontSize: 20,
+  },
+
+  nestedDateInputContainer: {
+    marginTop: 10,
+    flexDirection: "row",
+    justifyContent: "space-evenly",
   },
 });
 
