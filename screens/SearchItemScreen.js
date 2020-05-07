@@ -25,11 +25,17 @@ export default class App extends React.Component {
       search: "",
       modalVisible: false,
       dataFromDB: [],
+      itemName: "",
+      itemCategory: "",
+      quantityInput: "",
+      dayInput: "",
+      monthInput: "",
+      yearInput: "",
 
       data: [
         {
           category: "Fruit",
-          title: "Banana",
+          title: "123",
         },
         {
           category: "Fruit",
@@ -71,6 +77,9 @@ export default class App extends React.Component {
   render() {
     const { search } = this.state;
 
+    var itemName;
+    var itemCategory;
+
     return (
       <View style={styles.container}>
         <SearchBar
@@ -84,7 +93,15 @@ export default class App extends React.Component {
           data={this.state.data}
           renderItem={({ item }) => (
             <View style={styles.TouchableOpacityView}>
-              <TouchableOpacity style={styles.button}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => {
+                  this.setState({ modalVisible: true });
+
+                  this.setState({ itemName: item.title });
+                  this.setState({ itemCategory: item.category });
+                }}
+              >
                 <Text style={styles.itemTitleText}>{item.title}</Text>
                 <Text style={styles.itemCategoryText}>{item.category}</Text>
               </TouchableOpacity>
@@ -92,10 +109,6 @@ export default class App extends React.Component {
           )}
           keyExtractor={(item) => item.id}
         />
-        <Button
-          title="Test Modal"
-          onPress={() => this.setState({ modalVisible: true })}
-        ></Button>
 
         {/*MODAL CONTENT */}
         <Modal
@@ -107,53 +120,85 @@ export default class App extends React.Component {
             <Text style={styles.modalContentTitleText}>
               Enter the following
             </Text>
-            <Text>Enter Quantity</Text>
-            <TextInput placeholder="Quantity" />
+            <Text style={styles.enterQuantityText}>Enter Quantity:</Text>
+            <TextInput
+              style={styles.enterQuantityInputText}
+              placeholder="Quantity"
+              onChangeText={(quantityValue) => {
+                this.setState({ quantityInput: quantityValue });
+              }}
+            />
 
-            <Text>Enter Date</Text>
+            <Text style={styles.enterDateText}>Enter Date:</Text>
             <View style={styles.nestedDateInputContainer}>
               <TextInput
                 placeholder="dd"
                 style={styles.dayInput}
-                onChangeText={(dayValue) => this.setState({ day: dayValue })}
+                onChangeText={(dayValue) =>
+                  this.setState({ dayInput: dayValue })
+                }
               />
 
               <TextInput
                 placeholder="mm"
                 style={styles.monthInput}
                 onChangeText={(monthValue) =>
-                  this.setState({ month: monthValue })
+                  this.setState({ monthInput: monthValue })
                 }
               ></TextInput>
               <TextInput
                 placeholder="yyyy"
                 style={styles.yearInput}
-                onChangeText={(yearValue) => this.setState({ year: yearValue })}
+                onChangeText={(yearValue) =>
+                  this.setState({ yearInput: yearValue })
+                }
               ></TextInput>
             </View>
 
-            <Button
-              title="Exit"
-              onPress={() => this.setState({ modalVisible: false })}
-            ></Button>
+            <View style={styles.buttonContainer}>
+              <Button
+                title="Exit"
+                onPress={() => this.setState({ modalVisible: false })}
+              ></Button>
 
-            <Button
-              title="Add to storage"
-              onPress={() => {
-                var item = searchItem(search);
-                item.then(function (v) {
-                  if (v !== null || v !== undefined) {
-                    var item = v;
-                    console.log("Add Item: " + v.name + v.category);
-                    //addItem(v);
-                  } else {
-                    console.log(
-                      "This item does not exist, try making your own"
-                    );
-                  }
-                });
-              }}
-            ></Button>
+              <Button
+                title="Add"
+                onPress={() => {
+                  console.log(
+                    this.state.itemName +
+                      " | " +
+                      this.state.itemCategory +
+                      " | " +
+                      this.state.quantityInput +
+                      " | " +
+                      this.state.dayInput +
+                      " | " +
+                      this.state.monthInput +
+                      " | " +
+                      this.state.yearInput
+                  );
+                }}
+              ></Button>
+
+              {/* <Button
+                title="Add to storage"
+                style={styles.addToStorageButton}
+                onPress={() => {
+                  var item = searchItem(search);
+                  item.then(function (v) {
+                    if (v !== null || v !== undefined) {
+                      var item = v;
+                      console.log("Add Item: " + v.name + v.category);
+                      //addItem(v);
+                    } else {
+                      console.log(
+                        "This item does not exist, try making your own"
+                      );
+                    }
+                  });
+                }}
+              ></Button> */}
+            </View>
           </View>
         </Modal>
       </View>
@@ -179,40 +224,75 @@ const styles = new StyleSheet.create({
     fontSize: 20,
   },
   modalContent: {
-    flex: 1,
+    height: "50%",
+    justifyContent: "flex-start",
+    backgroundColor: "white",
+    margin: 20,
+    alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "yellow",
-    margin: 50,
     borderRadius: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   itemCategoryText: {
     fontSize: 20,
   },
   modalContentTitleText: {
+    fontSize: 25,
+    fontWeight: "bold",
+  },
+  enterQuantityText: {
+    marginTop: 10,
     fontSize: 20,
   },
-
+  enterQuantityInputText: {
+    height: 50,
+    width: 200,
+    marginTop: 10,
+    borderWidth: 1,
+    borderRadius: 2,
+  },
+  enterDateText: {
+    marginTop: 10,
+    fontSize: 20,
+  },
   nestedDateInputContainer: {
     marginTop: 10,
     flexDirection: "row",
     justifyContent: "space-evenly",
   },
+  dayInput: {
+    height: 50,
+    width: 50,
+    marginTop: 10,
+    borderWidth: 1,
+    borderRadius: 2,
+  },
+  yearInput: {
+    height: 50,
+    width: 50,
+    marginTop: 10,
+    borderWidth: 1,
+    borderRadius: 2,
+  },
+  monthInput: {
+    height: 50,
+    width: 50,
+    marginTop: 10,
+    borderWidth: 1,
+    borderRadius: 2,
+  },
+  buttonContainer: {
+    marginTop: 10,
+    flexDirection: "row",
+  },
+  addToStorageButton: {
+    color: "green",
+  },
 });
-
-{
-  /* <Modal transparent={true} visible={false}>
-          <View>
-            <TouchableOpacity onPress={this.showDialog}>
-              <Text>Show Dialog</Text>
-            </TouchableOpacity>
-            <Dialog.Container visible={this.state.dialogVisible}>
-              <Dialog.Title>Account delete</Dialog.Title>
-              <Dialog.Description>
-                Enter Quantity and Expirary Date.
-              </Dialog.Description>
-              <Dialog.Button label="Cancel" onPress={this.handleCancel} />
-              <Dialog.Button label="Delete" onPress={this.handleDelete} />
-            </Dialog.Container>
-          </View>
-        </Modal> */
-}
