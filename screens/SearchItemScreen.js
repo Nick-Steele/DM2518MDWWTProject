@@ -9,12 +9,7 @@ import {
   Modal,
 } from "react-native";
 import { SearchBar } from "react-native-elements";
-import {
-  searchItem,
-  getItemsFoodCollection,
-  getItems,
-  addItem,
-} from "../Helpers/ItemHelper";
+import { getItemsFoodCollection } from "../Helpers/ItemHelper";
 import { TextInput } from "react-native-gesture-handler";
 
 export default class App extends React.Component {
@@ -32,20 +27,6 @@ export default class App extends React.Component {
       yearInput: "",
 
       // TEST DATA : What is currently working and showing in the UI.
-      data: [
-        {
-          category: "Fruit",
-          title: "123",
-        },
-        {
-          category: "Fruit",
-          title: "Orange",
-        },
-        {
-          category: "Meat",
-          title: "Beef",
-        },
-      ],
     };
     this.navigation = navigation;
     this.nav(); //Display the top nar bar content.
@@ -56,8 +37,8 @@ export default class App extends React.Component {
 
       for (var i = 0; i < value.length; i++) {
         // Segregating the name and the category. Checking that it is working.
-        console.log(value[i].name);
-        console.log(value[i].category);
+        // console.log(value[i].name);
+        // console.log(value[i].category);
       }
     });
   }
@@ -98,18 +79,18 @@ export default class App extends React.Component {
 
         {/* List that holds the data from Foodcollection WOKING WITH TEST DATA */}
         <FlatList
-          data={this.state.data}
+          data={this.state.dataFromDB}
           renderItem={({ item }) => (
             <View style={styles.TouchableOpacityView}>
               <TouchableOpacity
                 style={styles.button}
                 onPress={() => {
                   this.setState({ modalVisible: true });
-                  this.setState({ itemName: item.title });
+                  this.setState({ itemName: item.name });
                   this.setState({ itemCategory: item.category });
                 }}
               >
-                <Text style={styles.itemTitleText}>{item.title}</Text>
+                <Text style={styles.itemTitleText}>{item.name}</Text>
                 <Text style={styles.itemCategoryText}>{item.category}</Text>
               </TouchableOpacity>
             </View>
@@ -162,6 +143,15 @@ export default class App extends React.Component {
               ></TextInput>
             </View>
 
+            <Button
+              title="testDB"
+              onPress={() => {
+                for (var i = 0; i < this.state.dataFromDB.length; i++) {
+                  console.log(this.state.dataFromDB[i].name);
+                }
+              }}
+            ></Button>
+
             <View style={styles.buttonContainer}>
               <Button
                 title="Exit"
@@ -183,12 +173,7 @@ export default class App extends React.Component {
                       " | " +
                       this.state.monthInput +
                       " | " +
-                      this.state.yearInput +
-                      buildDate(
-                        this.state.dayInput +
-                          this.state.monthInput +
-                          this.state.yearInput
-                      )
+                      this.state.yearInput
                   );
                 }}
               ></Button>
