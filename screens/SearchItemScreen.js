@@ -11,6 +11,7 @@ import {
 import { SearchBar } from "react-native-elements";
 import { getItemsFoodCollection } from "../Helpers/ItemHelper";
 import { TextInput } from "react-native-gesture-handler";
+import renderIf from "../Helpers/renderIf";
 
 export default class App extends React.Component {
   constructor({ navigation }) {
@@ -99,106 +100,104 @@ export default class App extends React.Component {
         />
 
         {/*POP UP MODAL CONTENT : Currently works on phone, but looks like rubbish on the computer web browser. */}
-        <Modal
-          visible={this.state.modalVisible}
-          animationType="slide"
-          transparent={true}
-        >
-          <View style={styles.modalContent}>
-            <Text style={styles.modalContentTitleText}>
-              Enter the following
-            </Text>
-            <Text style={styles.enterQuantityText}>Enter Quantity:</Text>
-            <TextInput
-              style={styles.enterQuantityInputText}
-              placeholder="Quantity"
-              onChangeText={(quantityValue) => {
-                this.setState({ quantityInput: quantityValue });
-              }}
-            />
-
-            <Text style={styles.enterDateText}>Enter Date:</Text>
-            <View style={styles.nestedDateInputContainer}>
+        {renderIf(this.state.modalVisible)(
+          <Modal animationType="slide" transparent={true}>
+            <View style={styles.modalContent}>
+              <Text style={styles.modalContentTitleText}>
+                Enter the following
+              </Text>
+              <Text style={styles.enterQuantityText}>Enter Quantity:</Text>
               <TextInput
-                placeholder="dd"
-                style={styles.dayInput}
-                onChangeText={(dayValue) =>
-                  this.setState({ dayInput: dayValue })
-                }
+                style={styles.enterQuantityInputText}
+                placeholder="Quantity"
+                onChangeText={(quantityValue) => {
+                  this.setState({ quantityInput: quantityValue });
+                }}
               />
 
-              <TextInput
-                placeholder="mm"
-                style={styles.monthInput}
-                onChangeText={(monthValue) =>
-                  this.setState({ monthInput: monthValue })
-                }
-              ></TextInput>
-              <TextInput
-                placeholder="yyyy"
-                style={styles.yearInput}
-                onChangeText={(yearValue) =>
-                  this.setState({ yearInput: yearValue })
-                }
-              ></TextInput>
-            </View>
+              <Text style={styles.enterDateText}>Enter Date:</Text>
+              <View style={styles.nestedDateInputContainer}>
+                <TextInput
+                  placeholder="dd"
+                  style={styles.dayInput}
+                  onChangeText={(dayValue) =>
+                    this.setState({ dayInput: dayValue })
+                  }
+                />
 
-            <Button
-              title="testDB"
-              onPress={() => {
-                for (var i = 0; i < this.state.dataFromDB.length; i++) {
-                  console.log(this.state.dataFromDB[i].name);
-                }
-              }}
-            ></Button>
+                <TextInput
+                  placeholder="mm"
+                  style={styles.monthInput}
+                  onChangeText={(monthValue) =>
+                    this.setState({ monthInput: monthValue })
+                  }
+                ></TextInput>
+                <TextInput
+                  placeholder="yyyy"
+                  style={styles.yearInput}
+                  onChangeText={(yearValue) =>
+                    this.setState({ yearInput: yearValue })
+                  }
+                ></TextInput>
+              </View>
 
-            <View style={styles.buttonContainer}>
               <Button
-                title="Exit"
-                onPress={() => this.setState({ modalVisible: false })}
-              ></Button>
-
-              {/*Checking the data is correct, implement addItem function once working */}
-              <Button
-                title="Add"
+                title="testDB"
                 onPress={() => {
-                  console.log(
-                    this.state.itemName +
-                      " | " +
-                      this.state.itemCategory +
-                      " | " +
-                      this.state.quantityInput +
-                      " | " +
-                      this.state.dayInput +
-                      " | " +
-                      this.state.monthInput +
-                      " | " +
-                      this.state.yearInput
-                  );
+                  for (var i = 0; i < this.state.dataFromDB.length; i++) {
+                    console.log(this.state.dataFromDB[i].name);
+                  }
                 }}
               ></Button>
 
-              {/* <Button
-                title="Add to storage"
-                style={styles.addToStorageButton}
-                onPress={() => {
-                  var item = searchItem(search);
-                  item.then(function (v) {
-                    if (v !== null || v !== undefined) {
-                      var item = v;
-                      console.log("Add Item: " + v.name + v.category);
-                      //addItem(v);
-                    } else {
-                      console.log(
-                        "This item does not exist, try making your own"
-                      );
-                    }
-                  });
-                }}
-              ></Button> */}
+              <View style={styles.buttonContainer}>
+                <Button
+                  title="Exit"
+                  onPress={() => this.setState({ modalVisible: false })}
+                ></Button>
+
+                {/*Checking the data is correct, implement addItem function once working */}
+                <Button
+                  title="Add"
+                  onPress={() => {
+                    console.log(
+                      this.state.itemName +
+                        " | " +
+                        this.state.itemCategory +
+                        " | " +
+                        this.state.quantityInput +
+                        " | " +
+                        this.state.dayInput +
+                        " | " +
+                        this.state.monthInput +
+                        " | " +
+                        this.state.yearInput
+                    );
+                  }}
+                ></Button>
+
+                {/* <Button
+                  title="Add to storage"
+                  style={styles.addToStorageButton}
+                  onPress={() => {
+                    var item = searchItem(search);
+                    item.then(function (v) {
+                      if (v !== null || v !== undefined) {
+                        var item = v;
+                        console.log("Add Item: " + v.name + v.category);
+                        //addItem(v);
+                      } else {
+                        console.log(
+                          "This item does not exist, try making your own"
+                        );
+                      }
+                    });
+                  }}
+                ></Button> */}
+              </View>
             </View>
-          </View>
-        </Modal>
+          </Modal>
+        )}
       </View>
     );
   }
