@@ -19,16 +19,6 @@ const GraphScreen = () => {
 
   // Used to toggle details of graph
   const [isEnabled, setIsEnabled] = React.useState(false);
-  const [theData, setTheData] = React.useState([
-    {
-      name: "Dairy",
-      wasted: 5,
-      color: "skyblue",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 15,
-    },
-  ]);
-
   // const [theData, setTheData] = React.useState([
   //   {
   //     name: "Dairy",
@@ -37,28 +27,38 @@ const GraphScreen = () => {
   //     legendFontColor: "#7F7F7F",
   //     legendFontSize: 15,
   //   },
-  //   {
-  //     name: "Meat",
-  //     wasted: 1,
-  //     color: "red",
-  //     legendFontColor: "#7F7F7F",
-  //     legendFontSize: 15,
-  //   },
-  //   {
-  //     name: "Vegetables",
-  //     wasted: 2,
-  //     color: "lightgreen",
-  //     legendFontColor: "#7F7F7F",
-  //     legendFontSize: 15,
-  //   },
-  //   {
-  //     name: "Fruit",
-  //     wasted: 2,
-  //     color: "yellow",
-  //     legendFontColor: "#7F7F7F",
-  //     legendFontSize: 15,
-  //   },
   // ]);
+
+  const [theData, setTheData] = React.useState([
+    {
+      name: "Dairy",
+      wasted: 5,
+      color: "skyblue",
+      legendFontColor: "#7F7F7F",
+      legendFontSize: 15,
+    },
+    {
+      name: "Meat",
+      wasted: 1,
+      color: "salmon",
+      legendFontColor: "#7F7F7F",
+      legendFontSize: 15,
+    },
+    {
+      name: "Vegetables",
+      wasted: 2,
+      color: "lightgreen",
+      legendFontColor: "#7F7F7F",
+      legendFontSize: 15,
+    },
+    {
+      name: "Fruit",
+      wasted: 2,
+      color: "yellow",
+      legendFontColor: "#7F7F7F",
+      legendFontSize: 15,
+    },
+  ]);
 
   // Adds a new legend and catagory to chart (Adds to the bottom)
   const addItem = (props) => {

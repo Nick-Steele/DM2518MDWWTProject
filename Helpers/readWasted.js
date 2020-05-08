@@ -9,7 +9,7 @@ import {
   Alert,
   Button,
 } from "react-native";
-
+import { getWasteFoodCollection } from "../Helpers/ItemHelper";
 // Reads in the local data and creates an object
 // This is then read in by wasteScreen to display data
 
@@ -18,11 +18,13 @@ const readWasted = () => {
     {
       name: "Meat",
       wasted: 1,
-      color: "red",
+      color: "salmon",
       legendFontColor: "#7F7F7F",
       legendFontSize: 15,
     },
   ]);
+
+  // Read data and append it to the list
   const appendData = (props) => {
     setTheData((prevItem) => {
       return [
@@ -42,3 +44,9 @@ const readWasted = () => {
 };
 
 export default readWasted;
+
+// Issue:
+// Each item is a seperate get which means that
+
+// Option 1
+// Read all data
