@@ -131,8 +131,16 @@ class NewItem extends React.Component {
 
 // Function used to build the date in appropriate format.
 function buildDate(year, month, day) {
-  var dateObj = new Date(year, month, day);
-  return dateObj;
+  let current_datetime = new Date(year, month, day);
+  let formatted_date =
+    current_datetime.getDate() +
+    "-" +
+    current_datetime.getMonth() +
+    "-" +
+    current_datetime.getFullYear();
+  console.log("Format Date: " + formatted_date);
+
+  return formatted_date;
 }
 // Function creates the Item object itself and adds it to the item class where it is managed.
 function parseData(name, quantity, category, storage, year, month, day) {
