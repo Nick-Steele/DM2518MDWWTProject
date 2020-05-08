@@ -15,7 +15,6 @@ import {
   getItems,
   addItem,
 } from "../Helpers/ItemHelper";
-import Dialog from "react-native-dialog";
 import { TextInput } from "react-native-gesture-handler";
 
 export default class App extends React.Component {
@@ -32,6 +31,7 @@ export default class App extends React.Component {
       monthInput: "",
       yearInput: "",
 
+      // TEST DATA : What is currently working and showing in the UI.
       data: [
         {
           category: "Fruit",
@@ -50,16 +50,19 @@ export default class App extends React.Component {
     this.navigation = navigation;
     this.nav(); //Display the top nar bar content.
 
-    // getItemsFoodCollection().then((value) => {
-    //   this.setState({ dataFromDB: value });
-    // });
+    // Pull in Data from database.
+    getItemsFoodCollection().then((value) => {
+      this.setState({ dataFromDB: value }); // Assign the state to access dataFromDB from value.
+
+      for (var i = 0; i < value.length; i++) {
+        // Segregating the name and the category. Checking that it is working.
+        console.log(value[i].name);
+        console.log(value[i].category);
+      }
+    });
   }
 
-  updateSearch = (search) => {
-    this.setState({ search });
-    //Automatically Query the database each time User Inputs.
-    //searchItem(search);
-  };
+  // Draw this content in the top navigation bar.
   nav() {
     this.navigation.setOptions({
       headerRight: () => (
@@ -74,11 +77,15 @@ export default class App extends React.Component {
       ),
     });
   }
-  render() {
-    const { search } = this.state;
 
-    var itemName;
-    var itemCategory;
+  updateSearch = (search) => {
+    this.setState({ search });
+    //Automatically Query the database each time User Inputs.
+    //searchItem(search);
+  };
+
+  render() {
+    const { search } = this.state; // Search result from search bar goes here.
 
     return (
       <View style={styles.container}>
@@ -89,6 +96,7 @@ export default class App extends React.Component {
           value={search}
         />
 
+        {/* List that holds the data from Foodcollection WOKING WITH TEST DATA */}
         <FlatList
           data={this.state.data}
           renderItem={({ item }) => (
@@ -97,7 +105,6 @@ export default class App extends React.Component {
                 style={styles.button}
                 onPress={() => {
                   this.setState({ modalVisible: true });
-
                   this.setState({ itemName: item.title });
                   this.setState({ itemCategory: item.category });
                 }}
@@ -110,7 +117,7 @@ export default class App extends React.Component {
           keyExtractor={(item) => item.id}
         />
 
-        {/*MODAL CONTENT */}
+        {/*POP UP MODAL CONTENT : Currently works on phone, but looks like rubbish on the computer web browser. */}
         <Modal
           visible={this.state.modalVisible}
           animationType="slide"
@@ -161,6 +168,7 @@ export default class App extends React.Component {
                 onPress={() => this.setState({ modalVisible: false })}
               ></Button>
 
+              {/*Checking the data is correct, implement addItem function once working */}
               <Button
                 title="Add"
                 onPress={() => {
@@ -175,7 +183,12 @@ export default class App extends React.Component {
                       " | " +
                       this.state.monthInput +
                       " | " +
-                      this.state.yearInput
+                      this.state.yearInput +
+                      buildDate(
+                        this.state.dayInput +
+                          this.state.monthInput +
+                          this.state.yearInput
+                      )
                   );
                 }}
               ></Button>

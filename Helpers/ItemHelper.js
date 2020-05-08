@@ -1,4 +1,5 @@
 import Firebase from "../config/Firebase";
+import { Alert } from "react-native";
 
 //I8dOBqVCVMaLBgtjSzF7xy0yy5i1
 export function getItems(userid) {
@@ -73,6 +74,7 @@ export function addItem(item) {
           if (compareItems(food, item)) {
             // This case is repeated add(every info is the same)
             inlist = true;
+            Alert.alert("You already have this item");
             console.log(
               "Give user a hint that this item is already exist! Use the edit method if needed."
             );

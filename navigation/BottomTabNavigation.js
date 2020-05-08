@@ -50,13 +50,13 @@ const StorageStackScreen = () => (
     <StorageStack.Screen
       name="NewItem"
       component={NewItem}
-      options={{ title: "Add New Item", headerTitleAlign: "center" }}
+      options={{ title: "New Item", headerTitleAlign: "center" }}
     />
 
     <StorageStack.Screen
       name="SearchItems"
       component={SearchItemScreen}
-      options={{ title: "Search Food", headerTitleAlign: "center" }}
+      options={{ title: "Food", headerTitleAlign: "center" }}
     />
     <StorageStack.Screen name="ItemScreen" component={ItemScreen} />
   </StorageStack.Navigator>
