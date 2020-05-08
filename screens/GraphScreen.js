@@ -6,6 +6,8 @@ import {
   SafeAreaView,
   TouchableOpacity,
   Dimensions,
+  Alert,
+  Button,
 } from "react-native";
 
 import { PieChart } from "react-native-chart-kit";
@@ -25,28 +27,38 @@ const GraphScreen = () => {
       legendFontColor: "#7F7F7F",
       legendFontSize: 15,
     },
-    {
-      name: "Meat",
-      wasted: 1,
-      color: "red",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 15,
-    },
-    {
-      name: "Vegetables",
-      wasted: 2,
-      color: "lightgreen",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 15,
-    },
-    {
-      name: "Fruit",
-      wasted: 2,
-      color: "yellow",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 15,
-    },
   ]);
+
+  // const [theData, setTheData] = React.useState([
+  //   {
+  //     name: "Dairy",
+  //     wasted: 5,
+  //     color: "skyblue",
+  //     legendFontColor: "#7F7F7F",
+  //     legendFontSize: 15,
+  //   },
+  //   {
+  //     name: "Meat",
+  //     wasted: 1,
+  //     color: "red",
+  //     legendFontColor: "#7F7F7F",
+  //     legendFontSize: 15,
+  //   },
+  //   {
+  //     name: "Vegetables",
+  //     wasted: 2,
+  //     color: "lightgreen",
+  //     legendFontColor: "#7F7F7F",
+  //     legendFontSize: 15,
+  //   },
+  //   {
+  //     name: "Fruit",
+  //     wasted: 2,
+  //     color: "yellow",
+  //     legendFontColor: "#7F7F7F",
+  //     legendFontSize: 15,
+  //   },
+  // ]);
 
   // Adds a new legend and catagory to chart (Adds to the bottom)
   const addItem = (props) => {
@@ -75,15 +87,24 @@ const GraphScreen = () => {
       <Text style={styles.titleText}>Select Analytics</Text>
       <View style={styles.dropDownContainer}>
         <View style={styles.dropDownView}>
-          <Text>DropDown Here...</Text>
-          <TouchableOpacity
+          <Button
+            title="1 Week"
             onPress={() => {
-              addItem((name = "Testing"), (wasted = 5), (color = "purple"));
+              setTheData(() => {
+                return readWasted.theData;
+              });
             }}
-          >
-            <Text>Click to test addItem</Text>
-          </TouchableOpacity>
+          ></Button>
+          <Button title="1 Month" onPress={() => Alert.alert("Test")}></Button>
+          <Button title="Lifespan" onPress={() => Alert.alert("Test")}></Button>
         </View>
+        <TouchableOpacity
+          onPress={() => {
+            addItem((name = "Testing"), (wasted = 5), (color = "purple"));
+          }}
+        >
+          <Text>Click to test addItem</Text>
+        </TouchableOpacity>
       </View>
       <View style={styles.graphContainer}>
         <View style={styles.graphView}>
@@ -92,7 +113,7 @@ const GraphScreen = () => {
               setIsEnabled((previousState) => !previousState);
             }}
           >
-            <Text style={styles.graphTitle}>Pie Chart</Text>
+            <Text style={styles.graphTitle}>Today</Text>
             <PieChart
               data={theData}
               width={screenWidth}
@@ -128,6 +149,7 @@ const styles = StyleSheet.create({
   dropDownView: {
     flex: 1,
     paddingLeft: 16,
+    flexDirection: "row",
     justifyContent: "center",
     backgroundColor: "white",
   },
