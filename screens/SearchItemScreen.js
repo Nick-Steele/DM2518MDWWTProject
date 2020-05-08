@@ -80,6 +80,7 @@ export default class App extends React.Component {
 
         {/* List that holds the data from Foodcollection WOKING WITH TEST DATA */}
         <FlatList
+          style={styles.listContainer}
           data={this.state.dataFromDB}
           renderItem={({ item }) => (
             <View style={styles.TouchableOpacityView}>
@@ -99,84 +100,86 @@ export default class App extends React.Component {
           keyExtractor={(item) => item.id}
         />
 
-        {/*POP UP MODAL CONTENT : Currently works on phone, but looks like rubbish on the computer web browser. */}
         {renderIf(this.state.modalVisible)(
-          <Modal animationType="slide" transparent={true}>
-            <View style={styles.modalContent}>
-              <Text style={styles.modalContentTitleText}>
-                Enter the following
-              </Text>
-              <Text style={styles.enterQuantityText}>Enter Quantity:</Text>
-              <TextInput
-                style={styles.enterQuantityInputText}
-                placeholder="Quantity"
-                onChangeText={(quantityValue) => {
-                  this.setState({ quantityInput: quantityValue });
-                }}
-              />
+          <View style={styles.modalContainer}>
+            <View style={styles.modalCenterView}>
+              {/*POP UP MODAL CONTENT : Currently works on phone, but looks like rubbish on the computer web browser. */}
+              <Modal animationType="slide" transparent={true}>
+                <View style={styles.modalContent}>
+                  <Text style={styles.modalContentTitleText}>
+                    Enter the following
+                  </Text>
+                  <Text style={styles.enterQuantityText}>Enter Quantity:</Text>
+                  <TextInput
+                    style={styles.enterQuantityInputText}
+                    placeholder="Quantity"
+                    onChangeText={(quantityValue) => {
+                      this.setState({ quantityInput: quantityValue });
+                    }}
+                  />
 
-              <Text style={styles.enterDateText}>Enter Date:</Text>
-              <View style={styles.nestedDateInputContainer}>
-                <TextInput
-                  placeholder="dd"
-                  style={styles.dayInput}
-                  onChangeText={(dayValue) =>
-                    this.setState({ dayInput: dayValue })
-                  }
-                />
+                  <Text style={styles.enterDateText}>Enter Date:</Text>
+                  <View style={styles.nestedDateInputContainer}>
+                    <TextInput
+                      placeholder="dd"
+                      style={styles.dayInput}
+                      onChangeText={(dayValue) =>
+                        this.setState({ dayInput: dayValue })
+                      }
+                    />
 
-                <TextInput
-                  placeholder="mm"
-                  style={styles.monthInput}
-                  onChangeText={(monthValue) =>
-                    this.setState({ monthInput: monthValue })
-                  }
-                ></TextInput>
-                <TextInput
-                  placeholder="yyyy"
-                  style={styles.yearInput}
-                  onChangeText={(yearValue) =>
-                    this.setState({ yearInput: yearValue })
-                  }
-                ></TextInput>
-              </View>
+                    <TextInput
+                      placeholder="mm"
+                      style={styles.monthInput}
+                      onChangeText={(monthValue) =>
+                        this.setState({ monthInput: monthValue })
+                      }
+                    ></TextInput>
+                    <TextInput
+                      placeholder="yyyy"
+                      style={styles.yearInput}
+                      onChangeText={(yearValue) =>
+                        this.setState({ yearInput: yearValue })
+                      }
+                    ></TextInput>
+                  </View>
 
-              <Button
-                title="testDB"
-                onPress={() => {
-                  for (var i = 0; i < this.state.dataFromDB.length; i++) {
-                    console.log(this.state.dataFromDB[i].name);
-                  }
-                }}
-              ></Button>
+                  <Button
+                    title="testDB"
+                    onPress={() => {
+                      for (var i = 0; i < this.state.dataFromDB.length; i++) {
+                        console.log(this.state.dataFromDB[i].name);
+                      }
+                    }}
+                  ></Button>
 
-              <View style={styles.buttonContainer}>
-                <Button
-                  title="Exit"
-                  onPress={() => this.setState({ modalVisible: false })}
-                ></Button>
+                  <View style={styles.buttonContainer}>
+                    <Button
+                      title="Exit"
+                      onPress={() => this.setState({ modalVisible: false })}
+                    ></Button>
 
-                {/*Checking the data is correct, implement addItem function once working */}
-                <Button
-                  title="Add"
-                  onPress={() => {
-                    console.log(
-                      this.state.itemName +
-                        " | " +
-                        this.state.itemCategory +
-                        " | " +
-                        this.state.quantityInput +
-                        " | " +
-                        this.state.dayInput +
-                        " | " +
-                        this.state.monthInput +
-                        " | " +
-                        this.state.yearInput
-                    );
-                  }}
-                ></Button>
+                    {/*Checking the data is correct, implement addItem function once working */}
+                    <Button
+                      title="Add"
+                      onPress={() => {
+                        console.log(
+                          this.state.itemName +
+                            " | " +
+                            this.state.itemCategory +
+                            " | " +
+                            this.state.quantityInput +
+                            " | " +
+                            this.state.dayInput +
+                            " | " +
+                            this.state.monthInput +
+                            " | " +
+                            this.state.yearInput
+                        );
+                      }}
+                    ></Button>
 
-                {/* <Button
+                    {/* <Button
                   title="Add to storage"
                   style={styles.addToStorageButton}
                   onPress={() => {
@@ -194,9 +197,11 @@ export default class App extends React.Component {
                     });
                   }}
                 ></Button> */}
-              </View>
+                  </View>
+                </View>
+              </Modal>
             </View>
-          </Modal>
+          </View>
         )}
       </View>
     );
@@ -206,16 +211,16 @@ export default class App extends React.Component {
 const styles = new StyleSheet.create({
   container: { flex: 1 },
   button: {
-    alignItems: "center",
-    backgroundColor: "white",
-    paddingLeft: 50,
-    paddingRight: 50,
-    paddingTop: 30,
-    paddingBottom: 30,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    margin: 5,
+    flex: 1,
+    maxWidth: 600,
     borderRadius: 20,
+    margin: 5,
+    paddingVertical: 30,
+    paddingHorizontal: 50,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    backgroundColor: "white",
   },
   itemTitleText: {
     fontSize: 20,
@@ -224,7 +229,6 @@ const styles = new StyleSheet.create({
     height: "50%",
     justifyContent: "flex-start",
     backgroundColor: "white",
-    margin: 20,
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 20,
@@ -291,5 +295,28 @@ const styles = new StyleSheet.create({
   },
   addToStorageButton: {
     color: "green",
+  },
+
+  listContainer: {
+    flex: 1,
+  },
+  TouchableOpacityView: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+  modalContainer: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
+  },
+  modalCenterView: {
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
