@@ -12,53 +12,114 @@ import {
 
 import { PieChart } from "react-native-chart-kit";
 import readWasted from "../Helpers/readWasted";
+import { getWasteFoodCollection } from "../Helpers/ItemHelper";
 
 const GraphScreen = () => {
   const screenWidth = Dimensions.get("window").width - 32;
   const screenHeight = Dimensions.get("window").height / 3.5;
 
   // Used to toggle details of graph
-  const [isEnabled, setIsEnabled] = React.useState(false);
-  // const [theData, setTheData] = React.useState([
-  //   {
-  //     name: "Dairy",
-  //     wasted: 5,
-  //     color: "skyblue",
-  //     legendFontColor: "#7F7F7F",
-  //     legendFontSize: 15,
-  //   },
-  // ]);
-
+  const [isEnabled, setIsEnabled] = React.useState(true);
+  const [theGraphTitle, setTheGraphTitle] = React.useState(true);
   const [theData, setTheData] = React.useState([
     {
-      name: "Dairy",
-      wasted: 5,
+      name: "dairy",
+      wasted: 0,
       color: "skyblue",
       legendFontColor: "#7F7F7F",
       legendFontSize: 15,
     },
     {
-      name: "Meat",
-      wasted: 1,
+      name: "meat",
+      wasted: 0,
       color: "salmon",
       legendFontColor: "#7F7F7F",
       legendFontSize: 15,
     },
     {
-      name: "Vegetables",
-      wasted: 2,
+      name: "vegetables",
+      wasted: 0,
       color: "lightgreen",
       legendFontColor: "#7F7F7F",
       legendFontSize: 15,
     },
     {
-      name: "Fruit",
-      wasted: 2,
+      name: "fruit",
+      wasted: 0,
       color: "yellow",
       legendFontColor: "#7F7F7F",
       legendFontSize: 15,
     },
   ]);
+
+  // Get the data
+  // Filter data depending on graphType
+  // Cycle through filtered data and set variabels using case
+  // Update static data with new waste amount for graphType
+  const changeGraphType = (props) => {
+    getWasteFoodCollection().then((value) => {
+      var dairyCount = 0;
+      var meatCount = 0;
+      var vegetablesCount = 0;
+      var fruitCount = 0;
+
+      // Set the graphs title
+      setTheGraphTitle(props.graphTitle);
+
+      // Filter data depending on graphType
+      var filteredData;
+
+      switch (props.graphType) {
+        case "week":
+          filteredData = value;
+          break;
+        case "month":
+          filteredData = value;
+          break;
+        case "year":
+          filteredData = value;
+          break;
+        case "life":
+          filteredData = value;
+          break;
+      }
+
+      console.log("The length of value is: ", value);
+      console.log("The graph type is: ", props.graphType);
+
+      // getItems().then( items => var itemDate = new Date(items[0].date) )
+
+      // Cycle through filtered data and set variabels using case
+      for (var i = 0; i < filteredData.length; i++) {
+        switch (value[i].category) {
+          case "dairy":
+            dairyCount++;
+            break;
+          case "meat":
+            meatCount++;
+            break;
+          case "veg":
+            vegetablesCount++;
+            break;
+          case "fruit":
+            fruitCount++;
+            break;
+          default:
+          // Do Nothing...
+        }
+      }
+      console.log(dairyCount);
+      console.log(meatCount);
+      console.log(vegetablesCount);
+      console.log(fruitCount);
+
+      // Update static data with new waste amount for graphType
+      updateWasteAmount({ name: "dairy", quantity: dairyCount });
+      updateWasteAmount({ name: "meat", quantity: meatCount });
+      updateWasteAmount({ name: "vegetables", quantity: vegetablesCount });
+      updateWasteAmount({ name: "fruit", quantity: fruitCount });
+    });
+  };
 
   // Adds a new legend and catagory to chart (Adds to the bottom)
   const addItem = (props) => {
@@ -66,13 +127,33 @@ const GraphScreen = () => {
       return [
         ...prevItem,
         {
-          name: name,
-          wasted: wasted,
-          color: color,
+          name: props.name,
+          wasted: props.wasted,
+          color: props.color,
           legendFontColor: "#7F7F7F",
           legendFontSize: 15,
         },
       ];
+    });
+  };
+
+  const deleteItem = (name) => {
+    setTheData((prevItem) => {
+      return prevItem.filter((item) => item.name != name);
+    });
+  };
+
+  const updateWasteAmount = (props) => {
+    // Gets the item data
+    var newData = theData.filter((item) => item.name == props.name);
+    newData[0].wasted = props.quantity;
+
+    // Deletes the item data
+    deleteItem((name = props.name));
+
+    // Appends the new item data
+    setTheData((prevItem) => {
+      return [...prevItem, newData[0]];
     });
   };
 
@@ -87,20 +168,42 @@ const GraphScreen = () => {
       <Text style={styles.titleText}>Select Analytics</Text>
       <View style={styles.dropDownContainer}>
         <View style={styles.dropDownView}>
-          <Button
-            title="1 Week"
+          <TouchableOpacity
+            style={styles.button}
             onPress={() => {
-              setTheData(() => {
-                return readWasted.theData;
-              });
+              changeGraphType({ graphType: "week", graphTitle: "1 Week" });
             }}
-          ></Button>
-          <Button title="1 Month" onPress={() => Alert.alert("Test")}></Button>
-          <Button title="Lifespan" onPress={() => Alert.alert("Test")}></Button>
+          >
+            <Text>1 Week</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              changeGraphType({ graphType: "month", graphTitle: "1 Month" });
+            }}
+          >
+            <Text>1 Month</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              changeGraphType({ graphType: "year", graphTitle: "1 Year" });
+            }}
+          >
+            <Text>1 Year</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              changeGraphType({ graphType: "life", graphTitle: "Life Span" });
+            }}
+          >
+            <Text>Life Span</Text>
+          </TouchableOpacity>
         </View>
         <TouchableOpacity
           onPress={() => {
-            addItem((name = "Testing"), (wasted = 5), (color = "purple"));
+            addItem({ name: "Testing", wasted: 5, color: "purple" });
           }}
         >
           <Text>Click to test addItem</Text>
@@ -113,7 +216,8 @@ const GraphScreen = () => {
               setIsEnabled((previousState) => !previousState);
             }}
           >
-            <Text style={styles.graphTitle}>Today</Text>
+            <Text style={styles.graphTitle}>{theGraphTitle}</Text>
+
             <PieChart
               data={theData}
               width={screenWidth}
@@ -123,7 +227,7 @@ const GraphScreen = () => {
               accessor="wasted"
               paddingLeft="15"
               backgroundColor="powderblue"
-              absolute={isEnabled} //for the absolute number remove if you want percentage
+              absolute={isEnabled} // Switch for absolute number and percentage
             />
           </TouchableOpacity>
           <Text style={styles.detailText}>Click for more details...</Text>
@@ -148,7 +252,7 @@ const styles = StyleSheet.create({
   },
   dropDownView: {
     flex: 1,
-    paddingLeft: 16,
+    // padding: 16,
     flexDirection: "row",
     justifyContent: "center",
     backgroundColor: "white",
@@ -180,6 +284,45 @@ const styles = StyleSheet.create({
     marginRight: 24,
     alignSelf: "flex-end",
   },
+  button: {
+    flex: 1,
+    margin: 8,
+    borderRadius: 16,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "skyblue",
+  },
 });
 
 export default GraphScreen;
+
+// const [theData, setTheData] = React.useState([
+//   {
+//     name: "Dairy",
+//     wasted: 5,
+//     color: "skyblue",
+//     legendFontColor: "#7F7F7F",
+//     legendFontSize: 15,
+//   },
+//   {
+//     name: "Meat",
+//     wasted: 1,
+//     color: "salmon",
+//     legendFontColor: "#7F7F7F",
+//     legendFontSize: 15,
+//   },
+//   {
+//     name: "Vegetables",
+//     wasted: 2,
+//     color: "lightgreen",
+//     legendFontColor: "#7F7F7F",
+//     legendFontSize: 15,
+//   },
+//   {
+//     name: "Fruit",
+//     wasted: 2,
+//     color: "yellow",
+//     legendFontColor: "#7F7F7F",
+//     legendFontSize: 15,
+//   },
+// ]);

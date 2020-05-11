@@ -175,9 +175,13 @@ function compareItems(item1, item2) {
   );
 }
 
-export function getItemsFoodCollection() {
+export function getWasteFoodCollection() {
   var wasteCollectionList = [];
-  var first = Firebase.firestore().collection("Wastecollection");
+  // var first = Firebase.firestore().collection("Wastecollection");
+  var first = Firebase.firestore()
+    .collection("Wastecollection")
+    .doc("mMqD5JgVl9QpR1ssSMCNp2lBQyf2")
+    .collection("mat");
 
   return first
     .get()
