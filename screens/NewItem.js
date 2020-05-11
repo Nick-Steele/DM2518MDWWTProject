@@ -1,27 +1,38 @@
 import React from "react";
-import {
-  View,
-  ScrollView,
-  Text,
-  StyleSheet,
-  TextInput,
-  Button,
-} from "react-native";
+import { View, KeyboardAvoidingView, ScrollView, Text, StyleSheet, TextInput, Button, Keyboard, TouchableWithoutFeedback, Platform } from "react-native";
 import * as Item from "../Helpers/ItemHelper";
 import RadioForm from "react-native-simple-radio-button";
+import DatePicker from 'react-native-datepicker'
+
+const getTodaysDate = () => {
+  return new Date().toISOString().slice(0,10).replace(/-/g,"");
+}
+import ExpireCalendar from "../components/calendar";
 
 class NewItem extends React.Component {
-  state = {
-    itemName: "",
-    itemQuantity: "",
-    itemCategory: "fruit",
-    itemStorage: "fridge",
-    day: "",
-    month: "",
-    year: "",
-  };
+  constructor({ navigation }){
+    super()
+    this.navigation = navigation;
+    this.state = {
+      itemName: "",
+      itemQuantity: "",
+      itemCategory: "fruit",
+      itemStorage: "fridge",
+      day: "",
+      month: "",
+      year: "",
+      date: ""
+    };
+
+  }
+  
+  
+  fetchDate = (date)=>{
+    this.setState({selected:date})
+  }
 
   render() {
+    
     var itemCategoryProperties = [
       { label: "Fruit", value: "fruit" },
       { label: "Veg", value: "veg" },
@@ -35,7 +46,10 @@ class NewItem extends React.Component {
     ];
 
     return (
-      <View style={styles.container}>
+      <KeyboardAvoidingView 
+      behavior={Platform.OS == "ios" ? "padding" : "height"}
+      style={styles.container}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ScrollView style={styles.formWrapper}>
           {/* Item Name Input */}
           <TextInput
@@ -70,6 +84,7 @@ class NewItem extends React.Component {
             onPress={(categoryValue) => {
               this.setState({ itemCategory: categoryValue });
             }}
+            radioStyle={{paddingRight: 20, paddingTop: 20}}
           />
 
           {/* Items Storage Location */}
@@ -83,34 +98,70 @@ class NewItem extends React.Component {
             onPress={(storageValue) => {
               this.setState({ itemStorage: storageValue });
             }}
+            radioStyle={{paddingRight: 20, paddingTop: 20}}
           />
 
           <Text style={styles.expiraryDateText}>Expirary Date:</Text>
-          <View style={styles.nestedDateInputContainer}>
-            <TextInput
-              placeholder="dd"
-              style={styles.dayInput}
-              onChangeText={(dayValue) => this.setState({ day: dayValue })}
+          
+            {Platform.OS == 'web' ? (
+              <View style={styles.nestedDateInputContainer}>
+                <TextInput
+                  placeholder="dd"
+                  style={styles.dayInput}
+                  onChangeText={(dayValue) => this.setState({ day: dayValue })}
+                ></TextInput>
+                <TextInput
+                  placeholder="mm"
+                  style={styles.monthInput}
+                  onChangeText={(monthValue) =>
+                    this.setState({ month: monthValue })
+                  }
+                ></TextInput>
+                <TextInput
+                  placeholder="yyyy"
+                  style={styles.yearInput}
+                  onChangeText={(yearValue) => this.setState({ year: yearValue })}
+                ></TextInput>
+              </View>
+              /*<View>
+              <ExpireCalendar 
+              fetchDate={(date)=>this.fetchDate(date)}/>
+              </View>*/
+            ) : (
+              <DatePicker
+              style={{width: 200}}
+              date={this.state.date}
+              mode="date"
+              placeholder="select date"
+              format="YYYY-MM-DD"
+              minDate={getTodaysDate()}
+              maxDate="2100-06-01"
+              confirmBtnText="Confirm"
+              cancelBtnText="Cancel"
+              customStyles={{
+                dateIcon: {
+                  position: 'absolute',
+                  left: 0,
+                  top: 4,
+                  marginLeft: 0
+                },
+                dateInput: {
+                  marginLeft: 36
+                }
+                // ... You can check the source to find the other keys.
+              }}
+              onDateChange={(date) => {
+                this.setState({year: date.substring(0,4), month: date.substring(5, 7), day: date.substring(8, 10)})
+              }}
             />
-
-            <TextInput
-              placeholder="mm"
-              style={styles.monthInput}
-              onChangeText={(monthValue) =>
-                this.setState({ month: monthValue })
-              }
-            ></TextInput>
-            <TextInput
-              placeholder="yyyy"
-              style={styles.yearInput}
-              onChangeText={(yearValue) => this.setState({ year: yearValue })}
-            ></TextInput>
-          </View>
+            )}
+            
+          
         </ScrollView>
-
+        </TouchableWithoutFeedback>
         <Button
           title="Add Item"
-          onPress={() =>
+          onPress={() => {
             validateForm(
               this.state.itemName,
               this.state.itemQuantity,
@@ -119,29 +170,27 @@ class NewItem extends React.Component {
               this.state.day,
               this.state.month,
               this.state.year
-            )
+            ).then(success => {
+              if(success == true ){
+                this.navigation.pop(2);
+              }
+            });
+          }
           }
         ></Button>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }
 
 // Function used to build the date in appropriate format.
 function buildDate(year, month, day) {
-  let current_datetime = new Date(year, month, day);
-  let formatted_date =
-    current_datetime.getDate() +
-    "-" +
-    current_datetime.getMonth() +
-    "-" +
-    current_datetime.getFullYear();
-  console.log("Format Date: " + formatted_date);
-
+  let current_datetime = new Date(year, month-1, parseInt(day)+1);
+  let formatted_date = current_datetime.toISOString().substring(0,10);
   return formatted_date;
 }
 // Function creates the Item object itself and adds it to the item class where it is managed.
-function parseData(name, quantity, category, storage, year, month, day) {
+function parseData(name, quantity, category, storage, year, month, day, date) {
   let item = {
     name,
     quantity,
@@ -151,29 +200,34 @@ function parseData(name, quantity, category, storage, year, month, day) {
   }; // Create new item object based on form details.
   //itemObject.addItemToFoodList(itemObject);
   Item.addItem(item);
-  customAlert("Added:" + item.name + ", Quantity: " + item.quantity);
+  
 }
 
 // Function checks if form elements are not empty,
 // parses the data to Item class and clears the form for re-use.
-function validateForm(name, quantity, category, storage, day, month, year) {
+export async function validateForm(
+  name,
+  quantity,
+  category,
+  storage,
+  day,
+  month,
+  year
+) {
   if (
     name != "" &&
     quantity != "" &&
     category != "" &&
     storage != "" &&
-    day != "" &&
-    month != "" &&
-    year != ""
+    (day != "" && month != "" && year != "")
   ) {
-    parseData(name, quantity, category, storage, year, month, day);
-    //clearFields();
+    parseData(name.toLocaleLowerCase(), parseFloat(quantity), category, storage, year, month, day);
+    return true;
   } else {
     customAlert("Form incomplete, try again!");
+    return false;
   }
 }
-
-function clearFields() {}
 
 function customAlert(string) {
   alert(string);

@@ -3,7 +3,6 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import { StyleSheet } from "react-native";
-// import { Icon } from "react-native-elements";
 import Icons from "../components/Icons";
 
 import {
@@ -21,7 +20,6 @@ const BottomTab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
 const StorageStack = createStackNavigator();
 const WasteStack = createStackNavigator();
-const SearchItemsStack = createStackNavigator();
 
 const HomeStackScreen = () => (
   <HomeStack.Navigator>
@@ -34,7 +32,7 @@ const HomeStackScreen = () => (
         headerTitleAlign: "center",
       }}
     />
-    <StorageStack.Screen name="ItemScreen" component={ItemScreen} />
+    <HomeStack.Screen name="ItemScreen" component={ItemScreen} />
   </HomeStack.Navigator>
 );
 
@@ -50,13 +48,13 @@ const StorageStackScreen = () => (
     <StorageStack.Screen
       name="NewItem"
       component={NewItem}
-      options={{ title: "Add New Item", headerTitleAlign: "center" }}
+      options={{ title: "New Item", headerTitleAlign: "center" }}
     />
 
     <StorageStack.Screen
       name="SearchItems"
       component={SearchItemScreen}
-      options={{ title: "Search Existing Food", headerTitleAlign: "center" }}
+      options={{ title: "Food", headerTitleAlign: "center" }}
     />
     <StorageStack.Screen name="ItemScreen" component={ItemScreen} />
   </StorageStack.Navigator>

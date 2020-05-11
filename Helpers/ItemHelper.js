@@ -1,13 +1,12 @@
 import Firebase from "../config/Firebase";
 
-//I8dOBqVCVMaLBgtjSzF7xy0yy5i1
-export function getItems(userid) {
-  console.log(userid); // THIS GIVES UNDEFINED FOR SOME REASON.
+export function getItems() {
+  var userid = Firebase.auth().currentUser.uid;
   var first = Firebase.firestore()
     .collection("Fridgecollection")
-    .doc("I8dOBqVCVMaLBgtjSzF7xy0yy5i1") // userid should be used. But this is ok for testing.
+    .doc(userid) // userid should be used. But this is ok for testing.
     .collection("mat");
-
+    
   return first
     .get()
     .then((collectionSnapshot) => {
@@ -23,9 +22,25 @@ export function getItems(userid) {
     .catch((error) => console.log(error));
 }
 
+export function getItemsFoodCollection() {
+  var foodCollectionList = [];
+  var first = Firebase.firestore().collection("Foodcollection");
+
+  return first
+    .get()
+    .then((snapshot) => {
+      snapshot.docs.forEach((doc) => {
+        foodCollectionList.push(doc.data());
+      });
+      return foodCollectionList;
+    })
+    .catch((error) => console.log(error));
+}
+
 export function addItem(item) {
   // get current user id
   var userid = Firebase.auth().currentUser.uid;
+ // var userid = Firebase.auth().currentUser.uid;
   //compare with the food collection at first
   var fooddb = Firebase.firestore().collection("Foodcollection");
   var addfooddb = searchItem(item.name)
@@ -53,27 +68,15 @@ export function addItem(item) {
     .then((fitem) => {
       // compare with user's stroage
       var getcurrent = getItems(userid).then((currentfood) => {
-        var inlist = false;
-        currentfood.map((food) => {
-          if (compareItems(food, item)) {
-            // This case is repeated add(every info is the same)
-            inlist = true;
-            console.log(
-              "Give user a hint that this item is already exist! Use the edit method if needed."
-            );
-          }
-        });
-        if (!inlist) {
-          item["fid"] = fitem.id;
-          item["name"] = fitem.name;
-          (item["category"] = fitem.category),
-            Firebase.firestore()
-              .collection("Fridgecollection")
-              .doc(userid)
-              .collection("mat")
-              .add(item); // add to user's stroage db
-          currentfood.push(item); // add to the user's food list
-        }
+        item["fid"] = fitem.id;
+        item["name"] = fitem.name;
+        (item["category"] = fitem.category),
+        Firebase.firestore()
+          .collection("Fridgecollection")
+          .doc(userid)
+          .collection("mat")
+          .add(item); // add to user's stroage db
+        currentfood.push(item); // add to the user's food list
         return currentfood;
       });
       return Promise.resolve(getcurrent);
@@ -82,9 +85,10 @@ export function addItem(item) {
   return addfooddb;
 }
 
-export function removeItem(userid, rmid) {
+export function removeItem(rmid) {
+  var userid = Firebase.auth().currentUser.uid;
   // assume the food is already in fooddb
-  return getItem(userid)
+  return getItems()
     .then((currentfood) => {
       var rmlist = [];
       currentfood.map((food) => {
@@ -105,7 +109,62 @@ export function removeItem(userid, rmid) {
     .catch((error) => console.log(error));
 }
 
-export function editItem(userid, item, editid) {
+// waste or use function, amount is an input amout from a user
+// type should be a string either 'wasted' or 'used'
+export function reduceItem(wtid, amount, type){  
+  var userid = Firebase.auth().currentUser.uid;
+  return getItems()
+      .then((currentfood) => {
+        var rmlist = [];
+        currentfood.map((food) => {
+          if (food.id === wtid) {
+            if(!(amount>0)){
+              alert("Invalid quatity input")
+              return 
+            }
+            if(food.quantity<amount){
+              alert("The number should be smaller than the number alreay exist.")
+              return 
+            }
+            else if(food.quantity===amount){
+            // for output use, not necessary for db interaction
+              Firebase.firestore()
+                .collection("Fridgecollection")
+                .doc(userid)
+                .collection("mat")
+                .doc(wtid)
+                .delete(); // delete from database if waste all of them
+            }
+            else{
+              var newquantity = food.quantity-amount
+              Firebase.firestore()
+              .collection("Fridgecollection")
+              .doc(userid)
+              .collection("mat")
+              .doc(wtid)
+              .update({
+                quantity: newquantity
+            })
+            // add to the waste collection
+            var wasteFood = food
+            wasteFood.quantity = amount
+            wasteFood.type = type
+
+            Firebase.firestore()
+            .collection("Wastecollection")
+            .doc(userid)
+            .collection("mat")
+            .add(wasteFood)
+            }
+            return;
+          }
+        }); // return the result list
+      })
+      .catch((error) => console.log(error));
+}
+
+export function editItem(item, editid) {
+  var userid = Firebase.auth().currentUser.uid;
   // edit item
   var editfood = getItems(userid).then((items) => {
     var editlist = [];
@@ -130,6 +189,7 @@ export function editItem(userid, item, editid) {
 }
 
 export function searchItem(name) {
+  var userid = Firebase.auth().currentUser.uid;
   // search in fooddb
   var fooddb = Firebase.firestore().collection("Foodcollection");
   var searchfooddb = fooddb
@@ -154,7 +214,7 @@ export function searchItem(name) {
         var item;
         var inlist = false;
         foodlist.map((food) => {
-          if (food.name === name) {
+          if (food.name.match(name)) {
             inlist = true;
             item = food;
             return;

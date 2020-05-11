@@ -1,4 +1,5 @@
 import * as React from "react";
+
 import {
   View,
   ScrollView,
@@ -40,35 +41,43 @@ export default function StorageScreen({ navigation }) {
     ),
   });
 
-  const [mat, setMat] = React.useState(0);
+  const [state, setState] = React.useState({allFood: [], visibleFood: []});
   const [loading, setLoading] = React.useState(true);
   React.useEffect(() => {
-    getItems().then((x) => setMat(x));
+    getItems().then((x) => setState({allFood: x, visibleFood: x}));
     setTimeout(() => {
       setLoading(false);
     }, 500);
   }, []);
-  console.log(mat);
+
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      console.log("IM in focus");
+      getItems().then((x) => setState({allFood: x, visibleFood: x}));
+
+    });
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, [navigation]);
+
   if (loading) {
-    console.log("loading true", mat);
     return <LoadingScreen />;
   } else {
-    console.log("loading false", mat);
     return (
       <MenuProvider>
         <SafeAreaView style={styles.safeContainer}>
-          <View></View>
-          <ScrollView style={styles.container}>
+          <View>
+          </View>
             <FlatList
               style={{ flex: 1, marginTop: 10 }}
-              data={mat}
+              data={state.visibleFood}
               renderItem={({ item, index }) => {
                 return Listitem(item, navigation);
               }}
               keyExtractor={(item, index) => index.toString()}
+              initialNumToRender={13}
             />
-          </ScrollView>
-        </SafeAreaView>
+       </SafeAreaView>
       </MenuProvider>
     );
   }
