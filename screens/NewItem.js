@@ -116,9 +116,8 @@ class NewItem extends React.Component {
               this.state.itemQuantity,
               this.state.itemCategory,
               this.state.itemStorage,
-              this.state.day,
-              this.state.month,
-              this.state.year
+
+              buildDate(this.state.day, this.state.month, this.state.year)
             )
           }
         ></Button>
@@ -128,17 +127,9 @@ class NewItem extends React.Component {
 }
 
 // Function used to build the date in appropriate format.
-function buildDate(year, month, day) {
-  let current_datetime = new Date(year, month, day);
-  let formatted_date =
-    current_datetime.getDate() +
-    "-" +
-    current_datetime.getMonth() +
-    "-" +
-    current_datetime.getFullYear();
-  console.log("Format Date: " + formatted_date);
-
-  return formatted_date;
+export function buildDate(year, month, day) {
+  let currentDate = new Date(year, month, day);
+  return currentDate;
 }
 // Function creates the Item object itself and adds it to the item class where it is managed.
 function parseData(name, quantity, category, storage, year, month, day) {
@@ -150,13 +141,21 @@ function parseData(name, quantity, category, storage, year, month, day) {
     date: buildDate(year, month, day),
   }; // Create new item object based on form details.
   //itemObject.addItemToFoodList(itemObject);
-  //Item.addItem(item);
+  Item.addItem(item);
   customAlert("Added:" + item.name + ", Quantity: " + item.quantity);
 }
 
 // Function checks if form elements are not empty,
 // parses the data to Item class and clears the form for re-use.
-function validateForm(name, quantity, category, storage, day, month, year) {
+export function validateForm(
+  name,
+  quantity,
+  category,
+  storage,
+  day,
+  month,
+  year
+) {
   if (
     name != "" &&
     quantity != "" &&
