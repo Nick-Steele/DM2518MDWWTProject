@@ -8,172 +8,129 @@ import {
   ScrollView,
   Alert,
   FlatList,
+  Platform
 } from "react-native";
 import Listitem from "../components/Listitem";
 import { MenuProvider } from "react-native-popup-menu";
-
-// Change Views holding components into FlatLists
-// Load only 5 things
-// If > 5 display "Load More Button"
-// When pressed navigate to new page with list of all items in that day
-const TestData = {
-  food: [
-    {
-      name: "Cabbage",
-      category: "vegetable",
-      storage: "Pantry",
-      quantity: 4,
-      expirydate: "2020-04-17",
-    },
-    {
-      name: "Cabbage",
-      category: "vegetable",
-      storage: "Pantry",
-      quantity: 4,
-      expirydate: "2020-04-17",
-    },
-    {
-      name: "Cabbage",
-      category: "vegetable",
-      storage: "Pantry",
-      quantity: 4,
-      expirydate: "2020-04-17",
-    },
-    {
-      name: "Cabbage",
-      category: "vegetable",
-      storage: "Pantry",
-      quantity: 4,
-      expirydate: "2020-04-17",
-    },
-    {
-      name: "Cabbage",
-      category: "vegetable",
-      storage: "Pantry",
-      quantity: 4,
-      expirydate: "2020-04-17",
-    },
-    {
-      name: "Cabbage",
-      category: "vegetable",
-      storage: "Pantry",
-      quantity: 4,
-      expirydate: "2020-04-17",
-    },
-    {
-      name: "Cabbage",
-      category: "vegetable",
-      storage: "Pantry",
-      quantity: 4,
-      expirydate: "2020-04-17",
-    },
-    {
-      name: "Cabbage",
-      category: "vegetable",
-      storage: "Pantry",
-      quantity: 4,
-      expirydate: "2020-04-17",
-    },
-  ],
-};
+import {getItems} from "../Helpers/ItemHelper";
+import LoadingScreen from "./LoadingScreen";
+import moment from 'moment';
 
 export default function HomeScreen({ navigation }) {
-  return (
-    <SafeAreaView style={styles.safeContainer}>
-      <MenuProvider>
+  const [food, setFood] = React.useState({today: [], week: [], month:[] })
+  const [loading, setLoading] = React.useState(true);
+
+  const todaysDate = moment().format("YYYY-MM-DD");
+  const endOfWeekDate = moment().add('days', 7).format("YYYY-MM-DD");
+  const endOfMonthDate = moment().add('days', 31).format("YYYY-MM-DD");
+
+  React.useEffect(() => {
+    getItems().then((items) => {
+      let todaysItems = items.filter((item) => moment(item.date).isSame(todaysDate));
+      let thisWeeksItems = items.filter((item) => moment(item.date).isBetween(todaysDate, endOfWeekDate));
+      let thisMonthsItems = items.filter((item) => moment(item.date).isBetween(endOfWeekDate, endOfMonthDate));
+      setFood({today: todaysItems, week: thisWeeksItems, month: thisMonthsItems});
+    });
+    setTimeout(()=>{
+      setLoading(false)
+    },1000)
+  }, []);
+  if(loading){
+    return(
+      <LoadingScreen/>
+    )
+  } else {
+    return (
+      <SafeAreaView style={Platform.OS == 'web' ? styles.safeContainer : styles.safeContainer2}>
+        <MenuProvider>
         <ScrollView style={styles.container}>
           <Text style={[styles.bodyText, styles.topText]}>
-            Food that will expire:
+            The food is going to expire
           </Text>
-          <View style={[styles.todayView, styles.commonView]}>
+          <View style={[styles.todayView]}>
             <Text style={[styles.bodyText, styles.bodyTextMargin]}>Today</Text>
-            <ScrollView style={styles.other}>
+            {food.today != 0 ? (
               <FlatList
-                style={{ flex: 1 }}
-                data={TestData.food}
-                renderItem={({ item, index }) => {
-                  return Listitem(item, navigation);
-                }}
-                keyExtractor={(item, index) => index.toString()}
-              />
-              <View style={styles.loadMoreView}>
-                <TouchableOpacity
-                  onPress={() => {
-                    Alert.alert("Alert", "Loading more items");
-                  }}
-                >
-                  <Text>Load more...</Text>
-                </TouchableOpacity>
-              </View>
-            </ScrollView>
+              style={{ flex: 1, maxHeight: Platform.OS == 'android' ? 2000 : 400 }}
+              data={food.today}
+              renderItem={({ item, index }) => {
+                return Listitem(item, navigation);
+              }}
+              keyExtractor={(item, index) => index.toString()}
+              initialNumToRender={6}
+            />) : (
+              <Text style={[styles.bodyText, styles.bodyTextMargin]}>You have no food that will expire today!</Text>
+            )}
           </View>
 
-          <View style={[styles.tomorrowView, styles.commonView]}>
-            <Text style={[styles.bodyText, styles.bodyTextMargin]}>
-              This Week
-            </Text>
-            <ScrollView style={styles.other}>
+          <View style={[styles.tomorrowView]}>
+            <Text style={[styles.bodyText, styles.bodyTextMargin]}>This week</Text>
+            {food.week != 0 ? (
               <FlatList
-                style={{ flex: 1 }}
-                data={TestData.food}
-                renderItem={({ item, index }) => {
-                  return Listitem(item, navigation);
-                }}
-                keyExtractor={(item, index) => index.toString()}
-              />
-              <View style={styles.loadMoreView}>
-                <TouchableOpacity
-                  onPress={() => {
-                    Alert.alert("Alert", "Loading more items");
-                  }}
-                >
-                  <Text>Load more...</Text>
-                </TouchableOpacity>
-              </View>
-            </ScrollView>
+              style={{ flex: 1, maxHeight: Platform.OS == 'android' ? 2000 : 400 }}
+              data={food.week}
+              renderItem={({ item, index }) => {
+                return Listitem(item, navigation);
+              }}
+              keyExtractor={(item, index) => index.toString()}
+              initialNumToRender={6}
+            />
+            ):(
+              <Text style={[styles.bodyText, styles.bodyTextMargin]}>You have no food that will expire this week!</Text>
+            )}
           </View>
 
-          <View style={[styles.threedaysView, styles.commonView]}>
-            <Text style={[styles.bodyText, styles.bodyTextMargin]}>
-              This Month
-            </Text>
-            <ScrollView style={styles.other}>
+          <View style={[styles.threedaysView]}>
+            <Text style={[styles.bodyText, styles.bodyTextMargin]}>This month</Text>
+            {food.month != 0 ? (
               <FlatList
-                style={{ flex: 1 }}
-                data={TestData.food}
-                renderItem={({ item, index }) => {
-                  return Listitem(item, navigation);
-                }}
-                keyExtractor={(item, index) => index.toString()}
-              />
-              <View style={styles.loadMoreView}>
-                <TouchableOpacity
-                  onPress={() => {
-                    Alert.alert("Alert", "Loading more items");
-                  }}
-                >
-                  <Text>Load more...</Text>
-                </TouchableOpacity>
-              </View>
-            </ScrollView>
+              style={{ flex: 1, maxHeight: Platform.OS == 'android' ? 2000 : 400}}
+              data={food.month}
+              renderItem={({ item, index }) => {
+                return Listitem(item, navigation);
+              }}
+              keyExtractor={(item, index) => index.toString()}
+              initialNumToRender={6}
+            />
+            ):(
+              <Text style={[styles.bodyText, styles.bodyTextMargin]}>You have no food that will expire this month!</Text>
+            )}
           </View>
-          <Text style={[styles.bodyText, styles.bottomText]}>
-            Click items for more options
-          </Text>
         </ScrollView>
-      </MenuProvider>
-    </SafeAreaView>
-  );
+        </MenuProvider>
+      </SafeAreaView>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
   safeContainer: {
+  },
+  safeContainer2: {
     flex: 1,
   },
   container: {
-    flex: 1,
+    //flex: Platform.OS == 'web' ? 1 : 1,
+    flexDirection: 'column'
   },
-  commonView: {
+  todayView: {
+    backgroundColor: "powderblue",
+    flex: 1,
+    flexDirection: 'column',
+    margin: 20,
+    marginLeft: 40,
+    marginRight: 40,
+    shadowColor: "#000000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowRadius: 6,
+    shadowOpacity: 0.26,
+    borderRadius: 10
+  },
+  tomorrowView: {
+    backgroundColor: "lightgreen",
     flex: 1,
     margin: 20,
     marginLeft: 40,
@@ -186,15 +143,23 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
     shadowOpacity: 0.26,
     borderRadius: 10,
-  },
-  todayView: {
-    backgroundColor: "salmon",
-  },
-  tomorrowView: {
-    backgroundColor: "powderblue",
+    overflow: 'visible'
   },
   threedaysView: {
-    backgroundColor: "lightgreen",
+    backgroundColor: "salmon",
+    flex: 1,
+    margin: 20,
+    marginLeft: 40,
+    marginRight: 40,
+    shadowColor: "#000000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowRadius: 6,
+    shadowOpacity: 0.26,
+    borderRadius: 10
+    
   },
   bodyText: {
     fontSize: 18,
@@ -233,7 +198,6 @@ const styles = StyleSheet.create({
   loadMoreView: {
     alignItems: "center",
     backgroundColor: "#fafafa",
-    padding: 20,
-    color: "grey",
+    padding: 20
   },
 });

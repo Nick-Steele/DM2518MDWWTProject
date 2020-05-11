@@ -1,11 +1,12 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Icon } from 'react-native-elements'
 import { Popmenu } from "./Popmenu";
 import { MenuTrigger, Menu } from "react-native-popup-menu";
-import { TouchableOpacity } from "react-native-gesture-handler";
-
 const Listitem = (mat, navigation)=>{
+    var Standarddate = new Date(mat.date.seconds * 1000);
+    var date = Standarddate.getFullYear()+'-'+(Standarddate.getMonth()+1)+'-'+Standarddate.getDay()
+
     return (
         <View style={styles.listItem}>            
             <View style={{width:'90%'}}>
@@ -20,7 +21,7 @@ const Listitem = (mat, navigation)=>{
                             </View>  
                         </View>
                         <View style={styles.listinfo}>
-                            <Text>{mat.expirydate}</Text>
+                            <Text>{date}</Text>
                             <Text>{mat.category}</Text>
                             <Text>{mat.storage}</Text>
                         </View>

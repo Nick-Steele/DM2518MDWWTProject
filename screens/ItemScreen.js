@@ -9,7 +9,10 @@ function ItemScreen({ route, navigation }) {
   const [Type, setType] = React.useState()
   const [Quality, setQuality] = React.useState(0)
   const { item } = route.params;
-  console.log(item.id)
+
+  var Standarddate = new Date(item.date.seconds * 1000);
+  var date = Standarddate.getFullYear()+'-'+(Standarddate.getMonth()+1)+'-'+Standarddate.getDay()
+
   navigation.setOptions({
     title: "Item details",
     headerRight: () => (
@@ -33,7 +36,7 @@ function ItemScreen({ route, navigation }) {
         </View>
         <View style={styles.itemExpiryDate}>
           <Text style={styles.expiryDateText}>Expiry</Text>
-          <Text style={styles.expiryDateTextValue}>{item.expirydate}</Text>
+          <Text style={styles.expiryDateTextValue}>{date}</Text>
         </View>
         <View style={styles.itemAmount}>
           <Text style={styles.itemAmountText}>Amount</Text>

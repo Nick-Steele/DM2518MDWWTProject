@@ -1,14 +1,12 @@
 import React from "react";
-import {
-  View,
-  ScrollView,
-  Text,
-  StyleSheet,
-  TextInput,
-  Button,
-} from "react-native";
+import { View, KeyboardAvoidingView, ScrollView, Text, StyleSheet, TextInput, Button, Keyboard, TouchableWithoutFeedback, Platform } from "react-native";
 import * as Item from "../Helpers/ItemHelper";
 import RadioForm from "react-native-simple-radio-button";
+import DatePicker from 'react-native-datepicker'
+
+const getTodaysDate = () => {
+  return new Date().toISOString().slice(0,10).replace(/-/g,"");
+}
 import ExpireCalendar from "../components/calendar";
 
 class NewItem extends React.Component {
@@ -20,6 +18,7 @@ class NewItem extends React.Component {
     day: "",
     month: "",
     year: "",
+    date: ""
   };
 
   fetchDate = (date)=>{
@@ -40,7 +39,10 @@ class NewItem extends React.Component {
     ];
 
     return (
-      <View style={styles.container}>
+      <KeyboardAvoidingView 
+      behavior={Platform.OS == "ios" ? "padding" : "height"}
+      style={styles.container}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ScrollView style={styles.formWrapper}>
           {/* Item Name Input */}
           <TextInput
@@ -91,29 +93,63 @@ class NewItem extends React.Component {
           />
 
           <Text style={styles.expiraryDateText}>Expirary Date:</Text>
-          <View style={styles.nestedDateInputContainer}>
-            {/* <TextInput
-              placeholder="dd"
-              style={styles.dayInput}
-              onChangeText={(dayValue) => this.setState({ day: dayValue })}
+          
+            {Platform.OS == 'web' ? (
+              // <View style={styles.nestedDateInputContainer}>
+              //   <TextInput
+              //     placeholder="dd"
+              //     style={styles.dayInput}
+              //     onChangeText={(dayValue) => this.setState({ day: dayValue })}
+              //   ></TextInput>
+              //   <TextInput
+              //     placeholder="mm"
+              //     style={styles.monthInput}
+              //     onChangeText={(monthValue) =>
+              //       this.setState({ month: monthValue })
+              //     }
+              //   ></TextInput>
+              //   <TextInput
+              //     placeholder="yyyy"
+              //     style={styles.yearInput}
+              //     onChangeText={(yearValue) => this.setState({ year: yearValue })}
+              //   ></TextInput>
+              // </View>
+              <View>
+              <ExpireCalendar 
+              fetchDate={(date)=>this.fetchDate(date)}/>
+              </View>
+            ) : (
+              <DatePicker
+              style={{width: 200}}
+              date={this.state.date}
+              mode="date"
+              placeholder="select date"
+              format="YYYY-MM-DD"
+              minDate={getTodaysDate()}
+              maxDate="2100-06-01"
+              confirmBtnText="Confirm"
+              cancelBtnText="Cancel"
+              customStyles={{
+                dateIcon: {
+                  position: 'absolute',
+                  left: 0,
+                  top: 4,
+                  marginLeft: 0
+                },
+                dateInput: {
+                  marginLeft: 36
+                }
+                // ... You can check the source to find the other keys.
+              }}
+              onDateChange={(date) => {
+                this.setState({year: date.substring(0,4), month: date.substring(5, 7), day: date.substring(8, 10)})
+              }}
             />
-
-            <TextInput
-              placeholder="mm"
-              style={styles.monthInput}
-              onChangeText={(monthValue) =>
-                this.setState({ month: monthValue })
-              }
-            ></TextInput>
-            <TextInput
-              placeholder="yyyy"
-              style={styles.yearInput}
-              onChangeText={(yearValue) => this.setState({ year: yearValue })}
-            ></TextInput> */}
-            <ExpireCalendar fetchDate={(date)=>this.fetchDate(date)}/>
-          </View>
+            )}
+            
+          
         </ScrollView>
-
+        </TouchableWithoutFeedback>
         <Button
           title="Add Item"
           onPress={() =>
@@ -128,18 +164,19 @@ class NewItem extends React.Component {
             )
           }
         ></Button>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }
 
 // Function used to build the date in appropriate format.
-export function buildDate(year, month, day) {
-  let current_datetime = new Date(year, month, day);
-  return current_datetime;
+function buildDate(year, month, day) {
+  let current_datetime = new Date(year, month-1, parseInt(day)+1);
+  let formatted_date = current_datetime.toISOString().substring(0,10);
+  return formatted_date;
 }
 // Function creates the Item object itself and adds it to the item class where it is managed.
-function parseData(name, quantity, category, storage, year, month, day) {
+function parseData(name, quantity, category, storage, year, month, day, date) {
   let item = {
     name,
     quantity,
@@ -168,9 +205,7 @@ export function validateForm(
     quantity != "" &&
     category != "" &&
     storage != "" &&
-    day != "" &&
-    month != "" &&
-    year != ""
+    (day != "" && month != "" && year != "")
   ) {
     parseData(name.toLocaleLowerCase(), parseFloat(quantity), category, storage, year, month, day);
     //clearFields();

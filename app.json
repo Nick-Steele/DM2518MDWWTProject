@@ -2,7 +2,7 @@
   "expo": {
     "name": "FoodManagementApplication",
     "slug": "FoodManagementApplication",
-    "owner": "sbeasitanporling",
+    "owner": "sebasitanporling",
     "platforms": [
       "ios",
       "android",
@@ -24,6 +24,7 @@
     ],
     "ios": {
       "supportsTablet": true
-    }
+    },
+    "description": ""
   }
 }
