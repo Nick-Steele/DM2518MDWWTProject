@@ -41,7 +41,7 @@ function ItemScreen({ route, navigation }) {
         </View>
         <View style={styles.itemExpiryDate}>
           <Text style={styles.expiryDateText}>Expiry</Text>
-          <Text style={styles.expiryDateTextValue}>{item.expirydate}</Text>
+          <Text style={styles.expiryDateTextValue}>{item.date}</Text>
         </View>
         <View style={styles.itemAmount}>
           <Text style={styles.itemAmountText}>Amount</Text>

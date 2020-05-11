@@ -1,15 +1,13 @@
 import Firebase from "../config/Firebase";
 import { Alert } from "react-native";
 
-
 export function getItems() {
   var userid = Firebase.auth().currentUser.uid;
-  console.log(userid); // THIS GIVES UNDEFINED FOR SOME REASON.
   var first = Firebase.firestore()
     .collection("Fridgecollection")
     .doc(userid) // userid should be used. But this is ok for testing.
     .collection("mat");
-
+    
   return first
     .get()
     .then((collectionSnapshot) => {
@@ -216,7 +214,7 @@ export function searchItem(name) {
           obj["id"] = x.id;
           foodlist.push(obj);
         });
-        // console.log(foodlist);
+        console.log(foodlist);
         return foodlist;
       }
     )
@@ -226,7 +224,7 @@ export function searchItem(name) {
         var item;
         var inlist = false;
         foodlist.map((food) => {
-          if (food.name === name) {
+          if (food.name.match(name)) {
             inlist = true;
             item = food;
             return;

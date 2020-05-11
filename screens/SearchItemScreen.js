@@ -24,6 +24,7 @@ export default class App extends React.Component {
       search: "",
       modalVisible: false,
       dataFromDB: [],
+      listData: [],
       itemName: "",
       itemCategory: "",
       storageInput: "",
@@ -39,7 +40,7 @@ export default class App extends React.Component {
 
     // Pull in Data from database.
     getItemsFoodCollection().then((value) => {
-      this.setState({ dataFromDB: value }); // Assign the state to access dataFromDB from value.
+      this.setState({ dataFromDB: value, listData: value }); // Assign the state to access dataFromDB from value.
 
       for (var i = 0; i < value.length; i++) {
         // Segregating the name and the category. Checking that it is working.
@@ -65,14 +66,29 @@ export default class App extends React.Component {
     });
   }
 
-  updateSearch = (search) => {
-    this.setState({ search });
-    //Automatically Query the database each time User Inputs.
-    //searchItem(search);
-  };
+  
 
   render() {
     const { search } = this.state; // Search result from search bar goes here.
+    
+    const updateSearch = (search) => {
+      this.setState({ search });
+      //Automatically Query the database each time User Inputs.
+      //searchItem(search);
+      if (search.length > 2){
+        //this.setState({ dataFromDB: Item.searchItem(search)});
+        let listData = []
+        this.state.dataFromDB.forEach(item => {
+          if (item.name.match(search)){
+            listData.push(item);
+          }
+        }); 
+        console.log(listData);
+        this.setState({listData: listData});
+      } else {
+        this.setState({listData: this.state.dataFromDB});
+      }
+    };
 
     var itemStorageProperties = [
       { label: "Fridge", value: "fridge" },
@@ -82,17 +98,17 @@ export default class App extends React.Component {
 
     return (
       <View style={styles.container}>
-        {/* <SearchBar
+        <SearchBar
           lightTheme
           placeholder="Search Food Database"
-          onChangeText={this.updateSearch}
+          onChangeText={updateSearch}
           value={search}
-        /> */}
+        />
 
         {/* List that holds the data from Foodcollection WOKING WITH TEST DATA */}
         <FlatList
           style={styles.listContainer}
-          data={this.state.dataFromDB}
+          data={this.state.listData}
           renderItem={({ item }) => (
             <View style={styles.TouchableOpacityView}>
               <TouchableOpacity
