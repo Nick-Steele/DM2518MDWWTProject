@@ -1,4 +1,5 @@
 import Firebase from "../config/Firebase";
+import { Alert } from "react-native";
 
 
 export function getItems() {
@@ -20,6 +21,21 @@ export function getItems() {
         foodlist.push(obj);
       });
       return foodlist;
+    })
+    .catch((error) => console.log(error));
+}
+
+export function getItemsFoodCollection() {
+  var foodCollectionList = [];
+  var first = Firebase.firestore().collection("Foodcollection");
+
+  return first
+    .get()
+    .then((snapshot) => {
+      snapshot.docs.forEach((doc) => {
+        foodCollectionList.push(doc.data());
+      });
+      return foodCollectionList;
     })
     .catch((error) => console.log(error));
 }
@@ -60,6 +76,7 @@ export function addItem(item) {
           if (compareItems(food, item)) {
             // This case is repeated add(every info is the same)
             inlist = true;
+            Alert.alert("You already have this item");
             console.log(
               "Give user a hint that this item is already exist! Use the edit method if needed."
             );
@@ -199,7 +216,7 @@ export function searchItem(name) {
           obj["id"] = x.id;
           foodlist.push(obj);
         });
-        console.log(foodlist);
+        // console.log(foodlist);
         return foodlist;
       }
     )
@@ -229,4 +246,3 @@ function compareItems(item1, item2) {
     item1.expiredate === item2.expiredate
   );
 }
-

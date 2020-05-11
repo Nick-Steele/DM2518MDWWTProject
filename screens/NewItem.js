@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import * as Item from "../Helpers/ItemHelper";
 import RadioForm from "react-native-simple-radio-button";
-import ExpireCalendar from '../components/calendar'
+import ExpireCalendar from "../components/calendar";
 
 class NewItem extends React.Component {
   state = {
@@ -106,7 +106,7 @@ class NewItem extends React.Component {
               style={styles.yearInput}
               onChangeText={(yearValue) => this.setState({ year: yearValue })}
             ></TextInput>
-              <ExpireCalendar/>
+            <ExpireCalendar />
           </View>
         </ScrollView>
 
@@ -130,17 +130,9 @@ class NewItem extends React.Component {
 }
 
 // Function used to build the date in appropriate format.
-function buildDate(year, month, day) {
+export function buildDate(year, month, day) {
   let current_datetime = new Date(year, month, day);
-  let formatted_date =
-    current_datetime.getDate() +
-    "-" +
-    current_datetime.getMonth() +
-    "-" +
-    current_datetime.getFullYear();
-  console.log("Format Date: " + formatted_date);
-
-  return formatted_date;
+  return current_datetime;
 }
 // Function creates the Item object itself and adds it to the item class where it is managed.
 function parseData(name, quantity, category, storage, year, month, day) {
@@ -152,13 +144,21 @@ function parseData(name, quantity, category, storage, year, month, day) {
     date: buildDate(year, month, day),
   }; // Create new item object based on form details.
   //itemObject.addItemToFoodList(itemObject);
-  Item.addItem(item);
+  //Item.addItem(item);
   customAlert("Added:" + item.name + ", Quantity: " + item.quantity);
 }
 
 // Function checks if form elements are not empty,
 // parses the data to Item class and clears the form for re-use.
-function validateForm(name, quantity, category, storage, day, month, year) {
+export function validateForm(
+  name,
+  quantity,
+  category,
+  storage,
+  day,
+  month,
+  year
+) {
   if (
     name != "" &&
     quantity != "" &&
@@ -174,7 +174,6 @@ function validateForm(name, quantity, category, storage, day, month, year) {
     customAlert("Form incomplete, try again!");
   }
 }
-
 
 function customAlert(string) {
   alert(string);
