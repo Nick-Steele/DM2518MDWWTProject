@@ -144,7 +144,7 @@ function parseData(name, quantity, category, storage, year, month, day) {
     date: buildDate(year, month, day),
   }; // Create new item object based on form details.
   //itemObject.addItemToFoodList(itemObject);
-  //Item.addItem(item);
+  Item.addItem(item);
   customAlert("Added:" + item.name + ", Quantity: " + item.quantity);
 }
 
