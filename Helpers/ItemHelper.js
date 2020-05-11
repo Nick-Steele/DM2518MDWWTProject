@@ -1,5 +1,4 @@
 import Firebase from "../config/Firebase";
-import { Alert } from "react-native";
 
 export function getItems() {
   var userid = Firebase.auth().currentUser.uid;
@@ -69,28 +68,15 @@ export function addItem(item) {
     .then((fitem) => {
       // compare with user's stroage
       var getcurrent = getItems(userid).then((currentfood) => {
-        var inlist = false;
-        currentfood.map((food) => {
-          if (compareItems(food, item)) {
-            // This case is repeated add(every info is the same)
-            inlist = true;
-            Alert.alert("You already have this item");
-            console.log(
-              "Give user a hint that this item is already exist! Use the edit method if needed."
-            );
-          }
-        });
-        if (!inlist) {
-          item["fid"] = fitem.id;
-          item["name"] = fitem.name;
-          (item["category"] = fitem.category),
-            Firebase.firestore()
-              .collection("Fridgecollection")
-              .doc(userid)
-              .collection("mat")
-              .add(item); // add to user's stroage db
-          currentfood.push(item); // add to the user's food list
-        }
+        item["fid"] = fitem.id;
+        item["name"] = fitem.name;
+        (item["category"] = fitem.category),
+        Firebase.firestore()
+          .collection("Fridgecollection")
+          .doc(userid)
+          .collection("mat")
+          .add(item); // add to user's stroage db
+        currentfood.push(item); // add to the user's food list
         return currentfood;
       });
       return Promise.resolve(getcurrent);
@@ -132,6 +118,10 @@ export function reduceItem(wtid, amount, type){
         var rmlist = [];
         currentfood.map((food) => {
           if (food.id === wtid) {
+            if(!(amount>0)){
+              alert("Invalid quatity input")
+              return 
+            }
             if(food.quantity<amount){
               alert("The number should be smaller than the number alreay exist.")
               return 
@@ -244,3 +234,4 @@ function compareItems(item1, item2) {
     item1.expiredate === item2.expiredate
   );
 }
+

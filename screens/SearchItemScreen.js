@@ -21,6 +21,7 @@ import * as Item from "../Helpers/ItemHelper";
 
 import * as NewItem from "./NewItem";
 import RadioForm from "react-native-simple-radio-button";
+import ExpireCalendar from "../components/calendar";
 
 const getTodaysDate = () => {
   return new Date().toISOString().slice(0,10).replace(/-/g,"");
@@ -41,6 +42,7 @@ export default class App extends React.Component {
       dayInput: "",
       monthInput: "",
       yearInput: "",
+      selected:"",
 
       // TEST DATA : What is currently working and showing in the UI.
     };

@@ -27,6 +27,10 @@ class NewItem extends React.Component {
   }
   
   
+  fetchDate = (date)=>{
+    this.setState({selected:date})
+  }
+
   render() {
     
     var itemCategoryProperties = [
@@ -119,6 +123,10 @@ class NewItem extends React.Component {
                   onChangeText={(yearValue) => this.setState({ year: yearValue })}
                 ></TextInput>
               </View>
+              /*<View>
+              <ExpireCalendar 
+              fetchDate={(date)=>this.fetchDate(date)}/>
+              </View>*/
             ) : (
               <DatePicker
               style={{width: 200}}
@@ -213,7 +221,7 @@ export async function validateForm(
     storage != "" &&
     (day != "" && month != "" && year != "")
   ) {
-    parseData(name, quantity, category, storage, year, month, day);
+    parseData(name.toLocaleLowerCase(), parseFloat(quantity), category, storage, year, month, day);
     return true;
   } else {
     customAlert("Form incomplete, try again!");

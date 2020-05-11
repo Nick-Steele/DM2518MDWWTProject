@@ -3,24 +3,25 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Icon } from 'react-native-elements'
 import { Popmenu } from "./Popmenu";
 import { MenuTrigger, Menu } from "react-native-popup-menu";
-const Listitem = (mat, navigation)=>{
+const Listitem = (item, navigation)=>{
+
     return (
         <View style={styles.listItem}>            
             <View style={{width:'90%'}}>
                 <TouchableOpacity
-                onPress={() => {navigation.push("ItemScreen", {item: mat})}}
+                onPress={() => {navigation.push("ItemScreen", {item: item})}}
                 >
                     <View>
                         <View style={styles.icon}>
                             <View style={styles.itemAndAmount}>
-                                <Text style={styles.listItemText}>{mat.name}</Text>
-                                <Text style={styles.amount}>{mat.quantity}</Text>
+                                <Text style={styles.listItemText}>{item.name}</Text>
+                                <Text style={styles.amount}>{item.quantity}</Text>
                             </View>  
                         </View>
                         <View style={styles.listinfo}>
-                            <Text>{mat.date}</Text>
-                            <Text>{mat.category}</Text>
-                            <Text>{mat.storage}</Text>
+                            <Text>{item.date}</Text>
+                            <Text>{item.category}</Text>
+                            <Text>{item.storage}</Text>
                         </View>
                     </View>
                 </TouchableOpacity>
@@ -34,7 +35,7 @@ const Listitem = (mat, navigation)=>{
                         color='#0a84ff'
                         />
                     </MenuTrigger>
-                    {Popmenu()}
+                    {Popmenu(item.id)}
                 </Menu>
             </View>
         </View>
