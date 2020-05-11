@@ -10,18 +10,25 @@ const getTodaysDate = () => {
 import ExpireCalendar from "../components/calendar";
 
 class NewItem extends React.Component {
-  state = {
-    itemName: "",
-    itemQuantity: "",
-    itemCategory: "fruit",
-    itemStorage: "fridge",
-    day: "",
-    month: "",
-    year: "",
-    date: ""
-  };
+  constructor({ navigation }){
+    super()
+    this.navigation = navigation;
+    this.state = {
+      itemName: "",
+      itemQuantity: "",
+      itemCategory: "fruit",
+      itemStorage: "fridge",
+      day: "",
+      month: "",
+      year: "",
+      date: ""
+    };
 
+  }
+  
+  
   render() {
+    
     var itemCategoryProperties = [
       { label: "Fruit", value: "fruit" },
       { label: "Veg", value: "veg" },
@@ -73,6 +80,7 @@ class NewItem extends React.Component {
             onPress={(categoryValue) => {
               this.setState({ itemCategory: categoryValue });
             }}
+            radioStyle={{paddingRight: 20, paddingTop: 20}}
           />
 
           {/* Items Storage Location */}
@@ -86,6 +94,7 @@ class NewItem extends React.Component {
             onPress={(storageValue) => {
               this.setState({ itemStorage: storageValue });
             }}
+            radioStyle={{paddingRight: 20, paddingTop: 20}}
           />
 
           <Text style={styles.expiraryDateText}>Expirary Date:</Text>
@@ -144,7 +153,7 @@ class NewItem extends React.Component {
         </TouchableWithoutFeedback>
         <Button
           title="Add Item"
-          onPress={() =>
+          onPress={() => {
             validateForm(
               this.state.itemName,
               this.state.itemQuantity,
@@ -153,7 +162,12 @@ class NewItem extends React.Component {
               this.state.day,
               this.state.month,
               this.state.year
-            )
+            ).then(success => {
+              if(success == true ){
+                this.navigation.pop(2);
+              }
+            });
+          }
           }
         ></Button>
       </KeyboardAvoidingView>
@@ -178,12 +192,12 @@ function parseData(name, quantity, category, storage, year, month, day, date) {
   }; // Create new item object based on form details.
   //itemObject.addItemToFoodList(itemObject);
   Item.addItem(item);
-  customAlert("Added:" + item.name + ", Quantity: " + item.quantity);
+  
 }
 
 // Function checks if form elements are not empty,
 // parses the data to Item class and clears the form for re-use.
-export function validateForm(
+export async function validateForm(
   name,
   quantity,
   category,
@@ -200,9 +214,10 @@ export function validateForm(
     (day != "" && month != "" && year != "")
   ) {
     parseData(name, quantity, category, storage, year, month, day);
-    //clearFields();
+    return true;
   } else {
     customAlert("Form incomplete, try again!");
+    return false;
   }
 }
 
