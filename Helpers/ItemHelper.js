@@ -6,7 +6,7 @@ export function getItems() {
     .collection("Fridgecollection")
     .doc(userid) // userid should be used. But this is ok for testing.
     .collection("mat");
-
+    
   return first
     .get()
     .then((collectionSnapshot) => {

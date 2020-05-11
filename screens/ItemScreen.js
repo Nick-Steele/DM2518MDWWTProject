@@ -38,7 +38,7 @@ function ItemScreen({ route, navigation }) {
         </View>
         <View style={styles.itemExpiryDate}>
           <Text style={styles.expiryDateText}>Expiry</Text>
-          <Text style={styles.expiryDateTextValue}>{item.expirydate}</Text>
+          <Text style={styles.expiryDateTextValue}>{item.date}</Text>
         </View>
         <View style={styles.itemAmount}>
           <Text style={styles.itemAmountText}>Amount</Text>
@@ -57,7 +57,7 @@ function ItemScreen({ route, navigation }) {
           title="Wasted"
           color="#ff443a"
           onPress={() => {
-            alert("Mark item as wasted");
+            alert("Item id, " + item.id);
           }}
         ></Button>
         <Button
@@ -65,7 +65,7 @@ function ItemScreen({ route, navigation }) {
           title="Used"
           color="#30d158"
           onPress={() => {
-            alert("Mark item as used");
+            alert("Item id, " + item.id);
           }}
         ></Button>
       </View>

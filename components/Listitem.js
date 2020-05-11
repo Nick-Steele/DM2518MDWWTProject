@@ -1,10 +1,8 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Icon } from 'react-native-elements'
 import { Popmenu } from "./Popmenu";
 import { MenuTrigger, Menu } from "react-native-popup-menu";
-import { TouchableOpacity } from "react-native-gesture-handler";
-
 const Listitem = (mat, navigation)=>{
     return (
         <View style={styles.listItem}>            
@@ -20,7 +18,7 @@ const Listitem = (mat, navigation)=>{
                             </View>  
                         </View>
                         <View style={styles.listinfo}>
-                            <Text>{mat.expirydate}</Text>
+                            <Text>{mat.date}</Text>
                             <Text>{mat.category}</Text>
                             <Text>{mat.storage}</Text>
                         </View>

@@ -133,7 +133,7 @@ class NewItem extends React.Component {
                 // ... You can check the source to find the other keys.
               }}
               onDateChange={(date) => {
-                this.setState({date: date})
+                this.setState({year: date.substring(0,4), month: date.substring(5, 7), day: date.substring(8, 10)})
               }}
             />
             )}
@@ -162,19 +162,12 @@ class NewItem extends React.Component {
 
 // Function used to build the date in appropriate format.
 function buildDate(year, month, day) {
-  let current_datetime = new Date(year, month, day);
-  let formatted_date =
-    current_datetime.getDate() +
-    "-" +
-    current_datetime.getMonth() +
-    "-" +
-    current_datetime.getFullYear();
-  console.log("Format Date: " + formatted_date);
-
+  let current_datetime = new Date(year, month-1, parseInt(day)+1);
+  let formatted_date = current_datetime.toISOString().substring(0,10);
   return formatted_date;
 }
 // Function creates the Item object itself and adds it to the item class where it is managed.
-function parseData(name, quantity, category, storage, year, month, day) {
+function parseData(name, quantity, category, storage, year, month, day, date) {
   let item = {
     name,
     quantity,
@@ -195,9 +188,7 @@ function validateForm(name, quantity, category, storage, day, month, year) {
     quantity != "" &&
     category != "" &&
     storage != "" &&
-    day != "" &&
-    month != "" &&
-    year != ""
+    (day != "" && month != "" && year != "")
   ) {
     parseData(name, quantity, category, storage, year, month, day);
     //clearFields();

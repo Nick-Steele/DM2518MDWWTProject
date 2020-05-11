@@ -8,6 +8,7 @@ import {
   ScrollView,
   Alert,
   FlatList,
+  Platform
 } from "react-native";
 import Listitem from "../components/Listitem";
 import { MenuProvider } from "react-native-popup-menu";
@@ -15,268 +16,107 @@ import {getItems} from "../Helpers/ItemHelper";
 import LoadingScreen from "./LoadingScreen";
 import moment from 'moment';
 
-// Change Views holding components into FlatLists
-// Load only 5 things
-// If > 5 display "Load More Button"
-// When pressed navigate to new page with list of all items in that day
-const TestData = {
-  food: [
-    {
-      name: "Cabbage",
-      category: "vegetable",
-      storage: "Pantry",
-      quantity: 4,
-      expirydate: "2020-04-17",
-    },
-    {
-      name: "Cabbage",
-      category: "vegetable",
-      storage: "Pantry",
-      quantity: 4,
-      expirydate: "2020-04-17",
-    },
-    {
-      name: "Cabbage",
-      category: "vegetable",
-      storage: "Pantry",
-      quantity: 4,
-      expirydate: "2020-04-17",
-    },
-    {
-      name: "Cabbage",
-      category: "vegetable",
-      storage: "Pantry",
-      quantity: 4,
-      expirydate: "2020-04-17",
-    },
-    {
-      name: "Cabbage",
-      category: "vegetable",
-      storage: "Pantry",
-      quantity: 4,
-      expirydate: "2020-04-17",
-    },
-    {
-      name: "Cabbage",
-      category: "vegetable",
-      storage: "Pantry",
-      quantity: 4,
-      expirydate: "2020-04-17",
-    },
-    {
-      name: "Cabbage",
-      category: "vegetable",
-      storage: "Pantry",
-      quantity: 4,
-      expirydate: "2020-04-17",
-    },
-    {
-      name: "Cabbage",
-      category: "vegetable",
-      storage: "Pantry",
-      quantity: 4,
-      expirydate: "2020-04-17",
-    },
-  ],
-};
-
-const TestData2 = {
-  food: [
-    {
-      name: "Cabbage",
-      category: "vegetable",
-      storage: "Pantry",
-      quantity: 4,
-      expirydate: "2020-04-17",
-    },
-    {
-      name: "Cabbage",
-      category: "vegetable",
-      storage: "Pantry",
-      quantity: 4,
-      expirydate: "2020-04-17",
-    },
-    {
-      name: "Cabbage",
-      category: "vegetable",
-      storage: "Pantry",
-      quantity: 4,
-      expirydate: "2020-04-17",
-    },
-  ]
-}
-
-const TestData3 = {
-  food: [
-    {
-      name: "Cabbage",
-      category: "vegetable",
-      storage: "Pantry",
-      quantity: 4,
-      expirydate: "2020-04-17",
-    },
-    {
-      name: "Cabbage",
-      category: "vegetable",
-      storage: "Pantry",
-      quantity: 4,
-      expirydate: "2020-04-17",
-    },
-    {
-      name: "Cabbage",
-      category: "vegetable",
-      storage: "Pantry",
-      quantity: 4,
-      expirydate: "2020-04-17",
-    },
-    {
-      name: "Cabbage",
-      category: "vegetable",
-      storage: "Pantry",
-      quantity: 4,
-      expirydate: "2020-04-17",
-    },
-  ]
-}
-
 export default function HomeScreen({ navigation }) {
-  const [mat, setMat] = React.useState(0)
-  const [todayFood, setTodayFood]  = React.useState([]);
-  const [weekFood, setWeekFood]  = React.useState([]);
-  const [monthFood, setMonthFood]  = React.useState([]);
-  const [loading, setLoading] = React.useState(true)
-  React.useEffect(()=>{
-      getItems().then(items=>{
-        let todaysDate = new Date().toISOString().slice(0,10);
-        let endOfWeekDate = moment().add('days', 7).format("YYYY-MM-DD");
-        let endOfMonthDate = moment().add('days', 31).format("YYYY-MM-DD");
-        setMat(items);
-        setTodayFood(items.filter(item => item.expirydate == todaysDate));
-        items = items.filter(item => item.expirydate != todaysDate);
-        setWeekFood(items.filter(item => moment(item.expirydate).isBetween(todaysDate, endOfWeekDate)))
-        items = items.filter(item => !moment(item.expirydate).isBetween(todaysDate, endOfWeekDate));
-        setMonthFood(items.filter(item => moment(item.expirydate).isBetween(endOfWeekDate, endOfMonthDate)));
-        console.log(todayFood);
-        console.log(weekFood);
-        console.log(monthFood);
-      });
-      setTimeout(()=>{
-        setLoading(false)
-      },500)
-  },[])
+  const [food, setFood] = React.useState({today: [], week: [], month:[] })
+  const [loading, setLoading] = React.useState(true);
+
+  const todaysDate = moment().format("YYYY-MM-DD");
+  const endOfWeekDate = moment().add('days', 7).format("YYYY-MM-DD");
+  const endOfMonthDate = moment().add('days', 31).format("YYYY-MM-DD");
+
+  React.useEffect(() => {
+    getItems().then((items) => {
+      let todaysItems = items.filter((item) => moment(item.date).isSame(todaysDate));
+      let thisWeeksItems = items.filter((item) => moment(item.date).isBetween(todaysDate, endOfWeekDate));
+      let thisMonthsItems = items.filter((item) => moment(item.date).isBetween(endOfWeekDate, endOfMonthDate));
+      setFood({today: todaysItems, week: thisWeeksItems, month: thisMonthsItems});
+    });
+    setTimeout(()=>{
+      setLoading(false)
+    },1000)
+  }, []);
   if(loading){
     return(
       <LoadingScreen/>
     )
-  }
-  else{
-  return (
-    <SafeAreaView style={styles.safeContainer}>
-      <MenuProvider>
-      <ScrollView style={styles.container}>
-        <Text style={[styles.bodyText, styles.topText]}>
-          The food is going to expire
-        </Text>
-        <View style={[styles.todayView]}>
-          <Text style={[styles.bodyText, styles.bodyTextMargin]}>Today</Text>
-          {/*<ScrollView style={styles.other}>*/}
-            <FlatList
-              style={{ flex: 1}}
-              data={todayFood}
+  } else {
+    return (
+      <SafeAreaView style={Platform.OS == 'web' ? styles.safeContainer : styles.safeContainer2}>
+        <MenuProvider>
+        <ScrollView style={styles.container}>
+          <Text style={[styles.bodyText, styles.topText]}>
+            The food is going to expire
+          </Text>
+          <View style={[styles.todayView]}>
+            <Text style={[styles.bodyText, styles.bodyTextMargin]}>Today</Text>
+            {food.today != 0 ? (
+              <FlatList
+              style={{ flex: 1, maxHeight: Platform.OS == 'android' ? 2000 : 400 }}
+              data={food.today}
               renderItem={({ item, index }) => {
                 return Listitem(item, navigation);
               }}
               keyExtractor={(item, index) => index.toString()}
-              initialNumToRender={3}
-            />
-            <View style={styles.loadMoreView}>
-              <TouchableOpacity
-                onPress={() => {
-                  Alert.alert("Alert", "Loading more items");
-                }}
-              >
-                <Text>Load more...</Text>
-              </TouchableOpacity>
-            </View>
-          {/*</ScrollView>*/}
-        </View>
+              initialNumToRender={6}
+            />) : (
+              <Text style={[styles.bodyText, styles.bodyTextMargin]}>You have no food that will expire today!</Text>
+            )}
+          </View>
 
-        <View style={[styles.tomorrowView]}>
-          <Text style={[styles.bodyText, styles.bodyTextMargin]}>This week</Text>
-          {/*<ScrollView style={styles.other}>*/}
-            <FlatList
-              style={{ flex: 1}}
-              data={weekFood}
+          <View style={[styles.tomorrowView]}>
+            <Text style={[styles.bodyText, styles.bodyTextMargin]}>This week</Text>
+            {food.week != 0 ? (
+              <FlatList
+              style={{ flex: 1, maxHeight: Platform.OS == 'android' ? 2000 : 400 }}
+              data={food.week}
               renderItem={({ item, index }) => {
                 return Listitem(item, navigation);
               }}
               keyExtractor={(item, index) => index.toString()}
+              initialNumToRender={6}
             />
-            <View style={styles.loadMoreView}>
-              <TouchableOpacity
-                onPress={() => {
-                  Alert.alert("Alert", "Loading more items");
-                }}
-              >
-                <Text>Load more...</Text>
-              </TouchableOpacity>
-            </View>
-          {/*</ScrollView>*/}
-        </View>
+            ):(
+              <Text style={[styles.bodyText, styles.bodyTextMargin]}>You have no food that will expire this week!</Text>
+            )}
+          </View>
 
-        <View style={[styles.threedaysView]}>
-          <Text style={[styles.bodyText, styles.bodyTextMargin]}>This month</Text>
-          {/*<ScrollView style={styles.other}>*/}
-            <FlatList
-              style={{ flex: 1}}
-              data={monthFood}
+          <View style={[styles.threedaysView]}>
+            <Text style={[styles.bodyText, styles.bodyTextMargin]}>This month</Text>
+            {food.month != 0 ? (
+              <FlatList
+              style={{ flex: 1, maxHeight: Platform.OS == 'android' ? 2000 : 400}}
+              data={food.month}
               renderItem={({ item, index }) => {
                 return Listitem(item, navigation);
               }}
               keyExtractor={(item, index) => index.toString()}
+              initialNumToRender={6}
             />
-            <View style={styles.loadMoreView}>
-              <TouchableOpacity
-                onPress={() => {
-                  Alert.alert("Alert", "Loading more items");
-                }}
-              >
-                <Text>Load more...</Text>
-              </TouchableOpacity>
-            </View>
-          {/*</ScrollView>*/}
-        </View>
-      </ScrollView>
-      </MenuProvider>
-    </SafeAreaView>
-  );
+            ):(
+              <Text style={[styles.bodyText, styles.bodyTextMargin]}>You have no food that will expire this month!</Text>
+            )}
+          </View>
+        </ScrollView>
+        </MenuProvider>
+      </SafeAreaView>
+    );
   }
 }
 
 const styles = StyleSheet.create({
   safeContainer: {
+  },
+  safeContainer2: {
     flex: 1,
   },
   container: {
-    flex: 1,
-  },
-  commonView: {
-    flex: 1,
-    margin: 20,
-    marginLeft: 40,
-    marginRight: 40,
-    shadowColor: "#000000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowRadius: 6,
-    shadowOpacity: 0.26,
-    borderRadius: 10,
+    //flex: Platform.OS == 'web' ? 1 : 1,
+    flexDirection: 'column'
   },
   todayView: {
     backgroundColor: "powderblue",
     flex: 1,
+    flexDirection: 'column',
     margin: 20,
     marginLeft: 40,
     marginRight: 40,
@@ -302,7 +142,8 @@ const styles = StyleSheet.create({
     },
     shadowRadius: 6,
     shadowOpacity: 0.26,
-    borderRadius: 10
+    borderRadius: 10,
+    overflow: 'visible'
   },
   threedaysView: {
     backgroundColor: "salmon",

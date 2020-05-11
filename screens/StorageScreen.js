@@ -48,12 +48,9 @@ export default function StorageScreen({ navigation }) {
       setLoading(false);
     }, 500);
   }, []);
-  console.log(mat);
   if (loading) {
-    console.log("loading true", mat);
     return <LoadingScreen />;
   } else {
-    console.log("loading false", mat);
     return (
       <MenuProvider>
         <SafeAreaView style={styles.safeContainer}>
