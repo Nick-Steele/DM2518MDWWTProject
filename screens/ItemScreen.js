@@ -1,8 +1,11 @@
 import * as React from "react";
 import { View, Text, StyleSheet, Button, TouchableOpacity } from "react-native";
+import {reduceItem} from '../Helpers/ItemHelper'
 
 function ItemScreen({ route, navigation }) {
+
   const { item } = route.params;
+  console.log(item.id)
   navigation.setOptions({
     title: "Item details",
     headerRight: () => (
@@ -57,6 +60,7 @@ function ItemScreen({ route, navigation }) {
           title="Wasted"
           color="#ff443a"
           onPress={() => {
+            reduceItem(item.id, 0.1, 'wasted')
             alert("Mark item as wasted");
           }}
         ></Button>
@@ -65,6 +69,7 @@ function ItemScreen({ route, navigation }) {
           title="Used"
           color="#30d158"
           onPress={() => {
+            reduceItem(item.id, 0.1, 'used')
             alert("Mark item as used");
           }}
         ></Button>

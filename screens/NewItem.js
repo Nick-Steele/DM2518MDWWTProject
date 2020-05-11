@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import * as Item from "../Helpers/ItemHelper";
 import RadioForm from "react-native-simple-radio-button";
+import ExpireCalendar from '../components/calendar'
 
 class NewItem extends React.Component {
   state = {
@@ -105,6 +106,7 @@ class NewItem extends React.Component {
               style={styles.yearInput}
               onChangeText={(yearValue) => this.setState({ year: yearValue })}
             ></TextInput>
+              <ExpireCalendar/>
           </View>
         </ScrollView>
 
@@ -173,7 +175,6 @@ function validateForm(name, quantity, category, storage, day, month, year) {
   }
 }
 
-function clearFields() {}
 
 function customAlert(string) {
   alert(string);

@@ -1,12 +1,13 @@
 import Firebase from "../config/Firebase";
 import { Alert } from "react-native";
 
-//I8dOBqVCVMaLBgtjSzF7xy0yy5i1
-export function getItems(userid) {
+
+export function getItems() {
+  var userid = Firebase.auth().currentUser.uid;
   console.log(userid); // THIS GIVES UNDEFINED FOR SOME REASON.
   var first = Firebase.firestore()
     .collection("Fridgecollection")
-    .doc("I8dOBqVCVMaLBgtjSzF7xy0yy5i1") // userid should be used. But this is ok for testing.
+    .doc(userid) // userid should be used. But this is ok for testing.
     .collection("mat");
 
   return first
@@ -42,6 +43,7 @@ export function getItemsFoodCollection() {
 export function addItem(item) {
   // get current user id
   var userid = Firebase.auth().currentUser.uid;
+ // var userid = Firebase.auth().currentUser.uid;
   //compare with the food collection at first
   var fooddb = Firebase.firestore().collection("Foodcollection");
   var addfooddb = searchItem(item.name)
@@ -99,9 +101,10 @@ export function addItem(item) {
   return addfooddb;
 }
 
-export function removeItem(userid, rmid) {
+export function removeItem(rmid) {
+  var userid = Firebase.auth().currentUser.uid;
   // assume the food is already in fooddb
-  return getItem(userid)
+  return getItems()
     .then((currentfood) => {
       var rmlist = [];
       currentfood.map((food) => {
@@ -122,7 +125,58 @@ export function removeItem(userid, rmid) {
     .catch((error) => console.log(error));
 }
 
-export function editItem(userid, item, editid) {
+// waste or use function, amount is an input amout from a user
+// type should be a string either 'wasted' or 'used'
+export function reduceItem(wtid, amount, type){  
+  var userid = Firebase.auth().currentUser.uid;
+  return getItems()
+      .then((currentfood) => {
+        var rmlist = [];
+        currentfood.map((food) => {
+          if (food.id === wtid) {
+            if(food.quantity<amount){
+              alert("The number should be smaller than the number alreay exist.")
+              return 
+            }
+            else if(food.quantity===amount){
+            // for output use, not necessary for db interaction
+              Firebase.firestore()
+                .collection("Fridgecollection")
+                .doc(userid)
+                .collection("mat")
+                .doc(wtid)
+                .delete(); // delete from database if waste all of them
+            }
+            else{
+              var newquantity = food.quantity-amount
+              Firebase.firestore()
+              .collection("Fridgecollection")
+              .doc(userid)
+              .collection("mat")
+              .doc(wtid)
+              .update({
+                quantity: newquantity
+            })
+            // add to the waste collection
+            var wasteFood = food
+            wasteFood.quantity = amount
+            wasteFood.type = type
+
+            Firebase.firestore()
+            .collection("Wastecollection")
+            .doc(userid)
+            .collection("mat")
+            .add(wasteFood)
+            }
+            return;
+          }
+        }); // return the result list
+      })
+      .catch((error) => console.log(error));
+}
+
+export function editItem(item, editid) {
+  var userid = Firebase.auth().currentUser.uid;
   // edit item
   var editfood = getItems(userid).then((items) => {
     var editlist = [];
@@ -147,6 +201,7 @@ export function editItem(userid, item, editid) {
 }
 
 export function searchItem(name) {
+  var userid = Firebase.auth().currentUser.uid;
   // search in fooddb
   var fooddb = Firebase.firestore().collection("Foodcollection");
   var searchfooddb = fooddb

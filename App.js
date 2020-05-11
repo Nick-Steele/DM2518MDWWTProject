@@ -5,6 +5,7 @@ import { LoginScreen, NewItem, TestChildScreen } from "./screens";
 
 import { decode, encode } from "base-64";
 import SearchItemScreen from "./screens/SearchItemScreen";
+import Testscanner from "./screens/Testscanner";
 
 if (!global.btoa) {
   global.btoa = encode;
@@ -21,7 +22,6 @@ export default function App(props) {
       {/* <NewItem></NewItem> */}
       {<MainNavigator props={props} />}
       {/* <Item><TestChildScreen/></Item>  */}
-      {/* <TestChildScreen/> */}
       {/*<SearchItemScreen></SearchItemScreen>*/}
     </View>
   );
