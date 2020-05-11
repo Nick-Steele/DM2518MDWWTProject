@@ -68,27 +68,15 @@ export function addItem(item) {
     .then((fitem) => {
       // compare with user's stroage
       var getcurrent = getItems(userid).then((currentfood) => {
-        var inlist = false;
-        currentfood.map((food) => {
-          if (compareItems(food, item)) {
-            // This case is repeated add(every info is the same)
-            inlist = true;
-            console.log(
-              "Give user a hint that this item is already exist! Use the edit method if needed."
-            );
-          }
-        });
-        if (!inlist) {
-          item["fid"] = fitem.id;
-          item["name"] = fitem.name;
-          (item["category"] = fitem.category),
-            Firebase.firestore()
-              .collection("Fridgecollection")
-              .doc(userid)
-              .collection("mat")
-              .add(item); // add to user's stroage db
-          currentfood.push(item); // add to the user's food list
-        }
+        item["fid"] = fitem.id;
+        item["name"] = fitem.name;
+        (item["category"] = fitem.category),
+        Firebase.firestore()
+          .collection("Fridgecollection")
+          .doc(userid)
+          .collection("mat")
+          .add(item); // add to user's stroage db
+        currentfood.push(item); // add to the user's food list
         return currentfood;
       });
       return Promise.resolve(getcurrent);

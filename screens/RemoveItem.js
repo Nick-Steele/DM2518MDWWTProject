@@ -25,7 +25,7 @@ export default class RemoveItem extends React.Component {
             style={styles.itemQuantityInput}
             placeholder="Item Quatity "
             required
-            keyboardType="default"
+            keyboardType="number-pad"
             maxLength={30}
             onChangeText={(itemNameValue) =>
             this.setState({ 

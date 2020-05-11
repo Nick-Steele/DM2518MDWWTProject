@@ -35,6 +35,23 @@ export default function HomeScreen({ navigation }) {
       setLoading(false)
     },1000)
   }, []);
+
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      getItems().then((items) => {
+      let todaysItems = items.filter((item) => moment(item.date).isSame(todaysDate));
+      let thisWeeksItems = items.filter((item) => moment(item.date).isBetween(todaysDate, endOfWeekDate));
+      let thisMonthsItems = items.filter((item) => moment(item.date).isBetween(endOfWeekDate, endOfMonthDate));
+      setFood({today: todaysItems, week: thisWeeksItems, month: thisMonthsItems});
+    });
+    setTimeout(()=>{
+      setLoading(false)
+    },1000)
+    });
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, [navigation]);
+
   if(loading){
     return(
       <LoadingScreen/>
@@ -105,6 +122,7 @@ export default function HomeScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   safeContainer: {
+    flex: 1
   },
   safeContainer2: {
     flex: 1,

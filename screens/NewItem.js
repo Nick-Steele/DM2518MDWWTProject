@@ -10,22 +10,29 @@ const getTodaysDate = () => {
 import ExpireCalendar from "../components/calendar";
 
 class NewItem extends React.Component {
-  state = {
-    itemName: "",
-    itemQuantity: "",
-    itemCategory: "fruit",
-    itemStorage: "fridge",
-    day: "",
-    month: "",
-    year: "",
-    date: ""
-  };
+  constructor({ navigation }){
+    super()
+    this.navigation = navigation;
+    this.state = {
+      itemName: "",
+      itemQuantity: "",
+      itemCategory: "fruit",
+      itemStorage: "fridge",
+      day: "",
+      month: "",
+      year: "",
+      date: ""
+    };
 
+  }
+  
+  
   fetchDate = (date)=>{
     this.setState({selected:date})
   }
 
   render() {
+    
     var itemCategoryProperties = [
       { label: "Fruit", value: "fruit" },
       { label: "Veg", value: "veg" },
@@ -77,6 +84,7 @@ class NewItem extends React.Component {
             onPress={(categoryValue) => {
               this.setState({ itemCategory: categoryValue });
             }}
+            radioStyle={{paddingRight: 20, paddingTop: 20}}
           />
 
           {/* Items Storage Location */}
@@ -90,34 +98,35 @@ class NewItem extends React.Component {
             onPress={(storageValue) => {
               this.setState({ itemStorage: storageValue });
             }}
+            radioStyle={{paddingRight: 20, paddingTop: 20}}
           />
 
           <Text style={styles.expiraryDateText}>Expirary Date:</Text>
           
             {Platform.OS == 'web' ? (
-              // <View style={styles.nestedDateInputContainer}>
-              //   <TextInput
-              //     placeholder="dd"
-              //     style={styles.dayInput}
-              //     onChangeText={(dayValue) => this.setState({ day: dayValue })}
-              //   ></TextInput>
-              //   <TextInput
-              //     placeholder="mm"
-              //     style={styles.monthInput}
-              //     onChangeText={(monthValue) =>
-              //       this.setState({ month: monthValue })
-              //     }
-              //   ></TextInput>
-              //   <TextInput
-              //     placeholder="yyyy"
-              //     style={styles.yearInput}
-              //     onChangeText={(yearValue) => this.setState({ year: yearValue })}
-              //   ></TextInput>
-              // </View>
-              <View>
+              <View style={styles.nestedDateInputContainer}>
+                <TextInput
+                  placeholder="dd"
+                  style={styles.dayInput}
+                  onChangeText={(dayValue) => this.setState({ day: dayValue })}
+                ></TextInput>
+                <TextInput
+                  placeholder="mm"
+                  style={styles.monthInput}
+                  onChangeText={(monthValue) =>
+                    this.setState({ month: monthValue })
+                  }
+                ></TextInput>
+                <TextInput
+                  placeholder="yyyy"
+                  style={styles.yearInput}
+                  onChangeText={(yearValue) => this.setState({ year: yearValue })}
+                ></TextInput>
+              </View>
+              /*<View>
               <ExpireCalendar 
               fetchDate={(date)=>this.fetchDate(date)}/>
-              </View>
+              </View>*/
             ) : (
               <DatePicker
               style={{width: 200}}
@@ -152,16 +161,21 @@ class NewItem extends React.Component {
         </TouchableWithoutFeedback>
         <Button
           title="Add Item"
-          onPress={() =>
+          onPress={() => {
             validateForm(
               this.state.itemName,
               this.state.itemQuantity,
               this.state.itemCategory,
               this.state.itemStorage,
-              this.state.selected.day,
-              this.state.selected.month,
-              this.state.selected.year
-            )
+              this.state.day,
+              this.state.month,
+              this.state.year
+            ).then(success => {
+              if(success == true ){
+                this.navigation.pop(2);
+              }
+            });
+          }
           }
         ></Button>
       </KeyboardAvoidingView>
@@ -182,16 +196,16 @@ function parseData(name, quantity, category, storage, year, month, day, date) {
     quantity,
     category,
     storage,
-    date: buildDate(year, month-1, day),
+    date: buildDate(year, month, day),
   }; // Create new item object based on form details.
   //itemObject.addItemToFoodList(itemObject);
   Item.addItem(item);
-  customAlert("Added:" + item.name + ", Quantity: " + item.quantity);
+  
 }
 
 // Function checks if form elements are not empty,
 // parses the data to Item class and clears the form for re-use.
-export function validateForm(
+export async function validateForm(
   name,
   quantity,
   category,
@@ -208,9 +222,10 @@ export function validateForm(
     (day != "" && month != "" && year != "")
   ) {
     parseData(name.toLocaleLowerCase(), parseFloat(quantity), category, storage, year, month, day);
-    //clearFields();
+    return true;
   } else {
     customAlert("Form incomplete, try again!");
+    return false;
   }
 }
 

@@ -3,7 +3,6 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import { StyleSheet } from "react-native";
-// import { Icon } from "react-native-elements";
 import Icons from "../components/Icons";
 
 import {
@@ -15,14 +14,12 @@ import {
   SettingsScreen,
 } from "../screens";
 import SearchItemScreen from "../screens/SearchItemScreen";
-import RemoveItem from "../screens/RemoveItem";
 
 const BottomTab = createBottomTabNavigator();
 
 const HomeStack = createStackNavigator();
 const StorageStack = createStackNavigator();
 const WasteStack = createStackNavigator();
-const SearchItemsStack = createStackNavigator();
 
 const HomeStackScreen = () => (
   <HomeStack.Navigator>
@@ -35,7 +32,7 @@ const HomeStackScreen = () => (
         headerTitleAlign: "center",
       }}
     />
-    <StorageStack.Screen name="ItemScreen" component={ItemScreen} />
+    <HomeStack.Screen name="ItemScreen" component={ItemScreen} />
   </HomeStack.Navigator>
 );
 

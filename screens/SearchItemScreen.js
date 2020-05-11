@@ -7,8 +7,13 @@ import {
   Button,
   FlatList,
   Modal,
+  Platform,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard
 } from "react-native";
 import { SearchBar } from "react-native-elements";
+import DatePicker from 'react-native-datepicker'
 import { getItemsFoodCollection } from "../Helpers/ItemHelper";
 import { TextInput } from "react-native-gesture-handler";
 import renderIf from "../Helpers/renderIf";
@@ -17,6 +22,10 @@ import * as Item from "../Helpers/ItemHelper";
 import * as NewItem from "./NewItem";
 import RadioForm from "react-native-simple-radio-button";
 import ExpireCalendar from "../components/calendar";
+
+const getTodaysDate = () => {
+  return new Date().toISOString().slice(0,10).replace(/-/g,"");
+}
 
 export default class App extends React.Component {
   constructor({ navigation }) {
@@ -68,23 +77,14 @@ export default class App extends React.Component {
     });
   }
 
-  updateSearch = (search) => {
-    this.setState({ search });
-    //Automatically Query the database each time User Inputs.
-    //searchItem(search);
-  };
-  fetchDate = (date)=>{
-    this.setState({selected:date})
-  }
+
+
   render() {
     const { search } = this.state; // Search result from search bar goes here.
     
     const updateSearch = (search) => {
       this.setState({ search });
-      //Automatically Query the database each time User Inputs.
-      //searchItem(search);
       if (search.length > 2){
-        //this.setState({ dataFromDB: Item.searchItem(search)});
         let listData = []
         this.state.dataFromDB.forEach(item => {
           if (item.name.match(search)){
@@ -105,6 +105,10 @@ export default class App extends React.Component {
     ];
 
     return (
+      <KeyboardAvoidingView 
+      behavior={Platform.OS == "ios" ? "padding" : "height"}
+      style={styles.container}>
+        
       <View style={styles.container}>
         <SearchBar
           lightTheme
@@ -112,7 +116,7 @@ export default class App extends React.Component {
           onChangeText={updateSearch}
           value={search}
         />
-
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         {/* List that holds the data from Foodcollection WOKING WITH TEST DATA */}
         <FlatList
           style={styles.listContainer}
@@ -134,24 +138,28 @@ export default class App extends React.Component {
           )}
           keyExtractor={(item) => item.id}
         />
-
+        </TouchableWithoutFeedback>
         {renderIf(this.state.modalVisible)(
           <View style={styles.modalContainer}>
-            <View style={styles.modalCenterView}>
+        <View style={styles.modalCenterView}>
               {/*POP UP MODAL CONTENT : Currently works on phone, but looks like rubbish on the computer web browser. */}
               <Modal animationType="slide" transparent={true}>
+                <View style={styles.modalCenterView}>
                 <View style={styles.modalContent}>
                   <Text style={styles.modalContentTitleText}>
                     Enter the following
                   </Text>
-                  <Text style={styles.enterQuantityText}>Enter Quantity:</Text>
+                  {/* Item Quantity Input */}
                   <TextInput
-                    style={styles.enterQuantityInputText}
-                    placeholder="Quantity"
+                    style={styles.enterQuantityText}
+                    ref={this.state.quantityInput}
+                    placeholder="Item Quantity"
+                    keyboardType="number-pad"
+                    maxLength={30}
                     onChangeText={(quantityValue) => {
                       this.setState({ quantityInput: quantityValue });
                     }}
-                  />
+                  ></TextInput>
 
                   {/* Items Storage Location */}
                   <Text style={styles.selectStorageLocationText}>
@@ -164,11 +172,14 @@ export default class App extends React.Component {
                     onPress={(storageValue) => {
                       this.setState({ storageInput: storageValue });
                     }}
+                    radioStyle={{paddingRight: 20, paddingTop: 20}}
                   />
 
                   <Text style={styles.enterDateText}>Enter Date:</Text>
-                  <View style={styles.nestedDateInputContainer}>
-                    {/* <TextInput
+                  
+                    {Platform.OS == 'web' ? (
+                      <View style={styles.nestedDateInputContainer}>
+                      <TextInput
                       placeholder="dd"
                       style={styles.dayInput}
                       onChangeText={(dayValue) =>
@@ -189,10 +200,37 @@ export default class App extends React.Component {
                       onChangeText={(yearValue) =>
                         this.setState({ yearInput: yearValue })
                       }
-                    ></TextInput> */}
-                    <ExpireCalendar 
-                    fetchDate={(date)=>this.fetchDate(date)}/>
-                  </View>
+                    ></TextInput></View>
+                    ) : (
+                      <DatePicker
+                      style={{width: 200}}
+                      date={this.state.date}
+                      mode="date"
+                      placeholder="select date"
+                      format="YYYY-MM-DD"
+                      minDate={getTodaysDate()}
+                      maxDate="2100-06-01"
+                      confirmBtnText="Confirm"
+                      cancelBtnText="Cancel"
+                      customStyles={{
+                        dateIcon: {
+                          position: 'absolute',
+                          left: 0,
+                          top: 4,
+                          marginLeft: 0
+                        },
+                        dateInput: {
+                          marginLeft: 36
+                        }
+                        // ... You can check the source to find the other keys.
+                      }}
+                      onDateChange={(date) => {
+                        this.setState({yearInput: date.substring(0,4), monthInput: date.substring(5, 7), dayInput: date.substring(8, 10)})
+                      }}
+                    />
+                    )}
+                    
+                  
 
                   <View style={styles.buttonContainer}>
                     <Button
@@ -209,20 +247,29 @@ export default class App extends React.Component {
                           this.state.quantityInput,
                           this.state.itemCategory,
                           this.state.storageInput,
-                          this.state.selected.day,
-                          this.state.selected.month,
-                          this.state.selected.year
-                        );
-                        this.setState({ modalVisible: false });
+                          this.state.dayInput,
+                          this.state.monthInput,
+                          this.state.yearInput
+                        ).then(success => {
+                          if(success) {
+                            this.setState({ modalVisible: false });
+                            this.navigation.goBack();
+                          }else{
+                            this.setState({ modalVisible: false });
+                          }
+                        });
                       }}
                     ></Button>
                   </View>
                 </View>
+                </View>
               </Modal>
             </View>
-          </View>
+            </View>
         )}
       </View>
+      
+      </KeyboardAvoidingView>
     );
   }
 }
@@ -245,7 +292,9 @@ const styles = new StyleSheet.create({
     fontSize: 20,
   },
   modalContent: {
-    height: "50%",
+    marginTop: 50,
+    height: Platform.OS == 'web' ? '80vh' : '80%',
+    width: Platform.OS == 'web' ? '80vw' : '80%',
     justifyContent: "flex-start",
     backgroundColor: "white",
     alignItems: "center",
@@ -268,53 +317,55 @@ const styles = new StyleSheet.create({
     fontWeight: "bold",
   },
   enterQuantityText: {
-    marginTop: 10,
+    marginTop: 20,
     fontSize: 20,
   },
   enterQuantityInputText: {
     height: 50,
     width: 200,
-    marginTop: 10,
+    marginTop: 20,
     borderWidth: 1,
     borderRadius: 2,
   },
   selectStorageLocationText: {
-    marginTop: 10,
+    marginTop: 20,
     fontSize: 20,
   },
   enterDateText: {
-    marginTop: 10,
+    marginTop: 20,
     fontSize: 20,
   },
   nestedDateInputContainer: {
-    marginTop: 10,
+    marginTop: 20,
     flexDirection: "row",
     justifyContent: "space-evenly",
   },
   dayInput: {
     height: 50,
     width: 50,
-    marginTop: 10,
+    marginTop: 20,
     borderWidth: 1,
     borderRadius: 2,
   },
   yearInput: {
     height: 50,
     width: 50,
-    marginTop: 10,
+    marginTop: 20,
     borderWidth: 1,
     borderRadius: 2,
   },
   monthInput: {
     height: 50,
     width: 50,
-    marginTop: 10,
+    marginTop: 20,
     borderWidth: 1,
     borderRadius: 2,
   },
   buttonContainer: {
-    marginTop: 10,
+    marginTop: 20,
+    width: '80%',
     flexDirection: "row",
+    justifyContent: "space-evenly",
   },
   addToStorageButton: {
     color: "green",
@@ -331,12 +382,11 @@ const styles = new StyleSheet.create({
   modalContainer: {
     position: "absolute",
     top: 50,
-    left: 0,
-    right: 0,
+    left: '50%',
+    right: '50%',
     bottom: 0,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.7)",
   },
   modalCenterView: {
     justifyContent: "center",
