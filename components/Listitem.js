@@ -36,7 +36,7 @@ const Listitem = (mat, navigation)=>{
                         color='#0a84ff'
                         />
                     </MenuTrigger>
-                    {Popmenu()}
+                    {Popmenu(mat.id)}
                 </Menu>
             </View>
         </View>

@@ -15,6 +15,7 @@ import {
   SettingsScreen,
 } from "../screens";
 import SearchItemScreen from "../screens/SearchItemScreen";
+import RemoveItem from "../screens/RemoveItem";
 
 const BottomTab = createBottomTabNavigator();
 

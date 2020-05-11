@@ -1,9 +1,13 @@
 import * as React from "react";
-import { View, Text, StyleSheet, Button, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Button, TouchableOpacity,Modal,TextInput} from "react-native";
 import {reduceItem} from '../Helpers/ItemHelper'
+import renderIf from "../Helpers/renderIf";
 
 function ItemScreen({ route, navigation }) {
 
+  const [modalVisible, setVisble] = React.useState(false)
+  const [Type, setType] = React.useState()
+  const [Quality, setQuality] = React.useState(0)
   const { item } = route.params;
   console.log(item.id)
   navigation.setOptions({
@@ -19,19 +23,7 @@ function ItemScreen({ route, navigation }) {
       </View>
     ),
   });
-  // test function
-  // var foodlist = this.props.getItemFromItems(userid)
-  // foodlist.then(x=>console.log("current food list:",x))
-  // var searchitem = this.props.searchItemFromItems("potato")
-  // searchitem.then(x=>console.log("search result:",x))
-  // var newaddlist = this.props.addItemToItems(userid,item3)
-  // newaddlist.then(x=>console.log("new add list:",x))
-  // var newaddlist = this.props.addItemToItems(userid,item3)
-  // newaddlist.then(x=>console.log("new add list:",x))
-  // var newrmlist = this.props.removeItemFromItems(userid,editid)
-  // newrmlist.then(x=>console.log("new remove list:",x))
-  // var editlist = this.props.editItemInItems(userid,item3, editid)
-  // editlist.then(x=>console.log("new edit list:",x))
+
   return (
     <View style={styles.container}>
       <View style={styles.innerView}>
@@ -60,8 +52,8 @@ function ItemScreen({ route, navigation }) {
           title="Wasted"
           color="#ff443a"
           onPress={() => {
-            reduceItem(item.id, 0.1, 'wasted')
-            alert("Mark item as wasted");
+            setVisble(true)
+            setType('wasted')
           }}
         ></Button>
         <Button
@@ -69,11 +61,47 @@ function ItemScreen({ route, navigation }) {
           title="Used"
           color="#30d158"
           onPress={() => {
-            reduceItem(item.id, 0.1, 'used')
-            alert("Mark item as used");
+            setVisble(true)
+            setType('used')
           }}
         ></Button>
       </View>
+      
+      {renderIf(modalVisible)(
+            <View style={styles.modalContainer}>
+              <View style={styles.modalCenterView}>
+                {/*POP UP MODAL CONTENT : Currently works on phone, but looks like rubbish on the computer web browser. */}
+                <Modal animationType="slide" transparent={true}>
+                  <View style={styles.modalContent}>
+                    <Text style={styles.enterQuantityText}>Enter Quantity:</Text>
+                    <TextInput
+                      style={styles.enterQuantityInputText}
+                      placeholder="Quantity"
+                      onChangeText={(x)=>setQuality(x)}
+                    />
+                  <View style={styles.buttonContainer}>
+                    <Button
+                      title="Exit"
+                      onPress={() => setVisble(false)}
+                    ></Button>
+                      <Button
+                      title={Type}
+                      onPress={
+                        () => {
+                        reduceItem(item.id, parseFloat(Quality), Type)
+                        parseFloat(Quality)
+                        setVisble(false)
+                        var string= Type+' '+Quality+' '+item.name
+                        alert(string);
+                      }
+                      }
+                    ></Button>
+                  </View>
+                    </View>
+                      </Modal>
+                      </View>
+                      </View>)
+        }
     </View>
   );
 }
@@ -139,6 +167,59 @@ const styles = StyleSheet.create({
   },
   button: {
     padding: 40,
+  },
+  modalContainer: {
+    position: "absolute",
+    top: 50,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
+  },
+  modalCenterView: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalContent: {
+    height: "50%",
+    justifyContent: "flex-start",
+    backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  itemCategoryText: {
+    fontSize: 20,
+  },
+  modalContentTitleText: {
+    fontSize: 25,
+    fontWeight: "bold",
+  },
+  button: {
+    flex: 1,
+    maxWidth: 600,
+    borderRadius: 20,
+    margin: 5,
+    paddingVertical: 30,
+    paddingHorizontal: 50,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    backgroundColor: "white",
+  },
+  buttonContainer: {
+    marginTop: 10,
+    flexDirection: "row",
   },
 });
 

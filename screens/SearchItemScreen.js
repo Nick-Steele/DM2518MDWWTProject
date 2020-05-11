@@ -16,6 +16,7 @@ import * as Item from "../Helpers/ItemHelper";
 
 import * as NewItem from "./NewItem";
 import RadioForm from "react-native-simple-radio-button";
+import ExpireCalendar from "../components/calendar";
 
 export default class App extends React.Component {
   constructor({ navigation }) {
@@ -31,6 +32,7 @@ export default class App extends React.Component {
       dayInput: "",
       monthInput: "",
       yearInput: "",
+      selected:"",
 
       // TEST DATA : What is currently working and showing in the UI.
     };
@@ -70,7 +72,9 @@ export default class App extends React.Component {
     //Automatically Query the database each time User Inputs.
     //searchItem(search);
   };
-
+  fetchDate = (date)=>{
+    this.setState({selected:date})
+  }
   render() {
     const { search } = this.state; // Search result from search bar goes here.
 
@@ -144,7 +148,7 @@ export default class App extends React.Component {
 
                   <Text style={styles.enterDateText}>Enter Date:</Text>
                   <View style={styles.nestedDateInputContainer}>
-                    <TextInput
+                    {/* <TextInput
                       placeholder="dd"
                       style={styles.dayInput}
                       onChangeText={(dayValue) =>
@@ -165,7 +169,9 @@ export default class App extends React.Component {
                       onChangeText={(yearValue) =>
                         this.setState({ yearInput: yearValue })
                       }
-                    ></TextInput>
+                    ></TextInput> */}
+                    <ExpireCalendar 
+                    fetchDate={(date)=>this.fetchDate(date)}/>
                   </View>
 
                   <View style={styles.buttonContainer}>
@@ -183,9 +189,9 @@ export default class App extends React.Component {
                           this.state.quantityInput,
                           this.state.itemCategory,
                           this.state.storageInput,
-                          this.state.dayInput,
-                          this.state.monthInput,
-                          this.state.yearInput
+                          this.state.selected.day,
+                          this.state.selected.month,
+                          this.state.selected.year
                         );
                         this.setState({ modalVisible: false });
                       }}

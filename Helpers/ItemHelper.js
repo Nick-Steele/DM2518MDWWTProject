@@ -132,6 +132,10 @@ export function reduceItem(wtid, amount, type){
         var rmlist = [];
         currentfood.map((food) => {
           if (food.id === wtid) {
+            if(!(amount>0)){
+              alert("Invalid quatity input")
+              return 
+            }
             if(food.quantity<amount){
               alert("The number should be smaller than the number alreay exist.")
               return 

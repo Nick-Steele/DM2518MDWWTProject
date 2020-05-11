@@ -22,6 +22,10 @@ class NewItem extends React.Component {
     year: "",
   };
 
+  fetchDate = (date)=>{
+    this.setState({selected:date})
+  }
+
   render() {
     var itemCategoryProperties = [
       { label: "Fruit", value: "fruit" },
@@ -88,7 +92,7 @@ class NewItem extends React.Component {
 
           <Text style={styles.expiraryDateText}>Expirary Date:</Text>
           <View style={styles.nestedDateInputContainer}>
-            <TextInput
+            {/* <TextInput
               placeholder="dd"
               style={styles.dayInput}
               onChangeText={(dayValue) => this.setState({ day: dayValue })}
@@ -105,8 +109,8 @@ class NewItem extends React.Component {
               placeholder="yyyy"
               style={styles.yearInput}
               onChangeText={(yearValue) => this.setState({ year: yearValue })}
-            ></TextInput>
-            <ExpireCalendar />
+            ></TextInput> */}
+            <ExpireCalendar fetchDate={(date)=>this.fetchDate(date)}/>
           </View>
         </ScrollView>
 
@@ -118,9 +122,9 @@ class NewItem extends React.Component {
               this.state.itemQuantity,
               this.state.itemCategory,
               this.state.itemStorage,
-              this.state.day,
-              this.state.month,
-              this.state.year
+              this.state.selected.day,
+              this.state.selected.month,
+              this.state.selected.year
             )
           }
         ></Button>
@@ -141,7 +145,7 @@ function parseData(name, quantity, category, storage, year, month, day) {
     quantity,
     category,
     storage,
-    date: buildDate(year, month, day),
+    date: buildDate(year, month-1, day),
   }; // Create new item object based on form details.
   //itemObject.addItemToFoodList(itemObject);
   Item.addItem(item);
@@ -168,7 +172,7 @@ export function validateForm(
     month != "" &&
     year != ""
   ) {
-    parseData(name, quantity, category, storage, year, month, day);
+    parseData(name.toLocaleLowerCase(), parseFloat(quantity), category, storage, year, month, day);
     //clearFields();
   } else {
     customAlert("Form incomplete, try again!");
