@@ -12,6 +12,10 @@ import { SearchBar } from "react-native-elements";
 import { getItemsFoodCollection } from "../Helpers/ItemHelper";
 import { TextInput } from "react-native-gesture-handler";
 import renderIf from "../Helpers/renderIf";
+import * as Item from "../Helpers/ItemHelper";
+
+import * as NewItem from "./NewItem";
+import RadioForm from "react-native-simple-radio-button";
 
 export default class App extends React.Component {
   constructor({ navigation }) {
@@ -22,6 +26,7 @@ export default class App extends React.Component {
       dataFromDB: [],
       itemName: "",
       itemCategory: "",
+      storageInput: "",
       quantityInput: "",
       dayInput: "",
       monthInput: "",
@@ -69,14 +74,20 @@ export default class App extends React.Component {
   render() {
     const { search } = this.state; // Search result from search bar goes here.
 
+    var itemStorageProperties = [
+      { label: "Fridge", value: "fridge" },
+      { label: "Freezer", value: "freezer" },
+      { label: "Pantry", value: "pantry" },
+    ];
+
     return (
       <View style={styles.container}>
-        <SearchBar
+        {/* <SearchBar
           lightTheme
           placeholder="Search Food Database"
           onChangeText={this.updateSearch}
           value={search}
-        />
+        /> */}
 
         {/* List that holds the data from Foodcollection WOKING WITH TEST DATA */}
         <FlatList
@@ -118,6 +129,19 @@ export default class App extends React.Component {
                     }}
                   />
 
+                  {/* Items Storage Location */}
+                  <Text style={styles.selectStorageLocationText}>
+                    Storage Location:
+                  </Text>
+                  <RadioForm
+                    radio_props={itemStorageProperties}
+                    formHorizontal={true}
+                    labelHorizontal={false}
+                    onPress={(storageValue) => {
+                      this.setState({ storageInput: storageValue });
+                    }}
+                  />
+
                   <Text style={styles.enterDateText}>Enter Date:</Text>
                   <View style={styles.nestedDateInputContainer}>
                     <TextInput
@@ -144,15 +168,6 @@ export default class App extends React.Component {
                     ></TextInput>
                   </View>
 
-                  <Button
-                    title="testDB"
-                    onPress={() => {
-                      for (var i = 0; i < this.state.dataFromDB.length; i++) {
-                        console.log(this.state.dataFromDB[i].name);
-                      }
-                    }}
-                  ></Button>
-
                   <View style={styles.buttonContainer}>
                     <Button
                       title="Exit"
@@ -163,40 +178,18 @@ export default class App extends React.Component {
                     <Button
                       title="Add"
                       onPress={() => {
-                        console.log(
-                          this.state.itemName +
-                            " | " +
-                            this.state.itemCategory +
-                            " | " +
-                            this.state.quantityInput +
-                            " | " +
-                            this.state.dayInput +
-                            " | " +
-                            this.state.monthInput +
-                            " | " +
-                            this.state.yearInput
+                        NewItem.validateForm(
+                          this.state.itemName,
+                          this.state.quantityInput,
+                          this.state.itemCategory,
+                          this.state.storageInput,
+                          this.state.dayInput,
+                          this.state.monthInput,
+                          this.state.yearInput
                         );
+                        this.setState({ modalVisible: false });
                       }}
                     ></Button>
-
-                    {/* <Button
-                  title="Add to storage"
-                  style={styles.addToStorageButton}
-                  onPress={() => {
-                    var item = searchItem(search);
-                    item.then(function (v) {
-                      if (v !== null || v !== undefined) {
-                        var item = v;
-                        console.log("Add Item: " + v.name + v.category);
-                        //addItem(v);
-                      } else {
-                        console.log(
-                          "This item does not exist, try making your own"
-                        );
-                      }
-                    });
-                  }}
-                ></Button> */}
                   </View>
                 </View>
               </Modal>
@@ -259,6 +252,10 @@ const styles = new StyleSheet.create({
     borderWidth: 1,
     borderRadius: 2,
   },
+  selectStorageLocationText: {
+    marginTop: 10,
+    fontSize: 20,
+  },
   enterDateText: {
     marginTop: 10,
     fontSize: 20,
@@ -307,7 +304,7 @@ const styles = new StyleSheet.create({
   },
   modalContainer: {
     position: "absolute",
-    top: 0,
+    top: 50,
     left: 0,
     right: 0,
     bottom: 0,
