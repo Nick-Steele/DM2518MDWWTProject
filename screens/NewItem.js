@@ -7,6 +7,7 @@ import DatePicker from 'react-native-datepicker'
 const getTodaysDate = () => {
   return new Date().toISOString().slice(0,10).replace(/-/g,"");
 }
+import ExpireCalendar from "../components/calendar";
 
 class NewItem extends React.Component {
   state = {
@@ -182,7 +183,15 @@ function parseData(name, quantity, category, storage, year, month, day, date) {
 
 // Function checks if form elements are not empty,
 // parses the data to Item class and clears the form for re-use.
-function validateForm(name, quantity, category, storage, day, month, year) {
+export function validateForm(
+  name,
+  quantity,
+  category,
+  storage,
+  day,
+  month,
+  year
+) {
   if (
     name != "" &&
     quantity != "" &&
@@ -196,8 +205,6 @@ function validateForm(name, quantity, category, storage, day, month, year) {
     customAlert("Form incomplete, try again!");
   }
 }
-
-function clearFields() {}
 
 function customAlert(string) {
   alert(string);
