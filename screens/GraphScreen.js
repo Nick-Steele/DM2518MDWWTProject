@@ -67,11 +67,35 @@ const GraphScreen = () => {
       setTheGraphTitle(props.graphTitle);
 
       // Filter data depending on graphType
-      var filteredData;
+      // Cycle through filtered data and set variabels using case
+      var filteredData = [];
+      console.log(filteredData);
 
       switch (props.graphType) {
         case "week":
-          filteredData = value;
+          var todayDate = new Date().getDate();
+          var count = 0;
+
+          for (var i = 0; i < value.length; i++) {
+            var newDate = new Date(value[i].date.toDate()).getDate();
+            // console.log("ITEM----", value[i].name, " ", value[i].category);
+            // console.log(
+            //   "Between: ",
+            //   todayDate - 7,
+            //   " ",
+            //   newDate,
+            //   " ",
+            //   todayDate
+            // );
+
+            if (newDate >= todayDate - 7 && newDate <= todayDate) {
+              console.log("This is true");
+              filteredData[count] = value[i];
+              count++;
+            }
+          }
+          console.log("");
+
           break;
         case "month":
           filteredData = value;
@@ -84,14 +108,14 @@ const GraphScreen = () => {
           break;
       }
 
+      console.log(filteredData);
+
       console.log("The length of value is: ", value);
       console.log("The graph type is: ", props.graphType);
 
-      // getItems().then( items => var itemDate = new Date(items[0].date) )
-
       // Cycle through filtered data and set variabels using case
       for (var i = 0; i < filteredData.length; i++) {
-        switch (value[i].category) {
+        switch (filteredData[i].category) {
           case "dairy":
             dairyCount++;
             break;
