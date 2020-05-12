@@ -151,7 +151,7 @@ const GraphScreen = () => {
     // Deletes the item data
     deleteItem((name = props.name));
 
-    // Appends the new item data
+    // Appends the updated item data
     setTheData((prevItem) => {
       return [...prevItem, newData[0]];
     });
