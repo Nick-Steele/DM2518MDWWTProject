@@ -24,39 +24,39 @@ export default function HomeScreen({ navigation }) {
   const endOfWeekDate = moment().add('days', 7).format("YYYY-MM-DD");
   const endOfMonthDate = moment().add('days', 31).format("YYYY-MM-DD");
 
-  React.useEffect(() => {
-    getItems().then((items) => {
-      let todaysItems = items.filter((item) => moment(item.date).isSame(todaysDate));
-      let thisWeeksItems = items.filter((item) => moment(item.date).isBetween(todaysDate, endOfWeekDate));
-      let thisMonthsItems = items.filter((item) => moment(item.date).isBetween(endOfWeekDate, endOfMonthDate));
-      setFood({today: todaysItems, week: thisWeeksItems, month: thisMonthsItems});
-    });
-    setTimeout(()=>{
-      setLoading(false)
-    },1000)
-  }, []);
+  // React.useEffect(() => {
+  //   getItems().then((items) => {
+  //     let todaysItems = items.filter((item) => moment(item.date).isSame(todaysDate));
+  //     let thisWeeksItems = items.filter((item) => moment(item.date).isBetween(todaysDate, endOfWeekDate));
+  //     let thisMonthsItems = items.filter((item) => moment(item.date).isBetween(endOfWeekDate, endOfMonthDate));
+  //     setFood({today: todaysItems, week: thisWeeksItems, month: thisMonthsItems});
+  //   });
+  //   setTimeout(()=>{
+  //     setLoading(false)
+  //   },1000)
+  // }, []);
 
-  React.useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      getItems().then((items) => {
-      let todaysItems = items.filter((item) => moment(item.date).isSame(todaysDate));
-      let thisWeeksItems = items.filter((item) => moment(item.date).isBetween(todaysDate, endOfWeekDate));
-      let thisMonthsItems = items.filter((item) => moment(item.date).isBetween(endOfWeekDate, endOfMonthDate));
-      setFood({today: todaysItems, week: thisWeeksItems, month: thisMonthsItems});
-    });
-    setTimeout(()=>{
-      setLoading(false)
-    },1000)
-    });
-    // Return the function to unsubscribe from the event so it gets removed on unmount
-    return unsubscribe;
-  }, [navigation]);
+  // React.useEffect(() => {
+  //   const unsubscribe = navigation.addListener('focus', () => {
+  //     getItems().then((items) => {
+  //     let todaysItems = items.filter((item) => moment(item.date).isSame(todaysDate));
+  //     let thisWeeksItems = items.filter((item) => moment(item.date).isBetween(todaysDate, endOfWeekDate));
+  //     let thisMonthsItems = items.filter((item) => moment(item.date).isBetween(endOfWeekDate, endOfMonthDate));
+  //     setFood({today: todaysItems, week: thisWeeksItems, month: thisMonthsItems});
+  //   });
+  //   setTimeout(()=>{
+  //     setLoading(false)
+  //   },1000)
+  //   });
+  //   // Return the function to unsubscribe from the event so it gets removed on unmount
+  //   return unsubscribe;
+  // }, [navigation]);
 
-  if(loading){
-    return(
-      <LoadingScreen/>
-    )
-  } else {
+  // if(loading){
+  //   return(
+  //     <LoadingScreen/>
+  //   )
+  // } else {
     return (
       <SafeAreaView style={Platform.OS == 'web' ? styles.safeContainer : styles.safeContainer2}>
         <MenuProvider>
@@ -118,7 +118,7 @@ export default function HomeScreen({ navigation }) {
       </SafeAreaView>
     );
   }
-}
+// }
 
 const styles = StyleSheet.create({
   safeContainer: {
