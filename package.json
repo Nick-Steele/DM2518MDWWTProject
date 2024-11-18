@@ -20,7 +20,7 @@
     "expo-google-app-auth": "^8.1.0",
     "expo-permissions": "^8.1.0",
     "expo-react-native-adapter": "^3.0.1",
-    "firebase": "7.9.0",
+    "firebase": "10.9.0",
     "kit": "^1.0.26",
     "moment": "^2.25.3",
     "quagga": "^0.12.1",
